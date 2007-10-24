@@ -1,5 +1,5 @@
 <?php
-/* $Id: ext_tables.php 207 2007-10-03 13:33:53Z dima $ */
+/* $Id$ */
 
 if (!defined('TYPO3_MODE'))  die ('Access denied.');
 

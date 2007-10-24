@@ -1,5 +1,5 @@
 <?php
-// $Id: $
+// $Id$
 if (!defined ('TYPO3_MODE')) die('Access denied.');
 
 $TCA['tx_comments_comments'] = array(

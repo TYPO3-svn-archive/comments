@@ -24,7 +24,7 @@
 /**
  * Handling of related records for comments.
  *
- * $Id: class.tx_comments_tcemain.php 210 2007-10-04 11:22:43Z dima $
+ * $Id$
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]

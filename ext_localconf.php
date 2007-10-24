@@ -1,5 +1,5 @@
 <?php
-/* $Id: ext_localconf.php 213 2007-10-12 16:36:45Z dima $ */
+/* $Id$ */
 
 if (!defined ('TYPO3_MODE')) die ('Access denied.');
 

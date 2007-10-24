@@ -1,4 +1,4 @@
-# $Id: ext_tables.sql 209 2007-10-04 11:14:27Z dima $
+# $Id$
 
 #
 # Table structure for table 'tx_comments_comments'

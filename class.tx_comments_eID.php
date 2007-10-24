@@ -29,7 +29,7 @@
 *
 * Comment management script.
 *
-* $Id: class.tx_comments_eID.php 203 2007-09-30 12:46:34Z dima $
+* $Id$
 *
 * @author Dmitry Dulepov <dmitry@typo3.org>
 */

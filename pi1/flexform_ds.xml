@@ -1,0 +1,11 @@
+<T3DataStructure>
+	<meta>
+		<langDisable>0</langDisable>
+		<langChildren>0</langChildren>
+	</meta>
+	<sheets>
+		<sDEF>EXT:comments/pi1/flexform_ds_general.xml</sDEF>
+		<sAdvanced>EXT:comments/pi1/flexform_ds_advanced.xml</sAdvanced>
+		<sSpamProtect>EXT:comments/pi1/flexform_ds_spamprotect.xml</sSpamProtect>
+	</sheets>
+</T3DataStructure>

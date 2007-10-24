@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Language labels for comments</description>
+        <type>module</type>
+        <csh_table></csh_table>
+        <fileId>EXT:comments/locallang.xml</fileId>
+        <labelContext type="array">
+            <label index="tt_content.list_type_pi1"></label>
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="tt_content.list_type_pi1">Commenting system (comments)</label>
+            <label index="tt_content.tx_comments_pi1.code">Mode:</label>
+            <label index="tt_content.tx_comments_pi1.code.I.0">Comment listing</label>
+            <label index="tt_content.tx_comments_pi1.code.I.1">Comment form</label>
+            <label index="tt_content.tx_comments_pi1.code.I.u">Plugin is not configured yet!</label>
+            <label index="tt_content.tx_comments_pi1.storage.page">Store records at page:</label>
+            <label index="tt_content.tx_comments_pi1.trigger.prefix">Triggering prefix:</label>
+            <label index="tt_content.tx_comments_pi1.template_file">Template file:</label>
+            <label index="error.undefined.foregn.table">[%s] Error: no foreign table defined in TS configuration for prefix '%s'</label>
+            <label index="error.required.field">This field is required!</label>
+            <label index="error.invalid.email">E-mail is incorrect</label>
+            <label index="error.wrong.captcha">The code is incorrect</label>
+            <label index="requires.approval">Notice: your message has been recorded and will appear as soon as it is approved by moderator.</label>
+            <label index="error.double.post">This message is already posted. If you do not see it, it may be waiting moderator's approval.</label>
+            <label index="email.subject">Notification about new comment</label>
+            <label index="sheet.general">General</label>
+            <label index="sheet.advanced">Advanced</label>
+            <label index="sheet.spamprotect">Anti-spam</label>
+            <label index="tt_content.tx_comments_pi1.commentsPerPage">Comments per page:</label>
+            <label index="tt_content.tx_comments_pi1.closeCommentsAfter">Close commenting after (read manual!):</label>
+            <label index="tt_content.tx_comments_pi1.requireApproval">Require approval of each comment:</label>
+            <label index="tt_content.tx_comments_pi1.checkTypicalSpam">Check for typical spam:</label>
+            <label index="tt_content.tx_comments_pi1.considerReferer">Check referer (read manual!):</label>
+            <label index="tt_content.tx_comments_pi1.notificationEmail">Send notification to this e-mail:</label>
+            <label index="tt_content.tx_comments_pi1.fromEmail">Send e-mail from this address:</label>
+            <label index="tt_content.tx_comments_pi1.emailTemplate">Template file for e-mails:</label>
+            <label index="tt_content.tx_comments_pi1.useCaptcha">Use captcha (read manual!):</label>
+            <label index="tt_content.tx_comments_pi1.useCaptcha.I.0">None</label>
+            <label index="tt_content.tx_comments_pi1.useCaptcha.I.1">captcha extension</label>
+            <label index="tt_content.tx_comments_pi1.useCaptcha.I.2">sr_freecap extension</label>
+            <label index="commenting.closed">Commenting is closed for this item</label>
+        </languageKey>
+    </data>
+</T3locallang>

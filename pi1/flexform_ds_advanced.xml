@@ -1,0 +1,36 @@
+<T3DataStructure>
+	<ROOT>
+		<TCEforms>
+			<sheetTitle>LLL:EXT:comments/pi1/locallang.xml:sheet.advanced</sheetTitle>
+		</TCEforms>
+		<type>array</type>
+		<el>
+			<commentsPerPage>
+				<TCEforms>
+				<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.commentsPerPage</label>
+				<config>
+					<type>input</type>
+					<default>10</default>
+					<eval>required,trim,lower,num,int</eval>
+					<size>7</size>
+					<max>5</max>
+					<range>
+						<lower>1</lower>
+					</range>
+				</config>
+				</TCEforms>
+			</commentsPerPage>
+			<closeCommentsAfter>
+				<TCEforms>
+				<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.closeCommentsAfter</label>
+				<config>
+					<type>input</type>
+					<default></default>
+					<eval>required,trim,lower,alphanum</eval>
+					<size>15</size>
+				</config>
+				</TCEforms>
+			</closeCommentsAfter>
+		</el>
+	</ROOT>
+</T3DataStructure>

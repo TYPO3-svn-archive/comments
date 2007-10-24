@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!-- $Id: locallang_db.xml 208 2007-10-04 10:50:22Z dima $ -->
+<T3locallang>
+	<meta type="array">
+		<description>Database labels</description>
+		<type>database</type>
+		<csh_table></csh_table>
+		<fileId>EXT:comments/locallang_db.xml</fileId>
+		<labelContext type="array">
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_comments_comments">Comments</label>
+			<label index="tx_comments_comments.external_ref">Comment for the record:</label>
+			<label index="tx_comments_comments.external_prefix">External prefix for this comment:</label>
+			<label index="tx_comments_comments.approved">Approval state:</label>
+			<label index="tx_comments_comments.approved.I.0"></label>
+			<label index="tx_comments_comments.firstname">Commenter's first name:</label>
+			<label index="tx_comments_comments.lastname">Commenter's last name:</label>
+			<label index="tx_comments_comments.email">Commenter's e-mail:</label>
+			<label index="tx_comments_comments.homepage">Commenter's web site:</label>
+			<label index="tx_comments_comments.location">Commenter's location:</label>
+			<label index="tx_comments_comments.content">Comment:</label>
+			<label index="tx_comments_comments.remote_addr">Commenter's IP address:</label>
+			<label index="tx_comments_comments.double_post_check">Code for double post checks:</label>
+		</languageKey>
+	</data>
+</T3locallang>

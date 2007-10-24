@@ -1,0 +1,36 @@
+2007-10-24 Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added commenting closing
+	* Added many new options in flexform
+
+2007-10-23 Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Changed extkey from nc_comments to comments
+
+2007-10-13 Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added default captcha support and selection for captcha extension to use
+	* Added notification feature
+	* Disabled autocomplete for captcha field
+
+2007-10-12 Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Moved commenting functionality to separate extension
+
+2007-10-04 Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added spam and double post checks
+	* Added hook to remove comments if associated record is removed
+
+2007-10-03 Dmitry Dulepov  <dmitry@typo3.org>
+
+	* First draft implementation of commenting system
+
+2007-09-30 Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added tables for comments
+	* Fix: $GLOBALS['LANG'] is not defined when no BE user
+
+2007-09-30 Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Implemented relation between news and products

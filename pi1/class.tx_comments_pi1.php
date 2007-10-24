@@ -38,26 +38,28 @@
  *
  *
  *
- *   74: class tx_comments_pi1 extends tslib_pibase
- *   98:     function main($content, $conf)
- *  129:     function init($conf)
- *  165:     function mergeConfiguration($conf)
- *  181:     function fetchConfigValue($param)
- *  201:     function checkExternalUid()
- *  216:     function comments()
- *  241:     function comments_getComments(&$rows)
- *  268:     function comments_getComments_getEmail($email)
- *  283:     function comments_getPageBrowser($page, $rpp, $rowCount)
- *  343:     function comments_getPageBrowser_getPageLink($page)
- *  360:     function form()
- *  412:     function form_getCaptcha()
- *  443:     function form_wrapError($field)
- *  453:     function processSubmission()
- *  553:     function processSubmission_checkTypicalSpam()
- *  595:     function processSubmission_validate()
- *  641:     function sendNotificationEmail($uid, $points)
+ *   76: class tx_comments_pi1 extends tslib_pibase
+ *  100:     function main($content, $conf)
+ *  136:     function init($conf)
+ *  172:     function mergeConfiguration($conf)
+ *  225:     function fetchConfigValue($param)
+ *  245:     function checkExternalUid()
+ *  260:     function comments()
+ *  286:     function comments_getComments(&$rows)
+ *  314:     function comments_getComments_getEmail($email)
+ *  329:     function comments_getPageBrowser($page, $rpp, $rowCount)
+ *  389:     function comments_getPageBrowser_getPageLink($page)
+ *  406:     function form()
+ *  460:     function form_getCaptcha()
+ *  493:     function form_wrapError($field)
+ *  503:     function processSubmission()
+ *  605:     function processSubmission_checkTypicalSpam()
+ *  647:     function processSubmission_validate()
+ *  693:     function sendNotificationEmail($uid, $points)
+ *  725:     function isCommentingClosed()
+ *  752:     function commentingClosed()
  *
- * TOTAL FUNCTIONS: 17
+ * TOTAL FUNCTIONS: 19
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -718,7 +720,7 @@ class tx_comments_pi1 extends tslib_pibase {
 	/**
 	 * Checks if commenting is closed for this item
 	 *
-	 * @return boolean	<code>true</code> if commenting is closed
+	 * @return	boolean		<code>true</code> if commenting is closed
 	 */
 	function isCommentingClosed() {
 		$timeAdd = $this->conf['advanced.']['closeCommentsAfter'];

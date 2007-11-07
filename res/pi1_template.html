@@ -17,7 +17,7 @@
 <!-- ###COMMENT_LIST### begin
 	This subpart formats comments
 -->
-<div class="tx-nccomments-comments">
+<div class="tx-comments-comments">
 
 	<!-- ###SINGLE_COMMENT### begin
 		A single comment in the list. Possible markers:
@@ -30,10 +30,10 @@
 			COMMENT_DATE	- date when posted
 			COMMENT_CONTENT	- content of the comment (nl2br + htmlspecialchars)
 	-->
-	<div class="tx-nccomments-comment###ALTERNATE###">
-		<span class="tx-nccomments-comment-name"><a href="###EMAIL###">###FIRSTNAME###</a></span> wrote on <span class="tx-nccomments-comment-date">###COMMENT_DATE###</span>:
+	<div class="tx-comments-comment###ALTERNATE###">
+		<span class="tx-comments-comment-name"><a href="###EMAIL###">###FIRSTNAME###</a></span> wrote on <span class="tx-comments-comment-date">###COMMENT_DATE###</span>:
 		<hr size="1" />
-		<div class="tx-nccomments-comment-content">
+		<div class="tx-comments-comment-content">
 			###COMMENT_CONTENT###
 		</div>
 	</div>
@@ -48,14 +48,14 @@
 			LINK_LAST		- link to last page
 		Wrapping subsections must exist if corresponding marker from above exists.
 	-->
-	<div class="tx-nccomments-page-browser">
+	<div class="tx-comments-page-browser">
 		<!-- ###LINK_FIRST_WRAP### begin -->
 			<a href="###LINK_FIRST###">First</a>
 		<!-- ###LINK_FIRST_WRAP### end -->
 		<!-- ###LINK_PREV_WRAP### begin -->
 			<a href="###LINK_PREV###">Previous</a>
 		<!-- ###LINK_PREV_WRAP### end -->
-		<span class="tx-nccomments-page-browser-current">###CUR_PAGE###</span>
+		<span class="tx-comments-page-browser-current">###CUR_PAGE###</span>
 		<!-- ###LINK_NEXT_WRAP### begin -->
 			<a href="###LINK_NEXT###">Next</a>
 		<!-- ###LINK_NEXT_WRAP### end -->
@@ -73,28 +73,28 @@
 <!-- ###COMMENT_FORM### begin
 	This subpart formats comment form
 -->
-<div class="tx-nccomments-comment-form">
+<div class="tx-comments-comment-form">
 	<h4>Add comment</h4>
 	###TOP_MESSAGE###
 	<form action="##ACTION_URL###" method="post">
 		<p>
-			<span class="tx-nccomments-required-mark">*</span> indicates required fields.
+			<span class="tx-comments-required-mark">*</span> indicates required fields.
 		</p>
-		<label for="tx_nccomments_pi1[firstname]">First name:</label>
-		<input class="tx-nccomments-comment-input" type="text" size="35" name="tx_nccomments_pi1[firstname]" id="tx_nccomments_pi1_firstname" value="###FIRSTNAME###" /> ###REQUIRED_FIRSTNAME### ###ERROR_FIRSTNAME###<br />
-		<label for="tx_nccomments_pi1[lastname]">Last name:</label>
-		<input class="tx-nccomments-comment-input" type="text" size="35" name="tx_nccomments_pi1[lastname]" id="tx_nccomments_pi1_lastname" value="###LASTNAME###" /> ###REQUIRED_LASTNAME### ###ERROR_LASTNAME###<br />
-		<label for="tx_nccomments_pi1[email]">E-mail:</label>
-		<input class="tx-nccomments-comment-input" type="text" size="35" name="tx_nccomments_pi1[email]" id="tx_nccomments_pi1_email" value="###EMAIL###" /> ###REQUIRED_EMAIL### ###ERROR_EMAIL###<br />
-		<label for="tx_nccomments_pi1[homepage]">Web site:</label>
-		<input class="tx-nccomments-comment-input" type="text" size="35" name="tx_nccomments_pi1[homepage]" id="tx_nccomments_pi1_homepage" value="###HOMEPAGE###" /> ###REQUIRED_HOMEPAGE### ###ERROR_HOMEPAGE###<br />
-		<label for="tx_nccomments_pi1[location]">Location:</label>
-		<input class="tx-nccomments-comment-input" type="text" size="35" name="tx_nccomments_pi1[location]" id="tx_nccomments_pi1_location" value="###LOCATION###" /> ###REQUIRED_LOCATION### ###ERROR_LOCATION###<br />
+		<label for="tx_comments_pi1[firstname]">First name:</label>
+		<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[firstname]" id="tx_comments_pi1_firstname" value="###FIRSTNAME###" /> ###REQUIRED_FIRSTNAME### ###ERROR_FIRSTNAME###<br />
+		<label for="tx_comments_pi1[lastname]">Last name:</label>
+		<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[lastname]" id="tx_comments_pi1_lastname" value="###LASTNAME###" /> ###REQUIRED_LASTNAME### ###ERROR_LASTNAME###<br />
+		<label for="tx_comments_pi1[email]">E-mail:</label>
+		<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[email]" id="tx_comments_pi1_email" value="###EMAIL###" /> ###REQUIRED_EMAIL### ###ERROR_EMAIL###<br />
+		<label for="tx_comments_pi1[homepage]">Web site:</label>
+		<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[homepage]" id="tx_comments_pi1_homepage" value="###HOMEPAGE###" /> ###REQUIRED_HOMEPAGE### ###ERROR_HOMEPAGE###<br />
+		<label for="tx_comments_pi1[location]">Location:</label>
+		<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[location]" id="tx_comments_pi1_location" value="###LOCATION###" /> ###REQUIRED_LOCATION### ###ERROR_LOCATION###<br />
 		###CAPTCHA###
-		<label for="tx_nccomments_pi1[content]">Content:</label>
-		<textarea cols="32" rows="7" name="tx_nccomments_pi1[content]" id="tx_nccomments_pi1_content">###CONTENT###</textarea> ###REQUIRED_CONTENT### ###ERROR_CONTENT###<br />
-		<label for="tx_nccomments_pi1[submit]">&nbsp;</label>
-		<input type="submit" name="tx_nccomments_pi1[submit]" id="tx_nccomments_pi1_submit" value="Submit" />
+		<label for="tx_comments_pi1[content]">Content:</label>
+		<textarea cols="32" rows="7" name="tx_comments_pi1[content]" id="tx_comments_pi1_content">###CONTENT###</textarea> ###REQUIRED_CONTENT### ###ERROR_CONTENT###<br />
+		<label for="tx_comments_pi1[submit]">&nbsp;</label>
+		<input type="submit" name="tx_comments_pi1[submit]" id="tx_comments_pi1_submit" value="Submit" />
 		<input type="reset" value="Reset" />
 		###JS_USER_DATA###
 	</form>
@@ -108,7 +108,7 @@
 <!-- ###REQUIRED_FIELD### begin
 	This subpart formats mark for required field
 -->
-<span class="tx-nccomments-required-mark">*</span>
+<span class="tx-comments-required-mark">*</span>
 <!-- ###REQUIRED_FIELD### end -->
 
 <hr size="1" />
@@ -119,13 +119,13 @@
 <!-- ###FORM_TOP_MESSAGE### begin
 	This subpart formats mark for required field
 -->
-<div class="tx-nccomments-form-top-message">
+<div class="tx-comments-form-top-message">
 ###MESSAGE###
 </div>
 <!-- ###FORM_TOP_MESSAGE### end -->
 
 <!-- ###COMMENTING_CLOSED### begin -->
-<div class="tx-nccomments-closed">
+<div class="tx-comments-closed">
 <img src="###SITE_REL_PATH###res/commenting-closed.gif" width="16" height="16" alt="" align="left" />
 ###MESSAGE###
 </div>
@@ -134,10 +134,10 @@
 <!-- ###CAPTCHA_SUB### begin
 	This subpart formats captcha
 -->
-<label for="tx_nccomments_pi1[captcha]">Enter the code:</label>
-<div class="tx-nccomments-captcha">
+<label for="tx_comments_pi1[captcha]">Enter the code:</label>
+<div class="tx-comments-captcha">
 ###SR_FREECAP_IMAGE###<br />###SR_FREECAP_CANT_READ###<br />
-<input class="tx-nccomments-comment-input" autocomplete="off" type="text" size="35" name="tx_nccomments_pi1[captcha]" value="" /> ###REQUIRED_CAPTCHA### ###ERROR_CAPTCHA###<br />
+<input class="tx-comments-comment-input" autocomplete="off" type="text" size="35" name="tx_comments_pi1[captcha]" value="" /> ###REQUIRED_CAPTCHA### ###ERROR_CAPTCHA###<br />
 </div>
 <!-- ###CAPTCHA_SUB### end -->
 

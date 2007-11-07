@@ -26,7 +26,7 @@
 				<config>
 					<type>input</type>
 					<default></default>
-					<eval>required,trim,lower,alphanum</eval>
+					<eval>trim,lower,alphanum</eval>
 					<size>15</size>
 				</config>
 				</TCEforms>

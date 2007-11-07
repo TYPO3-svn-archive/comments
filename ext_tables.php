@@ -32,11 +32,11 @@ function tx_comments_makeTempFlexFormDS() {
 		$ds = t3lib_div::xml2array($ffContent);
 		$sheets = t3lib_div::resolveAllSheetsInDS($ds);
 		unset($ds['sheets']);
-		$ds['sheets'] = $sheets;
+		$ds['sheets'] = $sheets['sheets'];
 		$ffContentNew = t3lib_div::array2xml($ds, '', 0, 'T3DataStructure');
 		t3lib_div::writeFileToTypo3tempDir($ffFileName, $ffContentNew);
 	}
-	return $ffFileName;
+	return 'FILE:' . substr($ffFileName, strlen(PATH_site));
 }
 
 if (!defined('TYPO3_MODE'))  die ('Access denied.');

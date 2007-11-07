@@ -213,6 +213,11 @@ class tx_comments_pi1 extends tslib_pibase {
 				$this->conf['advanced.']['closeCommentsAfter'] = '+ ' . $value . ' ' . $suffix;
 			}
 		}
+		// If storage pid is not set, use current page
+		$this->conf['storagePid'] = intval($this->conf['storagePid']);
+		if ($this->conf['storagePid'] == 0) {
+			$this->conf['storagePid'] = $GLOBALS['TSFE']->id;
+		}
 	}
 
 	/**

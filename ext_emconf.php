@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
 	'author_company' => 'http://typo3bloke.net/',
-	'version' => '0.8.0',
+	'version' => '0.9.0',
 	'constraints' => array(
 		'depends' => array(
 		),

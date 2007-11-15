@@ -733,7 +733,12 @@ class tx_comments_pi1 extends tslib_pibase {
 			$params['uid'] = $this->externalUid;
 			$time = t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments/pi1/class.tx_comments_pi1.php'][$this->foreignTableName], $params, $this);
 			if ($time !== false) {
-				return ($time < time());
+				if ($time <= $GLOBALS['EXEC_TIME']) {
+					return true;	// Commenting closed
+				}
+				// Expire this page cache when commets will be closed
+				$GLOBALS['TSFE']->set_cache_timeout_default($time - $GLOBALS['EXEC_TIME']);
+				return false;
 			}
 		}
 
@@ -756,7 +761,14 @@ class tx_comments_pi1 extends tslib_pibase {
 		}
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fieldName, $this->foreignTableName,
 					'uid=' . intval($this->externalUid) . $this->cObj->enableFields($this->foreignTableName));
-		return (count($rows) == 1 && strtotime($timeAdd, $rows[0][$fieldName]) < time());
+		if (count($rows) == 1) {
+			$time = strtotime($timeAdd, $rows[0][$fieldName]);
+			if ($time <= $GLOBALS['EXEC_TIME']) {
+				return true;
+			}
+			$GLOBALS['TSFE']->set_cache_timeout_default($time - $GLOBALS['EXEC_TIME']);
+		}
+		return false;
 	}
 
 	/**

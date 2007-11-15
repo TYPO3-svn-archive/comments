@@ -728,6 +728,16 @@ class tx_comments_pi1 extends tslib_pibase {
 	 * @return	boolean		<code>true</code> if commenting is closed
 	 */
 	function isCommentingClosed() {
+		// See if there are any hooks
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments/pi1/class.tx_comments_pi1.php'][$this->foreignTableName])) {
+			$params['uid'] = $this->externalUid;
+			$time = t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments/pi1/class.tx_comments_pi1.php'][$this->foreignTableName], $params, $this);
+			if ($time !== false) {
+				return ($time < time());
+			}
+		}
+
+		// Try global settings
 		$timeAdd = $this->conf['advanced.']['closeCommentsAfter'];
 		if ($timeAdd == '') {
 			// No time limit emposed

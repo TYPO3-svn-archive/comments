@@ -1,6 +1,7 @@
 2007-11-15 Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Changed setup to enable other extensions to add prefixes
+	* Added hook to disable comments for individual items
 
 2007-11-07 Dmitry Dulepov  <dmitry@typo3.org>
 

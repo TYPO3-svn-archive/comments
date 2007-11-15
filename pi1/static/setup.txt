@@ -35,16 +35,14 @@ plugin.tx_comments_pi1 {
 	}
 
 	# maps pi1 to associated tables where pi1 plugin stores records
-	prefixToTableMap {
-		tx_album3x_pi1 = tx_album3x_images
-		tx_commerce_pi1 = tx_commerce_products
-		tx_irfaq_pi1 = tx_irfaq_q
-		tx_mininews_pi1 = tx_mininews_news
-		tx_ttnews = tt_news
-	}
+	# Note: do not use { } syntax because other plugins may add entries here and they should not be overriden!
+	prefixToTableMap.tx_album3x_pi1 = tx_album3x_images
+	prefixToTableMap.tx_commerce_pi1 = tx_commerce_products
+	prefixToTableMap.tx_irfaq_pi1 = tx_irfaq_q
+	prefixToTableMap.tx_mininews_pi1 = tx_mininews_news
+	prefixToTableMap.tx_ttnews = tt_news
 
 	# some extensions may use url parameter other than showUid to show single record. Mapping here shows table to parameter mapping
-	showUidMap {
-		tx_ttnews = tt_news
-	}
+	# Note: do not use { } syntax because other plugins may add entries here and they should not be overriden!
+	showUidMap.tx_ttnews = tt_news
 }

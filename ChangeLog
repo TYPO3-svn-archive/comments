@@ -1,3 +1,7 @@
+2007-11-16 Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Enable commenting for pages
+
 2007-11-15 Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Changed setup to enable other extensions to add prefixes

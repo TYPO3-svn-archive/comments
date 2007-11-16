@@ -137,13 +137,22 @@ class tx_comments_pi1 extends tslib_pibase {
 		$this->pi_loadLL();
 		$this->mergeConfiguration($conf);
 
-		// Adjust 'showUid' for old extensions like tt_news
-		if ($this->conf['showUidMap.'][$this->conf['externalPrefix']]) {
-			$this->showUidParam = $this->conf['showUidMap.'][$this->conf['externalPrefix']];
-		}
+		if ($this->conf['externalPrefix'] != 'pages') {
+			// Adjust 'showUid' for old extensions like tt_news
+			if ($this->conf['showUidMap.'][$this->conf['externalPrefix']]) {
+				$this->showUidParam = $this->conf['showUidMap.'][$this->conf['externalPrefix']];
+			}
 
-		$ar = t3lib_div::_GP($this->conf['externalPrefix']);
-		$this->externalUid = (is_array($ar) ? intval($ar[$this->showUidParam]) : false);
+			$ar = t3lib_div::_GP($this->conf['externalPrefix']);
+			$this->externalUid = (is_array($ar) ? intval($ar[$this->showUidParam]) : false);
+			$this->foreignTableName = $this->conf['prefixToTableMap.'][$this->conf['externalPrefix']];
+		}
+		else {
+			// We are commenting on page
+			$this->externalUid = $GLOBALS['TSFE']->id;
+			$this->foreignTableName = 'pages';
+			$this->showUidParam = '';
+		}
 
 		$this->templateCode = $this->cObj->fileResource($this->conf['templateFile']);
 		$key = 'EXT:comments_' . md5($this->templateCode);
@@ -154,7 +163,6 @@ class tx_comments_pi1 extends tslib_pibase {
 				$GLOBALS['TSFE']->additionalHeaderData[$key] = $headerParts;
 			}
 		}
-		$this->foreignTableName = $this->conf['prefixToTableMap.'][$this->conf['externalPrefix']];
 
 		$this->where_dpck = 'external_prefix=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->conf['externalPrefix'], 'tx_comments_comments') .
 					' AND external_ref=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->foreignTableName . '_' . $this->externalUid, 'tx_comments_comments') .
@@ -248,8 +256,8 @@ class tx_comments_pi1 extends tslib_pibase {
 	 * @return	boolean		true, if $this->externalUid is ok
 	 */
 	function checkExternalUid() {
-		$result = false;
-		if ($this->externalUid) {
+		$result = ($this->conf['externalPrefix'] == 'pages');
+		if (!$result && $this->externalUid) {
 			list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS t', $this->foreignTableName,
 						'uid=' . intval($this->externalUid) . $this->cObj->enableFields($this->foreignTableName));
 			$result = ($row['t'] == 1);

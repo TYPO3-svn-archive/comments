@@ -1,6 +1,7 @@
 2007-11-26 Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added length to mysql index because some mysql versions refused to use TEXT column without length
+	* Changed default sorting direction to show last comments first
 
 2007-11-18 Dmitry Dulepov  <dmitry@typo3.org>
 

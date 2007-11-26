@@ -24,5 +24,5 @@ CREATE TABLE tx_comments_comments (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
-	KEY tcemainhook (external_ref,deleted)
+	KEY tcemainhook (external_ref(32),deleted)
 );

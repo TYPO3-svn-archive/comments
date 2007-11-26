@@ -24,6 +24,7 @@
 			<label index="tx_comments_comments.content">Comment:</label>
 			<label index="tx_comments_comments.remote_addr">Commenter's IP address:</label>
 			<label index="tx_comments_comments.double_post_check">Code for double post checks:</label>
+			<label index="tx_comments_comments.external_ref.wizard">Go to this record</label>
 		</languageKey>
 	</data>
 </T3locallang>

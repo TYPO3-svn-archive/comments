@@ -43,6 +43,7 @@
             <label index="tt_content.tx_comments_pi1.useCaptcha.I.1">captcha extension</label>
             <label index="tt_content.tx_comments_pi1.useCaptcha.I.2">sr_freecap extension</label>
             <label index="commenting.closed">Commenting is closed for this item</label>
+            <label index="error.no.ts.template">Message from "comments" extension: it appears that extension's TypoScript template is not added to main TypoScript template. Please, read "Administration" section of the manual in order to see how to add extension's TypoScript template to main TypoScript template.</label>
         </languageKey>
     </data>
 </T3locallang>

@@ -98,6 +98,15 @@ class tx_comments_pi1 extends tslib_pibase {
 	 * @return	void
 	 */
 	function main($content, $conf) {
+		$this->pi_loadLL();
+
+		// Check if TS template was included
+		if (!isset($conf['prefixToTableMap.'])) {
+			// TS template is not included
+			return $this->pi_wrapInBaseClass($this->pi_getLL('error.no.ts.template'));
+		}
+
+		// Initialize
 		$this->init($conf);
 		if (!$this->foreignTableName) {
 			return sprintf($this->pi_getLL('error.undefined.foregn.table'), $this->prefixId, $this->conf['externalPrefix']);
@@ -134,9 +143,9 @@ class tx_comments_pi1 extends tslib_pibase {
 	 * @return	void
 	 */
 	function init($conf) {
-		$this->pi_loadLL();
 		$this->mergeConfiguration($conf);
 
+		// See what we are commenting on
 		if ($this->conf['externalPrefix'] != 'pages') {
 			// Adjust 'showUid' for old extensions like tt_news
 			if ($this->conf['showUidMap.'][$this->conf['externalPrefix']]) {

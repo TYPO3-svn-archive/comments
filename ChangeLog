@@ -2,6 +2,7 @@
 
 	* Added date formatting TypoScript setting
 	* Updated documentation: added information about TypoScript template
+	* Added check for correct inclusion of extension's TypoScript template to main TypoScript template
 
 2007-11-26 Dmitry Dulepov  <dmitry@typo3.org>
 

@@ -9,10 +9,14 @@ plugin.tx_comments_pi1 {
 	templateFile = EXT:comments/res/pi1_template.html
 
 	advanced {
+		# Number of comments per page
 		commentsPerPage = {$plugin.tx_comments_pi1.commentsPerPage}
 
 		# Comments can be automatically closed after X months, days or hours. Specify integer number followed by m, d or h. Empty means "no limit"
 		closeCommentsAfter =
+
+		# Date format specification. See PHP date() function for details. If empty, uses TYPO3 date format defined in Install tool
+		dateFormat = {$plugin.tx_comments_pi1.dateFormat}
 	}
 
 	preventDuplicatePosts = 1

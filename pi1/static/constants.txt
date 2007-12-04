@@ -12,6 +12,9 @@ plugin.tx_comments_pi1 {
 	# cat=plugin.comments: Basic; type=int+; label=Comments per page:Number of comments per page
 	commentsPerPage = 10
 
+	# cat=plugin.comments: Advanced; type=string; label=Date format:Date format specification. See PHP date() function for details. If empty, uses TYPO3 date format defined in Install tool
+	dateFormat =
+
 	# cat=plugin.comments: Spam protection; type=boolean; label=Require approval:Comments must be approved by moderator before showing them to other users
 	requireApproval = 1
 

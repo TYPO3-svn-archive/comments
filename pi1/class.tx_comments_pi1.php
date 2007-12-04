@@ -187,6 +187,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		$this->fetchConfigValue('templateFile');
 		$this->fetchConfigValue('advanced.commentsPerPage');
 		$this->fetchConfigValue('advanced.closeCommentsAfter');
+		$this->fetchConfigValue('advanced.dateFormat');
 		$this->fetchConfigValue('spamProtect.requireApproval');
 		$this->fetchConfigValue('spamProtect.useCaptcha');
 		$this->fetchConfigValue('spamProtect.checkTypicalSpam');
@@ -225,6 +226,10 @@ class tx_comments_pi1 extends tslib_pibase {
 		$this->conf['storagePid'] = intval($this->conf['storagePid']);
 		if ($this->conf['storagePid'] == 0) {
 			$this->conf['storagePid'] = $GLOBALS['TSFE']->id;
+		}
+		// Set date
+		if (trim($this->conf['advanced.']['dateFormat']) == '') {
+			$this->conf['advanced.']['dateFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
 		}
 	}
 
@@ -307,7 +312,7 @@ class tx_comments_pi1 extends tslib_pibase {
 				'###EMAIL###' => $this->comments_getComments_getEmail($row['email']),
 				'###LOCATION###' => htmlspecialchars($row['location']),
 				'###HOMEPAGE###' => htmlspecialchars($row['homepage']),
-				'###COMMENT_DATE###' => date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $row['crdate']),
+				'###COMMENT_DATE###' => date($this->conf['advanced.']['dateFormat'], $row['crdate']),
 				'###COMMENT_CONTENT###' => nl2br(htmlspecialchars($row['content'])),
 				'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments')
 			);

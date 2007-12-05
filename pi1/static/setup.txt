@@ -35,7 +35,7 @@ plugin.tx_comments_pi1 {
 
 	# stdWrap!
 	requiredFields_errorWrap {
-		noTrimWrap = |<span class="tx-comments-required-error">Error: |</span>|
+		dataWrap = <span class="tx-comments-required-error">{LLL:EXT:comments/pi1/locallang.xml:error}:&#32;|</span>
 	}
 
 	# maps pi1 to associated tables where pi1 plugin stores records

@@ -1,6 +1,7 @@
 2007-12-05 Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Localized requiredFields_errorWrap
+	* Removed "align" attribute from the template
 
 2007-12-04 Dmitry Dulepov  <dmitry@typo3.org>
 

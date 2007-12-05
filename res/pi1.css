@@ -17,4 +17,4 @@
 .tx-comments-form-top-message { border: 1px solid #d0d0d0; padding: 10px 20px; text-align: center; font-weight: bold; }
 
 .tx-comments-closed { border: 1px solid #d0d0d0; padding: 10px 10px; margin: 10px 0; }
-.tx-comments-closed IMG { padding-right: 7px; }
+.tx-comments-closed IMG { vertical-align: baseline; margin-left: 4px; padding-right: 4px; }

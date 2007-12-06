@@ -1,44 +1,6 @@
 <?php
 /* $Id$ */
 
-/**
- * Checks if merged flexform file must be written to typo3temp.
- *
- * @param	string	$filePath	Path to merged file
- * @return	boolean	<code>true</code> if file has to be written
- */
-function tx_comments_mustUpdateTempFlexFile($filePath) {
-	if (!@file_exists($filePath)) {
-		return true;
-	}
-	$mtime = @filemtime($filePath);
-	foreach (array('general', 'advanced', 'spamprotect') as $pref) {
-		if ($mtime < @filemtime(t3lib_extMgm::extPath('comments', 'pi1/flexform_ds_' . $pref . '.xml'))) {
-			return true;
-		}
-	}
-	return false;
-}
-
-/**
- * Makes workaround against a bug in pre-4.2 versions of typo3 where flexform sheet references caused fatal PHP error in PHP5.
- *
- * @return	string	Merged flexform file path
- */
-function tx_comments_makeTempFlexFormDS() {
-	$ffFileName = PATH_site . 'typo3temp/tx_comments_flexform_ds.xml';
-	if (tx_comments_mustUpdateTempFlexFile($ffFileName)) {
-		$ffContent = t3lib_div::getURL(t3lib_extMgm::extPath('comments', 'pi1/flexform_ds.xml'));
-		$ds = t3lib_div::xml2array($ffContent);
-		$sheets = t3lib_div::resolveAllSheetsInDS($ds);
-		unset($ds['sheets']);
-		$ds['sheets'] = $sheets['sheets'];
-		$ffContentNew = t3lib_div::array2xml($ds, '', 0, 'T3DataStructure');
-		t3lib_div::writeFileToTypo3tempDir($ffFileName, $ffContentNew);
-	}
-	return 'FILE:' . substr($ffFileName, strlen(PATH_site));
-}
-
 if (!defined('TYPO3_MODE')) die('Access denied.');
 
 // Add static files for plugins
@@ -50,6 +12,7 @@ $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1'] = 'pi_f
 t3lib_extMgm::addPlugin(Array('LLL:EXT:comments/pi1/locallang.xml:tt_content.list_type_pi1', $_EXTKEY.'_pi1'), 'list_type');
 if (version_compare(TYPO3_version, '4.2', '<')) {
 	// Pre-4.2 dies if flexform has references to sheets
+	require_once(t3lib_extMgm::extPath('comments', 'flexform_functions.php'));
 	t3lib_extMgm::addPiFlexFormValue($_EXTKEY .'_pi1', tx_comments_makeTempFlexFormDS());
 }
 else {

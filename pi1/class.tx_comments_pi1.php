@@ -64,6 +64,7 @@
  *
  */
 
+require_once(PATH_t3lib . 'class.t3lib_befunc.php');
 require_once(PATH_t3lib . 'class.t3lib_refindex.php');
 require_once(PATH_tslib . 'class.tslib_pibase.php');
 

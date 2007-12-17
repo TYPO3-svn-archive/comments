@@ -1,5 +1,9 @@
 2007-12-06 Dmitry Dulepov  <dmitry@typo3.org>
 
+	* Fixed bug: t3lib_BEfunc is not defined sometimes when using refindex
+
+2007-12-06 Dmitry Dulepov  <dmitry@typo3.org>
+
 	* Fixed bug: Fatal error: Cannot redeclare tx_comments_mustupdatetempflexfile() in typo3conf/temp_CACHED_ps1660_ext_tables.php on line 2924
 
 2007-12-05 Dmitry Dulepov  <dmitry@typo3.org>

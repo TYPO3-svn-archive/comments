@@ -1,3 +1,7 @@
+2007-12-19 Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Committed improved icon for closed comments (thanks to Ben)
+
 2007-12-06 Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug: t3lib_BEfunc is not defined sometimes when using refindex

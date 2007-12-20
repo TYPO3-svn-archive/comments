@@ -2,6 +2,7 @@
 	<ROOT>
 		<TCEforms>
 			<sheetTitle>LLL:EXT:comments/pi1/locallang.xml:sheet.spamprotect</sheetTitle>
+			<cshFile>LLL:EXT:comments/pi1/locallang_csh.xml</cshFile>
 		</TCEforms>
 		<type>array</type>
 		<el>

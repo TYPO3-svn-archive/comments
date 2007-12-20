@@ -31,14 +31,14 @@
             <label index="sheet.advanced">Advanced</label>
             <label index="sheet.spamprotect">Anti-spam</label>
             <label index="tt_content.tx_comments_pi1.commentsPerPage">Comments per page:</label>
-            <label index="tt_content.tx_comments_pi1.closeCommentsAfter">Close commenting after (read manual!):</label>
+            <label index="tt_content.tx_comments_pi1.closeCommentsAfter">Close commenting after:</label>
             <label index="tt_content.tx_comments_pi1.requireApproval">Require approval of each comment:</label>
             <label index="tt_content.tx_comments_pi1.checkTypicalSpam">Check for typical spam:</label>
-            <label index="tt_content.tx_comments_pi1.considerReferer">Check referer (read manual!):</label>
+            <label index="tt_content.tx_comments_pi1.considerReferer">Check referer:</label>
             <label index="tt_content.tx_comments_pi1.notificationEmail">Send notification to this e-mail:</label>
             <label index="tt_content.tx_comments_pi1.fromEmail">Send e-mail from this address:</label>
             <label index="tt_content.tx_comments_pi1.emailTemplate">Template file for e-mails:</label>
-            <label index="tt_content.tx_comments_pi1.useCaptcha">Use captcha (read manual!):</label>
+            <label index="tt_content.tx_comments_pi1.useCaptcha">Use captcha:</label>
             <label index="tt_content.tx_comments_pi1.useCaptcha.I.0">None</label>
             <label index="tt_content.tx_comments_pi1.useCaptcha.I.1">captcha extension</label>
             <label index="tt_content.tx_comments_pi1.useCaptcha.I.2">sr_freecap extension</label>

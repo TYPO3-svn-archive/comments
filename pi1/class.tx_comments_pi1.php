@@ -497,6 +497,7 @@ class tx_comments_pi1 extends tslib_pibase {
 							'###TEXT_EMAIL###' => $this->pi_getLL('pi1_template.email'),
 							'###TEXT_WEB_SITE###' => $this->pi_getLL('pi1_template.web_site'),
 							'###TEXT_LOCATION###' => $this->pi_getLL('pi1_template.location'),
+							'###TEXT_CONTENT###' => $this->pi_getLL('pi1_template.content'),
 							'###TEXT_SUBMIT###' => $this->pi_getLL('pi1_template.submit'),
 							'###TEXT_RESET###' => $this->pi_getLL('pi1_template.reset'),
 							'###TEXT_LOCATION###' => $this->pi_getLL('pi1_template.location'),

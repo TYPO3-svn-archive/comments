@@ -39,25 +39,25 @@
  *
  *
  *   76: class tx_comments_pi1 extends tslib_pibase
- *  100:     function main($content, $conf)
- *  136:     function init($conf)
- *  172:     function mergeConfiguration($conf)
- *  225:     function fetchConfigValue($param)
- *  245:     function checkExternalUid()
- *  260:     function comments()
- *  286:     function comments_getComments(&$rows)
- *  314:     function comments_getComments_getEmail($email)
- *  329:     function comments_getPageBrowser($page, $rpp, $rowCount)
- *  389:     function comments_getPageBrowser_getPageLink($page)
- *  406:     function form()
- *  460:     function form_getCaptcha()
- *  493:     function form_wrapError($field)
- *  503:     function processSubmission()
- *  605:     function processSubmission_checkTypicalSpam()
- *  647:     function processSubmission_validate()
- *  693:     function sendNotificationEmail($uid, $points)
- *  725:     function isCommentingClosed()
- *  752:     function commentingClosed()
+ *  100:	 function main($content, $conf)
+ *  136:	 function init($conf)
+ *  172:	 function mergeConfiguration($conf)
+ *  225:	 function fetchConfigValue($param)
+ *  245:	 function checkExternalUid()
+ *  260:	 function comments()
+ *  286:	 function comments_getComments(&$rows)
+ *  314:	 function comments_getComments_getEmail($email)
+ *  329:	 function comments_getPageBrowser($page, $rpp, $rowCount)
+ *  389:	 function comments_getPageBrowser_getPageLink($page)
+ *  406:	 function form()
+ *  460:	 function form_getCaptcha()
+ *  493:	 function form_wrapError($field)
+ *  503:	 function processSubmission()
+ *  605:	 function processSubmission_checkTypicalSpam()
+ *  647:	 function processSubmission_validate()
+ *  693:	 function sendNotificationEmail($uid, $points)
+ *  725:	 function isCommentingClosed()
+ *  752:	 function commentingClosed()
  *
  * TOTAL FUNCTIONS: 19
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -379,28 +379,40 @@ class tx_comments_pi1 extends tslib_pibase {
 
 		if ($haveFirst) {
 			$subTemplate = $this->cObj->getSubpart($template, '###LINK_FIRST_WRAP###');
-			$sectionArray['###LINK_FIRST_WRAP###'] = $this->cObj->substituteMarker($subTemplate, '###LINK_FIRST###', $this->comments_getPageBrowser_getPageLink(1));
+			$sectionArray['###LINK_FIRST_WRAP###'] = $this->cObj->substituteMarkerArray($subTemplate, array(
+								'###LINK_FIRST###' => $this->comments_getPageBrowser_getPageLink(1),
+								'###TEXT_FIRST###' => $this->pi_getLL('pi1_template.first'),
+							));
 		}
 		else {
 			$sectionArray['###LINK_FIRST_WRAP###'] = '';
 		}
 		if ($havePrev) {
 			$subTemplate = $this->cObj->getSubpart($template, '###LINK_PREV_WRAP###');
-			$sectionArray['###LINK_PREV_WRAP###'] = $this->cObj->substituteMarker($subTemplate, '###LINK_PREV###', $this->comments_getPageBrowser_getPageLink($page - 1));
+			$sectionArray['###LINK_PREV_WRAP###'] = $this->cObj->substituteMarkerArray($subTemplate, array(
+								'###LINK_PREV###' => $this->comments_getPageBrowser_getPageLink($page - 1),
+								'###TEXT_PREVIOUS###' => $this->pi_getLL('pi1_template.previous'),
+							));
 		}
 		else {
 			$sectionArray['###LINK_PREV_WRAP###'] = '';
 		}
 		if ($haveNext) {
 			$subTemplate = $this->cObj->getSubpart($template, '###LINK_NEXT_WRAP###');
-			$sectionArray['###LINK_NEXT_WRAP###'] = $this->cObj->substituteMarker($subTemplate, '###LINK_NEXT###', $this->comments_getPageBrowser_getPageLink($page + 1));
+			$sectionArray['###LINK_NEXT_WRAP###'] = $this->cObj->substituteMarkerArray($subTemplate, array(
+								'###LINK_NEXT###' => $this->comments_getPageBrowser_getPageLink($page + 1),
+								'###TEXT_NEXT###' => $this->pi_getLL('pi1_template.next'),
+							));
 		}
 		else {
 			$sectionArray['###LINK_NEXT_WRAP###'] = '';
 		}
 		if ($haveLast) {
 			$subTemplate = $this->cObj->getSubpart($template, '###LINK_LAST_WRAP###');
-			$sectionArray['###LINK_LAST_WRAP###'] = $this->cObj->substituteMarker($subTemplate, '###LINK_LAST###', $this->comments_getPageBrowser_getPageLink($lastPage));
+			$sectionArray['###LINK_LAST_WRAP###'] = $this->cObj->substituteMarkerArray($subTemplate, array(
+								'###LINK_LAST###', $this->comments_getPageBrowser_getPageLink($lastPage),
+								'###TEXT_LAST###' => $this->pi_getLL('pi1_template.last'),
+							));
 		}
 		else {
 			$sectionArray['###LINK_LAST_WRAP###'] = '';
@@ -476,7 +488,20 @@ class tx_comments_pi1 extends tslib_pibase {
 							'###REQUIRED_HOMEPAGE###' => in_array('homepage', $requiredFields) ? $requiredMark : '',
 							'###REQUIRED_CONTENT###' => in_array('content', $requiredFields) ? $requiredMark : '',
 
-							'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments')
+							'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
+
+							'###TEXT_ADD_COMMENT###' => $this->pi_getLL('pi1_template.add_comment'),
+							'###TEXT_REQUIRED_HINT###' => $this->pi_getLL('pi1_template.required_field'),
+							'###TEXT_FIRST_NAME###' => $this->pi_getLL('pi1_template.first_name'),
+							'###TEXT_LAST_NAME###' => $this->pi_getLL('pi1_template.last_name'),
+							'###TEXT_EMAIL###' => $this->pi_getLL('pi1_template.email'),
+							'###TEXT_WEB_SITE###' => $this->pi_getLL('pi1_template.web_site'),
+							'###TEXT_LOCATION###' => $this->pi_getLL('pi1_template.location'),
+							'###TEXT_SUBMIT###' => $this->pi_getLL('pi1_template.submit'),
+							'###TEXT_RESET###' => $this->pi_getLL('pi1_template.reset'),
+							'###TEXT_LOCATION###' => $this->pi_getLL('pi1_template.location'),
+							'###TEXT_LOCATION###' => $this->pi_getLL('pi1_template.location'),
+							'###TEXT_LOCATION###' => $this->pi_getLL('pi1_template.location'),
 							));
 	}
 
@@ -495,7 +520,8 @@ class tx_comments_pi1 extends tslib_pibase {
 							'###SR_FREECAP_CANT_READ###' => '',
 							'###REQUIRED_CAPTCHA###' => $this->cObj->getSubpart($this->templateCode, '###REQUIRED_FIELD###'),
 							'###ERROR_CAPTCHA###' => $this->form_wrapError('captcha'),
-							'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments')
+							'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
+							'###TEXT_ENTER_CODE###' => $this->pi_getLL('pi1_template.enter_code'),
 						));
 			return str_replace('<br /><br />', '<br />', $code);
 		}

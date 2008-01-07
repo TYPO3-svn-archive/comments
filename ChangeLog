@@ -1,3 +1,7 @@
+2008-01-07 Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Labels moved from pi1_template.html to language file
+
 2007-12-20 Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added CSH for flexforms (requires support from core, feature request #7028)

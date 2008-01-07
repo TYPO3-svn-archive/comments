@@ -31,7 +31,7 @@
 			COMMENT_CONTENT	- content of the comment (nl2br + htmlspecialchars)
 	-->
 	<div class="tx-comments-comment###ALTERNATE###">
-		<span class="tx-comments-comment-name"><a href="###EMAIL###">###FIRSTNAME###</a></span> wrote on <span class="tx-comments-comment-date">###COMMENT_DATE###</span>:
+		<span class="tx-comments-comment-name"><a href="###EMAIL###">###FIRSTNAME###</a></span>, <span class="tx-comments-comment-date">###COMMENT_DATE###</span>:
 		<hr size="1" />
 		<div class="tx-comments-comment-content">
 			###COMMENT_CONTENT###
@@ -57,17 +57,17 @@
 	-->
 	<div class="tx-comments-page-browser">
 		<!-- ###LINK_FIRST_WRAP### begin -->
-			<a href="###LINK_FIRST###">First</a>
+			<a href="###LINK_FIRST###">###TEXT_FIRST###</a>
 		<!-- ###LINK_FIRST_WRAP### end -->
 		<!-- ###LINK_PREV_WRAP### begin -->
-			<a href="###LINK_PREV###">Previous</a>
+			<a href="###LINK_PREV###">###TEXT_PREVIOUS###</a>
 		<!-- ###LINK_PREV_WRAP### end -->
 		<span class="tx-comments-page-browser-current">###CUR_PAGE###</span>
 		<!-- ###LINK_NEXT_WRAP### begin -->
-			<a href="###LINK_NEXT###">Next</a>
+			<a href="###LINK_NEXT###">###TEXT_NEXT###</a>
 		<!-- ###LINK_NEXT_WRAP### end -->
 		<!-- ###LINK_LAST_WRAP### begin -->
-			<a href="###LINK_LAST###">Last</a>
+			<a href="###LINK_LAST###">###TEXT_LAST###</a>
 		<!-- ###LINK_LAST_WRAP### end -->
 	</div>
 	<!-- ###PAGE_BROWSER### end -->
@@ -81,28 +81,28 @@
 	This subpart formats comment form
 -->
 <div class="tx-comments-comment-form">
-	<h4>Add comment</h4>
+	<h4>###TEXT_ADD_COMMENT###</h4>
 	###TOP_MESSAGE###
 	<form action="##ACTION_URL###" method="post">
 		<p>
-			<span class="tx-comments-required-mark">*</span> indicates required fields.
+    		<span class="tx-comments-required-mark">*</span> ###TEXT_REQUIRED_HINT###
 		</p>
-		<label for="tx_comments_pi1[firstname]">First name:</label>
+		<label for="tx_comments_pi1[firstname]">###TEXT_FIRST_NAME###</label>
 		<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[firstname]" id="tx_comments_pi1_firstname" value="###FIRSTNAME###" /> ###REQUIRED_FIRSTNAME### ###ERROR_FIRSTNAME###<br />
-		<label for="tx_comments_pi1[lastname]">Last name:</label>
+		<label for="tx_comments_pi1[lastname]">###TEXT_LAST_NAME###</label>
 		<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[lastname]" id="tx_comments_pi1_lastname" value="###LASTNAME###" /> ###REQUIRED_LASTNAME### ###ERROR_LASTNAME###<br />
-		<label for="tx_comments_pi1[email]">E-mail:</label>
+		<label for="tx_comments_pi1[email]">###TEXT_EMAIL###</label>
 		<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[email]" id="tx_comments_pi1_email" value="###EMAIL###" /> ###REQUIRED_EMAIL### ###ERROR_EMAIL###<br />
-		<label for="tx_comments_pi1[homepage]">Web site:</label>
+		<label for="tx_comments_pi1[homepage]">###TEXT_WEB_SITE###</label>
 		<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[homepage]" id="tx_comments_pi1_homepage" value="###HOMEPAGE###" /> ###REQUIRED_HOMEPAGE### ###ERROR_HOMEPAGE###<br />
-		<label for="tx_comments_pi1[location]">Location:</label>
+		<label for="tx_comments_pi1[location]">###TEXT_LOCATION###</label>
 		<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[location]" id="tx_comments_pi1_location" value="###LOCATION###" /> ###REQUIRED_LOCATION### ###ERROR_LOCATION###<br />
 		###CAPTCHA###
 		<label for="tx_comments_pi1[content]">Content:</label>
 		<textarea cols="32" rows="7" name="tx_comments_pi1[content]" id="tx_comments_pi1_content">###CONTENT###</textarea> ###REQUIRED_CONTENT### ###ERROR_CONTENT###<br />
 		<label for="tx_comments_pi1[submit]">&nbsp;</label>
-		<input type="submit" name="tx_comments_pi1[submit]" id="tx_comments_pi1_submit" value="Submit" />
-		<input type="reset" value="Reset" />
+		<input type="submit" name="tx_comments_pi1[submit]" id="tx_comments_pi1_submit" value="###TEXT_SUBMIT###" />
+		<input type="reset" value="###TEXT_RESET###" />
 		###JS_USER_DATA###
 	</form>
 </div>
@@ -141,7 +141,7 @@
 <!-- ###CAPTCHA_SUB### begin
 	This subpart formats captcha
 -->
-<label for="tx_comments_pi1[captcha]">Enter the code:</label>
+<label for="tx_comments_pi1[captcha]">###TEXT_ENTER_CODE###</label>
 <div class="tx-comments-captcha">
 ###SR_FREECAP_IMAGE###<br />###SR_FREECAP_CANT_READ###<br />
 <input class="tx-comments-comment-input" autocomplete="off" type="text" size="35" name="tx_comments_pi1[captcha]" value="" /> ###REQUIRED_CAPTCHA### ###ERROR_CAPTCHA###<br />

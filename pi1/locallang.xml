@@ -45,6 +45,20 @@
             <label index="commenting.closed">Commenting is closed for this item</label>
             <label index="error.no.ts.template">Message from "comments" extension: it appears that extension's TypoScript template is not added to main TypoScript template. Please, read "Administration" section of the manual in order to see how to add extension's TypoScript template to main TypoScript template.</label>
             <label index="error">Error</label>
+            <label index="pi1_template.first">First</label>
+            <label index="pi1_template.previous">Previous</label>
+            <label index="pi1_template.next">Next</label>
+            <label index="pi1_template.last">Last</label>
+            <label index="pi1_template.add_comment">Add comment</label>
+            <label index="pi1_template.required_field">- required field</label>
+            <label index="pi1_template.first_name">First name:</label>
+            <label index="pi1_template.last_name">Last name:</label>
+            <label index="pi1_template.email">E-mail:</label>
+            <label index="pi1_template.web_site">Web site:</label>
+            <label index="pi1_template.location">Location:</label>
+            <label index="pi1_template.submit">Submit</label>
+            <label index="pi1_template.reset">Reset</label>
+            <label index="pi1_template.enter_code">Enter the code:</label>
         </languageKey>
     </data>
 </T3locallang>

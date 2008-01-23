@@ -6,7 +6,6 @@ plugin.tx_comments_pi1 {
 	externalPrefix = {$plugin.tx_comments_pi1.externalPrefix}
 	templateFile = {$plugin.tx_comments_pi1.templateFile}
 	additionalClearCachePages =
-	templateFile = EXT:comments/res/pi1_template.html
 
 	advanced {
 		# Number of comments per page

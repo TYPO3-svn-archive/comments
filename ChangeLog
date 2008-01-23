@@ -1,6 +1,7 @@
 2008-01-23 Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Removed duplicate entry for templateFile from TS setup
+	* Disabled separate languages for flexforms
 
 2008-01-07 Dmitry Dulepov  <dmitry@typo3.org>
 

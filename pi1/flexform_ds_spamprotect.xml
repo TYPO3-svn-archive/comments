@@ -1,4 +1,8 @@
 <T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+		<langChildren>0</langChildren>
+	</meta>
 	<ROOT>
 		<TCEforms>
 			<sheetTitle>LLL:EXT:comments/pi1/locallang.xml:sheet.spamprotect</sheetTitle>

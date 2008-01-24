@@ -299,7 +299,8 @@ class tx_comments_pi1 extends tslib_pibase {
 		$markerArray = array(
 			'###SINGLE_COMMENT###' => $this->comments_getComments($rows),
 			'###PAGE_BROWSER###' => $this->comments_getPageBrowser($page, $rpp, count($rows)),
-			'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments')
+			'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
+			'###UID###' => $this->externalUid,
 		);
 
 		$template = $this->cObj->getSubpart($this->templateCode, '###COMMENT_LIST###');

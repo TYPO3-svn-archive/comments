@@ -48,7 +48,104 @@ class tx_comments_ttnews {
 	 * @return	array	Modified marker array
 	 */
 	function extraItemMarkerProcessor($markerArray, $row, $lConf, &$pObj) {
+		/* @var $pObj tx_ttnews */
+		switch ($pObj->theCode) {
+			case 'LATEST':
+			case 'LIST':
+			case 'SEARCH':
+				// Add marker for number of comments
+				$lang = t3lib_div::makeInstance('language');
+				/* @var $lang language */
+				if (($template = $this->getTemplate('###TTNEWS_COMMENT_COUNT_SUB###', $lConf, $pObj))) {
+					$markerArray['###TX_COMMENTS_COUNT###'] = $pObj->cObj->substituteMarkerArray(
+						$template, array(
+							'###COMMENTS_COUNT###' => sprintf(
+								$lang->sL('LLL:EXT:comments/locallang_hooks.xml:comments_number'),
+								$this->getNumberOfComments($row['uid'], $pObj)),
+							'###UID###' => $row['uid'],
+							'###COMMENTS_LINK###' => $this->getItemLink($markerArray['###LINK_ITEM###'], $row['uid'], $pObj),
+						)
+					);
+				}
+				break;
+		}
 		return $markerArray;
+	}
+
+	/**
+	 * Retrieves number of comments
+	 *
+	 * @param	int	$newsUid	UID of tt_news item
+	 * @param	tx_ttnews	$pObj	Reference to parent object
+	 * @return	int	Number of comments for this news item
+	 * @access	private
+	 */
+	function getNumberOfComments($newsUid, &$pObj) {
+		/* @var $pObj tx_ttnews */
+		$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS t', 'tx_comments_comments',
+				'external_prefix=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('tx_ttnews', 'tx_comments_comments') .
+				' AND external_ref=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('tt_news_' . $newsUid, 'tx_comments_comments') .
+				$pObj->cObj->enableFields('tx_comments_comments'));
+		return $recs[0]['t'];
+	}
+
+	/**
+	 * Retrieves template for custom marker
+	 *
+	 * @param	string	$section	Section name in the template
+	 * @param	arrasy	$conf	tt_news configuration
+	 * @param	tx_ttnews	$pObj	Reference to parent object
+	 * @return	string	Template section
+	 * @access	private
+	 */
+	function getTemplate($section, $conf, &$pObj) {
+		// Search for file
+		if (isset($conf['commentsTemplateFile'])) {
+			$file = $conf['commentsTemplateFile'];
+		}
+		elseif (isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_comments_pi1.']['templateFile'])) {
+			$file = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_comments_pi1.']['templateFile'];
+		}
+		else {
+			// Use default
+			$file = 'EXT:comments/res/pi1_template.html';
+		}
+		if (($template = $pObj->cObj->fileResource($file))) {
+			$template = $pObj->cObj->getSubpart($template, $section);
+		}
+		return $template;
+	}
+
+	/**
+	 * Attempts to build URL to item.
+	 * Firsts it checks if marker value is not empty. If yes, it treats it as a
+	 * link to item and attempts to extract the link. If value is empty, it uses item
+	 * uid to manually create link
+	 *
+	 * @param	string	$marker	Marker value with link
+	 * @param	int	$itemUid	Item uid
+	 * @param	tx_ttnews	$pObj	Reference to parent object
+	 * @return	string	Generated URL to item
+	 * @access	private
+	 */
+	function getItemLink($marker, $itemUid, &$pObj) {
+		$result = '';
+		if (isset($GLOBALS['TSFE']->register['newsMoreLink']) &&
+				($pos = strpos($GLOBALS['TSFE']->register['newsMoreLink'], 'href="')) !== false) {
+			$value = substr($GLOBALS['TSFE']->register['newsMoreLink'], $pos + 6);
+			$result = substr($value, 0, strpos($value, '"'));
+		}
+		if (!$result) {
+			$params = array(
+				'additionalParams' => '&tx_ttnews[tt_news]=' . $itemUid,
+				'no_cache' => $GLOBALS['TSFE']->no_cache,
+				'parameter' => $pObj->conf['singlePid'] ? $pObj->conf['singlePid'] : $GLOBALS['TSFE']->id,
+				'useCacheHash' => !$GLOBALS['TSFE']->no_cache,
+				'returnLast' => 'url',
+			);
+			$result = $pObj->cObj->typolink('|', $params);
+		}
+		return $result;
 	}
 }
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Language labels for hooks</description>
+        <type>module</type>
+        <csh_table></csh_table>
+        <fileId>EXT:comments/locallang_hooks.xml</fileId>
+        <labelContext type="array">
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="comments_number">%d comment(s)</label>
+        </languageKey>
+    </data>
+</T3locallang>

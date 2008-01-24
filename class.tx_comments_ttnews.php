@@ -24,7 +24,7 @@
 /**
  * Hooks to tt_news.
  *
- * $Id: class.tx_comments_tcemain.php 7093 2007-10-24 12:39:55Z liels_bugs $
+ * $Id$
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]

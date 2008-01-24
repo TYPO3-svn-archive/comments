@@ -13,4 +13,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php'][
 
 // eID
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['comments'] = 'EXT:comments/class.tx_comments_eID.php';
+
+// Extra markers hook for tt_news
+if (t3lib_extMgm::isLoaded('tt_news')) {
+	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tt_news']['extraItemMarkerHook'][$_EXTKEY] = 'EXT:comments/class.tx_comments_ttnews.php:&tx_comments_ttnews';
+}
 ?>

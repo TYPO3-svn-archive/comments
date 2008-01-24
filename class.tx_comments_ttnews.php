@@ -38,6 +38,18 @@
  * @subpackage comments
  */
 class tx_comments_ttnews {
+	/**
+	 * Processes comments-specific markers for tt_news
+	 *
+	 * @param	array	$markerArray	Array with merkers
+	 * @param	array	$row	tt_news record
+	 * @param	array	$lConf	Configuration array for current tt_news view
+	 * @param	tx_ttnews	$pObj	Reference to parent object
+	 * @return	array	Modified marker array
+	 */
+	function extraItemMarkerProcessor($markerArray, $row, $lConf, &$pObj) {
+		return $markerArray;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/comments/pi1/class.tx_comments_ttnews.php']) {

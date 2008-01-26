@@ -1,3 +1,7 @@
+2008-01-25 Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #7104: impossible to select template from flexform
+
 2008-01-24 Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added hook for tt_news to display number of comments in List, Latest and Search modes

@@ -463,6 +463,9 @@ class tx_comments_pi1 extends tslib_pibase {
 		if (count($this->formValidationErrors['content']) == 0) {
 			unset($postVars['content']);
 		}
+		if ($this->conf['preFillFormFromFeUser']) {
+			$this->form_updatePostVarsWithFeUserData($postVars);
+		}
 		return $this->cObj->substituteMarkerArray($template, array(
 							'###TOP_MESSAGE###' => $this->formTopMessage,
 							'##ACTION_URL###' => $actionLink,
@@ -507,6 +510,53 @@ class tx_comments_pi1 extends tslib_pibase {
 							));
 	}
 
+
+	/**
+	 * Examines $postVars and fills missing fields with FE user data.
+	 *
+	 * @param	array	$postVars	Data as submitted by form (can be empty array). Passed by reference and modified directly.
+	 */
+	function form_updatePostVarsWithFeUserData(&$postVars) {
+		global $TSFE;
+
+		if ($TSFE->fe_user->user['uid']) {
+			$hasExtendedData = t3lib_extMgm::isLoaded('sr_feuser_register');
+			// Notice: we check for sr_feuser_register and not for the existence of columns
+			// in the record. This is intentional because if sr_feuser_register is removed,
+			// columns will remain in database but may contain outdated values. So we use
+			// these values only if we can assume they are updatable.
+			if (!$postVars['firstname']) {
+				if ($hasExtendedData && $TSFE->fe_user->user['first_name']) {
+					$postVars['firstname'] = $TSFE->fe_user->user['first_name'];
+				}
+				else {
+					$postVars['firstname'] = $TSFE->fe_user->user['name'];
+				}
+			}
+			if (!$postVars['lastname']) {
+				if ($hasExtendedData && $TSFE->fe_user->user['last_name']) {
+					$postVars['firstname'] = $TSFE->fe_user->user['last_name'];
+				}
+			}
+			if (!$postVars['email']) {
+				$postVars['email'] = $TSFE->fe_user->user['email'];
+			}
+			if (!$postVars['location']) {
+				$data = array();
+				if ($TSFE->fe_user->user['city']) {
+					$data = $TSFE->fe_user->user['city'];
+				}
+				if ($TSFE->fe_user->user['country']) {
+					$data = $TSFE->fe_user->user['country'];
+				}
+				$postVars['location'] = implode(', ', $data);
+				unset($data);
+			}
+			if (!$postVars['homepage']) {
+				$postVars['homepage'] = $TSFE->fe_user->user['www'];
+			}
+		}
+	}
 
 	/**
 	 * Adds captcha code if enabled.

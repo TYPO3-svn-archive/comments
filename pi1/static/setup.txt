@@ -16,6 +16,9 @@ plugin.tx_comments_pi1 {
 
 		# Date format specification. See PHP date() function for details. If empty, uses TYPO3 date format defined in Install tool
 		dateFormat = {$plugin.tx_comments_pi1.dateFormat}
+
+		# Should FE user data be set to form automatically?
+		preFillFormFromFeUser = {$plugin.tx_comments_pi1.preFillFormFromFeUser}
 	}
 
 	preventDuplicatePosts = 1

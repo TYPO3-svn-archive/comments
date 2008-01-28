@@ -1,6 +1,7 @@
 2008-01-25 Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #7104: impossible to select template from flexform
+	* New feature (untested!): prefill form with FE user data
 
 2008-01-24 Dmitry Dulepov  <dmitry@typo3.org>
 

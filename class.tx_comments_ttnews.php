@@ -30,6 +30,8 @@
  * [CLASS/FUNCTION INDEX of SCRIPT]
  */
 
+require_once(t3lib_extMgm::extPath('lang', 'lang.php'));
+
 /**
  * This clas provides hook to tt_news to add extra markers.
  *
@@ -54,18 +56,20 @@ class tx_comments_ttnews {
 			case 'LIST':
 			case 'SEARCH':
 				// Add marker for number of comments
-				$lang = t3lib_div::makeInstance('language');
-				/* @var $lang language */
-				if (($template = $this->getTemplate('###TTNEWS_COMMENT_COUNT_SUB###', $lConf, $pObj))) {
+				$commentCount = $this->getNumberOfComments($row['uid'], $pObj);
+				$templateName = $commentCount ? '###TTNEWS_COMMENT_COUNT_SUB###' : '###TTNEWS_COMMENT_NONE_SUB###';
+				if (($template = $this->getTemplate($templateName, $lConf, $pObj))) {
+					$lang = t3lib_div::makeInstance('language');
+					/* @var $lang language */
 					$markerArray['###TX_COMMENTS_COUNT###'] = $pObj->cObj->substituteMarkerArray(
 						$template, array(
-							'###COMMENTS_COUNT###' => sprintf(
-								$lang->sL('LLL:EXT:comments/locallang_hooks.xml:comments_number'),
-								$this->getNumberOfComments($row['uid'], $pObj)),
+							'###COMMENTS_COUNT###' => sprintf($lang->sL('LLL:EXT:comments/locallang_hooks.xml:comments_number'), $commentCount),
+							'###COMMENTS_COUNT_NONE###' => $lang->sL('LLL:EXT:comments/locallang_hooks.xml:comments_number_none'),
 							'###UID###' => $row['uid'],
 							'###COMMENTS_LINK###' => $this->getItemLink($markerArray['###LINK_ITEM###'], $row['uid'], $pObj),
 						)
 					);
+					unset($lang);	// Free memory explicitely!
 				}
 				break;
 		}

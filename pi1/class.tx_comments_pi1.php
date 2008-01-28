@@ -463,7 +463,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		if (count($this->formValidationErrors['content']) == 0) {
 			unset($postVars['content']);
 		}
-		if ($this->conf['preFillFormFromFeUser']) {
+		if ($this->conf['advanced.']['preFillFormFromFeUser']) {
 			$this->form_updatePostVarsWithFeUserData($postVars);
 		}
 		return $this->cObj->substituteMarkerArray($template, array(
@@ -544,10 +544,10 @@ class tx_comments_pi1 extends tslib_pibase {
 			if (!$postVars['location']) {
 				$data = array();
 				if ($TSFE->fe_user->user['city']) {
-					$data = $TSFE->fe_user->user['city'];
+					$data[] = $TSFE->fe_user->user['city'];
 				}
 				if ($TSFE->fe_user->user['country']) {
-					$data = $TSFE->fe_user->user['country'];
+					$data[] = $TSFE->fe_user->user['country'];
 				}
 				$postVars['location'] = implode(', ', $data);
 				unset($data);

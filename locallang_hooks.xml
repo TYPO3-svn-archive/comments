@@ -11,6 +11,7 @@
     <data type="array">
         <languageKey index="default" type="array">
             <label index="comments_number">%d comment(s)</label>
+            <label index="comments_number_none">No comments</label>
         </languageKey>
     </data>
 </T3locallang>

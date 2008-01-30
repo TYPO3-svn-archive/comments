@@ -38,28 +38,29 @@
  *
  *
  *
- *   76: class tx_comments_pi1 extends tslib_pibase
- *  100:	 function main($content, $conf)
- *  136:	 function init($conf)
- *  172:	 function mergeConfiguration($conf)
- *  225:	 function fetchConfigValue($param)
- *  245:	 function checkExternalUid()
- *  260:	 function comments()
- *  286:	 function comments_getComments(&$rows)
- *  314:	 function comments_getComments_getEmail($email)
- *  329:	 function comments_getPageBrowser($page, $rpp, $rowCount)
- *  389:	 function comments_getPageBrowser_getPageLink($page)
- *  406:	 function form()
- *  460:	 function form_getCaptcha()
- *  493:	 function form_wrapError($field)
- *  503:	 function processSubmission()
- *  605:	 function processSubmission_checkTypicalSpam()
- *  647:	 function processSubmission_validate()
- *  693:	 function sendNotificationEmail($uid, $points)
- *  725:	 function isCommentingClosed()
- *  752:	 function commentingClosed()
+ *   79: class tx_comments_pi1 extends tslib_pibase
+ *  103:     function main($content, $conf)
+ *  148:     function init($conf)
+ *  192:     function mergeConfiguration($conf)
+ *  255:     function fetchConfigValue($param)
+ *  275:     function checkExternalUid()
+ *  290:     function comments()
+ *  317:     function comments_getComments(&$rows)
+ *  345:     function comments_getComments_getEmail($email)
+ *  360:     function comments_getPageBrowser($page, $rpp, $rowCount)
+ *  432:     function comments_getPageBrowser_getPageLink($page)
+ *  449:     function form()
+ *  521:     function form_updatePostVarsWithFeUserData(&$postVars)
+ *  568:     function form_getCaptcha()
+ *  602:     function form_wrapError($field)
+ *  612:     function processSubmission()
+ *  714:     function processSubmission_checkTypicalSpam()
+ *  756:     function processSubmission_validate()
+ *  802:     function sendNotificationEmail($uid, $points)
+ *  834:     function isCommentingClosed()
+ *  883:     function commentingClosed()
  *
- * TOTAL FUNCTIONS: 19
+ * TOTAL FUNCTIONS: 20
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -514,7 +515,8 @@ class tx_comments_pi1 extends tslib_pibase {
 	/**
 	 * Examines $postVars and fills missing fields with FE user data.
 	 *
-	 * @param	array	$postVars	Data as submitted by form (can be empty array). Passed by reference and modified directly.
+	 * @param	array		$postVars	Data as submitted by form (can be empty array). Passed by reference and modified directly.
+	 * @return	void
 	 */
 	function form_updatePostVarsWithFeUserData(&$postVars) {
 		global $TSFE;

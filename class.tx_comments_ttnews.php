@@ -28,6 +28,18 @@
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   54: class tx_comments_ttnews
+ *   64:     function extraItemMarkerProcessor($markerArray, $row, $lConf, &$pObj)
+ *   99:     function getNumberOfComments($newsUid, &$pObj)
+ *  117:     function getTemplate($section, $conf, &$pObj)
+ *  147:     function getItemLink($marker, $itemUid, &$pObj)
+ *
+ * TOTAL FUNCTIONS: 4
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 require_once(t3lib_extMgm::extPath('lang', 'lang.php'));
@@ -41,14 +53,14 @@ require_once(t3lib_extMgm::extPath('lang', 'lang.php'));
  */
 class tx_comments_ttnews {
 	/**
-	 * Processes comments-specific markers for tt_news
-	 *
-	 * @param	array	$markerArray	Array with merkers
-	 * @param	array	$row	tt_news record
-	 * @param	array	$lConf	Configuration array for current tt_news view
-	 * @param	tx_ttnews	$pObj	Reference to parent object
-	 * @return	array	Modified marker array
-	 */
+ * Processes comments-specific markers for tt_news
+ *
+ * @param	array		$markerArray	Array with merkers
+ * @param	array		$row	tt_news record
+ * @param	array		$lConf	Configuration array for current tt_news view
+ * @param	tx_ttnews		$pObj	Reference to parent object
+ * @return	array		Modified marker array
+ */
 	function extraItemMarkerProcessor($markerArray, $row, $lConf, &$pObj) {
 		/* @var $pObj tx_ttnews */
 		switch ($pObj->theCode) {
@@ -79,10 +91,10 @@ class tx_comments_ttnews {
 	/**
 	 * Retrieves number of comments
 	 *
-	 * @param	int	$newsUid	UID of tt_news item
-	 * @param	tx_ttnews	$pObj	Reference to parent object
-	 * @return	int	Number of comments for this news item
-	 * @access	private
+	 * @param	int		$newsUid	UID of tt_news item
+	 * @param	tx_ttnews		$pObj	Reference to parent object
+	 * @return	int		Number of comments for this news item
+	 * @access private
 	 */
 	function getNumberOfComments($newsUid, &$pObj) {
 		/* @var $pObj tx_ttnews */
@@ -96,11 +108,11 @@ class tx_comments_ttnews {
 	/**
 	 * Retrieves template for custom marker
 	 *
-	 * @param	string	$section	Section name in the template
-	 * @param	arrasy	$conf	tt_news configuration
-	 * @param	tx_ttnews	$pObj	Reference to parent object
-	 * @return	string	Template section
-	 * @access	private
+	 * @param	string		$section	Section name in the template
+	 * @param	arrasy		$conf	tt_news configuration
+	 * @param	tx_ttnews		$pObj	Reference to parent object
+	 * @return	string		Template section
+	 * @access private
 	 */
 	function getTemplate($section, $conf, &$pObj) {
 		// Search for file
@@ -126,11 +138,11 @@ class tx_comments_ttnews {
 	 * link to item and attempts to extract the link. If value is empty, it uses item
 	 * uid to manually create link
 	 *
-	 * @param	string	$marker	Marker value with link
-	 * @param	int	$itemUid	Item uid
-	 * @param	tx_ttnews	$pObj	Reference to parent object
-	 * @return	string	Generated URL to item
-	 * @access	private
+	 * @param	string		$marker	Marker value with link
+	 * @param	int		$itemUid	Item uid
+	 * @param	tx_ttnews		$pObj	Reference to parent object
+	 * @return	string		Generated URL to item
+	 * @access private
 	 */
 	function getItemLink($marker, $itemUid, &$pObj) {
 		$result = '';
@@ -153,8 +165,8 @@ class tx_comments_ttnews {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/comments/pi1/class.tx_comments_ttnews.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/comments/pi1/class.tx_comments_ttnews.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/comments/class.tx_comments_ttnews.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/comments/class.tx_comments_ttnews.php']);
 }
 
 ?>

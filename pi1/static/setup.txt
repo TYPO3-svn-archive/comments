@@ -19,6 +19,9 @@ plugin.tx_comments_pi1 {
 
 		# Should FE user data be set to form automatically?
 		preFillFormFromFeUser = {$plugin.tx_comments_pi1.preFillFormFromFeUser}
+
+		# Should ratings be used?
+		enableRatings = {$plugin.tx_comments_pi1.enableRatings}
 	}
 
 	preventDuplicatePosts = 1

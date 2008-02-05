@@ -20,3 +20,5 @@
 .tx-comments-closed IMG { vertical-align: baseline; margin-left: 4px; padding-right: 4px; }
 
 .tx-comments-comment-report { font-size: 80%; margin: 7px 0 5px 15px; }
+
+.tx-comments-rating { margin-left: 15px; }

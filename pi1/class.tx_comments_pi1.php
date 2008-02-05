@@ -69,6 +69,10 @@ require_once(PATH_t3lib . 'class.t3lib_befunc.php');
 require_once(PATH_t3lib . 'class.t3lib_refindex.php');
 require_once(PATH_tslib . 'class.tslib_pibase.php');
 
+if (t3lib_extMgm::isLoaded('ratings')) {
+	require_once(t3lib_extMgm::extPath('ratings', 'class.tx_ratings_api.php'));
+}
+
 /**
  * Commenting system for tt_products.
  *
@@ -92,6 +96,13 @@ class tx_comments_pi1 extends tslib_pibase {
 	var $foreignTableName;					// Table name of the record we comment on
 	var $formValidationErrors = array();	// Array of form validation errors
 	var $formTopMessage = '';				// This message is displayed in the top of the form
+
+	/**
+	 * Ratings API
+	 *
+	 * @var	tx_ratings_api
+	 */
+	var $ratingsApiObj = null;
 
 	/**
 	 * Main function of the plugin
@@ -181,6 +192,10 @@ class tx_comments_pi1 extends tslib_pibase {
 					' AND pid=' . intval($this->conf['storagePid']) .
 					 $this->cObj->enableFields('tx_comments_comments');
 		$this->where = 'approved=1 AND ' . $this->where_dpck;
+
+		if ($this->conf['advanced.']['enableRatings'] && t3lib_extMgm::isLoaded('ratings')) {
+			$this->ratingsApiObj = t3lib_div::makeInstance('tx_ratings_api');
+		}
 	}
 
 	/**
@@ -200,6 +215,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		$this->fetchConfigValue('advanced.commentsPerPage');
 		$this->fetchConfigValue('advanced.closeCommentsAfter');
 		$this->fetchConfigValue('advanced.dateFormat');
+		$this->fetchConfigValue('advanced.enableRatings');
 		$this->fetchConfigValue('spamProtect.requireApproval');
 		$this->fetchConfigValue('spamProtect.useCaptcha');
 		$this->fetchConfigValue('spamProtect.checkTypicalSpam');
@@ -294,7 +310,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		$start = $rpp*($page - 1);
 
 		// Get records
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('approved,crdate,firstname,lastname,homepage,location,email,content',
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,approved,crdate,firstname,lastname,homepage,location,email,content',
 					'tx_comments_comments', $this->where, '', 'crdate', $start . ',' . $rpp);
 
 		$markerArray = array(
@@ -327,13 +343,34 @@ class tx_comments_pi1 extends tslib_pibase {
 				'###HOMEPAGE###' => htmlspecialchars($row['homepage']),
 				'###COMMENT_DATE###' => date($this->conf['advanced.']['dateFormat'], $row['crdate']),
 				'###COMMENT_CONTENT###' => nl2br(htmlspecialchars($row['content'])),
-				'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments')
+				'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
+				'###RATINGS###' => $this->comments_getComments_getRatings($row),
 			);
 			$entries[] = $this->cObj->substituteMarkerArray($template, $markerArray);
 			$alt = ($alt + 1) % 2;
 		}
 
 		return implode('', $entries);
+	}
+
+	/**
+	 * Retrieves ratings for this comment.
+	 *
+	 * @param	array	$row	Comment row data
+	 * @return	string	Ratings	HTML for this row
+	 */
+	function comments_getComments_getRatings(&$row) {
+		if ($this->ratingsApiObj) {
+			$conf = $this->conf['ratingsConfig.'];
+			if (!is_array($conf)) {
+				$conf = $this->ratingsApiObj->getDefaultConfig();
+			}
+			if ($this->isCommentingClosed()) {
+				$conf['mode'] = 'static';
+			}
+			return $this->ratingsApiObj->getRatingDisplay('tx_comments_comments_' . $row['uid'], $conf);
+		}
+		return '';
 	}
 
 	/**
@@ -833,9 +870,9 @@ class tx_comments_pi1 extends tslib_pibase {
 	 */
 	function isCommentingClosed() {
 		// See if there are any hooks
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments/pi1/class.tx_comments_pi1.php'][$this->foreignTableName])) {
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments/pi1/class.tx_comments_pi1.php'][$this->foreignTableName]['closeCommentsAfter'])) {
 			$params['uid'] = $this->externalUid;
-			$time = t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments/pi1/class.tx_comments_pi1.php'][$this->foreignTableName], $params, $this);
+			$time = t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments/pi1/class.tx_comments_pi1.php'][$this->foreignTableName]['closeCommentsAfter'], $params, $this);
 			if ($time !== false) {
 				if ($time <= $GLOBALS['EXEC_TIME']) {
 					return true;	// Commenting closed

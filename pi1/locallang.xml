@@ -32,6 +32,7 @@
             <label index="sheet.spamprotect">Anti-spam</label>
             <label index="tt_content.tx_comments_pi1.commentsPerPage">Comments per page:</label>
             <label index="tt_content.tx_comments_pi1.closeCommentsAfter">Close commenting after:</label>
+            <label index="tt_content.tx_comments_pi1.enableRatings">Enable ratings:</label>
             <label index="tt_content.tx_comments_pi1.requireApproval">Require approval of each comment:</label>
             <label index="tt_content.tx_comments_pi1.checkTypicalSpam">Check for typical spam:</label>
             <label index="tt_content.tx_comments_pi1.considerReferer">Check referer:</label>

@@ -20,6 +20,8 @@
             <label index="commentsPerPage.description">Defines how many comments per page to show</label>
             <label index="closeCommentsAfter.description">Defines a period after which commenting is closed</label>
             <label index="closeCommentsAfter.details">Period is defined by an integer number followed by suffix. Suffix can be h, m, y or d (meaning hours, months, years or days respectively). Example: 5d (means close commenting after 5 days). If empty, comments can be added at any moment.</label>
+            <label index="enableRatings.description">Enables comment ratings</label>
+            <label index="enableRatings.details">This works only if "ratings" extension is installed.</label>
             <label index="requireApproval.description">If checked, every message will require to be approved by moderator. Moderator will receive e-mail with message content and links to approve or delete comment.</label>
             <label index="considerReferer.description">If checked, comments will not be approved unless referer matches current site</label>
             <label index="considerReferer.details">It is not safe to use this option because many browsers are not reliable in sending referer (and they are not really required to). Also many firewalls block this field. Use only if you are really paranoid about it.</label>

@@ -18,6 +18,9 @@ plugin.tx_comments_pi1 {
 	# cat=plugin.comments: Advanced; type=boolean; label=Use FE user data:Check this option if you want to prefill comment form with data from authenticated FE user. Only empty values of the form will be set.
 	preFillFormFromFeUser = 1
 
+	# cat=plugin.comments: Advanced; type=boolean; label=Enable ratings:Enable ratings for comments. This works only if "ratings" extension is installed.
+	enableRatings = 0
+
 	# cat=plugin.comments: Spam protection; type=boolean; label=Require approval:Comments must be approved by moderator before showing them to other users
 	requireApproval = 1
 

@@ -36,6 +36,16 @@
 				</config>
 				</TCEforms>
 			</closeCommentsAfter>
+			<enableRatings>
+				<TCEforms>
+				<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.enableRatings</label>
+				<displayCond>EXT:ratings:LOADED:true</displayCond>
+				<config>
+					<type>check</type>
+					<default></default>
+				</config>
+				</TCEforms>
+			</enableRatings>
 		</el>
 	</ROOT>
 </T3DataStructure>

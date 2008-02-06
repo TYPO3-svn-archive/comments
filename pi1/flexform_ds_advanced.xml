@@ -16,7 +16,7 @@
 				<config>
 					<type>input</type>
 					<default>10</default>
-					<eval>required,trim,lower,num,int</eval>
+					<eval>trim,lower,num,int</eval>
 					<size>7</size>
 					<max>5</max>
 					<range>

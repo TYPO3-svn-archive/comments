@@ -1,3 +1,7 @@
+2008-02-06 Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Added posibility to output only number of votes (without text) in tt_news marker
+
 2008-02-05 Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added ratings for comments (through "ratings" extension)

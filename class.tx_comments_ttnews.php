@@ -53,14 +53,14 @@ require_once(t3lib_extMgm::extPath('lang', 'lang.php'));
  */
 class tx_comments_ttnews {
 	/**
- * Processes comments-specific markers for tt_news
- *
- * @param	array		$markerArray	Array with merkers
- * @param	array		$row	tt_news record
- * @param	array		$lConf	Configuration array for current tt_news view
- * @param	tx_ttnews		$pObj	Reference to parent object
- * @return	array		Modified marker array
- */
+	 * Processes comments-specific markers for tt_news
+	 *
+	 * @param	array		$markerArray	Array with merkers
+	 * @param	array		$row	tt_news record
+	 * @param	array		$lConf	Configuration array for current tt_news view
+	 * @param	tx_ttnews		$pObj	Reference to parent object
+	 * @return	array		Modified marker array
+	 */
 	function extraItemMarkerProcessor($markerArray, $row, $lConf, &$pObj) {
 		/* @var $pObj tx_ttnews */
 		switch ($pObj->theCode) {
@@ -75,6 +75,7 @@ class tx_comments_ttnews {
 					/* @var $lang language */
 					$markerArray['###TX_COMMENTS_COUNT###'] = $pObj->cObj->substituteMarkerArray(
 						$template, array(
+							'###COMMENTS_COUNT_NUMBER###' => $commentCount,
 							'###COMMENTS_COUNT###' => sprintf($lang->sL('LLL:EXT:comments/locallang_hooks.xml:comments_number'), $commentCount),
 							'###COMMENTS_COUNT_NONE###' => $lang->sL('LLL:EXT:comments/locallang_hooks.xml:comments_number_none'),
 							'###UID###' => $row['uid'],

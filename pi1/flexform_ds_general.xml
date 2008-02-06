@@ -61,7 +61,7 @@
 					<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.template_file</label>
 					<config>
 						<type>input</type>
-						<eval>trim,required</eval>
+						<eval>trim</eval>
 						<default>EXT:comments/res/pi1_template.html</default>
 						<wizards type="array">
 							<_PADDING>2</_PADDING>

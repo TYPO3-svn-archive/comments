@@ -33,9 +33,9 @@
  *
  *   54: class tx_comments_ttnews
  *   64:     function extraItemMarkerProcessor($markerArray, $row, $lConf, &$pObj)
- *   99:     function getNumberOfComments($newsUid, &$pObj)
- *  117:     function getTemplate($section, $conf, &$pObj)
- *  147:     function getItemLink($marker, $itemUid, &$pObj)
+ *  100:     function getNumberOfComments($newsUid, &$pObj)
+ *  118:     function getTemplate($section, $conf, &$pObj)
+ *  148:     function getItemLink($marker, $itemUid, &$pObj)
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -53,14 +53,14 @@ require_once(t3lib_extMgm::extPath('lang', 'lang.php'));
  */
 class tx_comments_ttnews {
 	/**
-	 * Processes comments-specific markers for tt_news
-	 *
-	 * @param	array		$markerArray	Array with merkers
-	 * @param	array		$row	tt_news record
-	 * @param	array		$lConf	Configuration array for current tt_news view
-	 * @param	tx_ttnews		$pObj	Reference to parent object
-	 * @return	array		Modified marker array
-	 */
+ * Processes comments-specific markers for tt_news
+ *
+ * @param	array		$markerArray	Array with merkers
+ * @param	array		$row	tt_news record
+ * @param	array		$lConf	Configuration array for current tt_news view
+ * @param	tx_ttnews		$pObj	Reference to parent object
+ * @return	array		Modified marker array
+ */
 	function extraItemMarkerProcessor($markerArray, $row, $lConf, &$pObj) {
 		/* @var $pObj tx_ttnews */
 		switch ($pObj->theCode) {

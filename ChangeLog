@@ -3,10 +3,12 @@
 	* Added posibility to output only number of votes (without text) in tt_news marker
 	* Fixed bug #7144: Day of week does not come out when server locale differs from website language
 	* Fixed bug #7154: Translation strings cannot be implemented using TS because of 'dots' in the label index
+	* Updated function index on several files
 
 2008-02-05 Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added ratings for comments (through "ratings" extension)
+	* Release of version 1.1.0
 
 2008-01-28 Dmitry Dulepov  <dmitry@typo3.org>
 

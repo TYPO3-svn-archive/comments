@@ -17,6 +17,9 @@ plugin.tx_comments_pi1 {
 		# Date format specification. See PHP date() function for details. If empty, uses TYPO3 date format defined in Install tool
 		dateFormat = {$plugin.tx_comments_pi1.dateFormat}
 
+		# Date format mode. Can be either "date" or "strftime" (without quuotes). Means what PHP function to use for date formatting
+		dateFormatMode = {$plugin.tx_comments_pi1.dateFormatMode}
+
 		# Should FE user data be set to form automatically?
 		preFillFormFromFeUser = {$plugin.tx_comments_pi1.preFillFormFromFeUser}
 

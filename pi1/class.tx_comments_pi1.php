@@ -123,7 +123,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		// Initialize
 		$this->init($conf);
 		if (!$this->foreignTableName) {
-			return sprintf($this->pi_getLL('error.undefined.foregn.table'), $this->prefixId, $this->conf['externalPrefix']);
+			return sprintf($this->pi_getLL('error.undefined.foreign.table'), $this->prefixId, $this->conf['externalPrefix']);
 		}
 
 		$content = '';
@@ -215,6 +215,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		$this->fetchConfigValue('advanced.commentsPerPage');
 		$this->fetchConfigValue('advanced.closeCommentsAfter');
 		$this->fetchConfigValue('advanced.dateFormat');
+		$this->fetchConfigValue('advanced.dateFormatMode');
 		$this->fetchConfigValue('advanced.enableRatings');
 		$this->fetchConfigValue('spamProtect.requireApproval');
 		$this->fetchConfigValue('spamProtect.useCaptcha');
@@ -258,6 +259,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		// Set date
 		if (trim($this->conf['advanced.']['dateFormat']) == '') {
 			$this->conf['advanced.']['dateFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+			$this->conf['dateFormatMode'] = 'date';
 		}
 	}
 
@@ -341,7 +343,7 @@ class tx_comments_pi1 extends tslib_pibase {
 				'###EMAIL###' => $this->comments_getComments_getEmail($row['email']),
 				'###LOCATION###' => htmlspecialchars($row['location']),
 				'###HOMEPAGE###' => htmlspecialchars($row['homepage']),
-				'###COMMENT_DATE###' => date($this->conf['advanced.']['dateFormat'], $row['crdate']),
+				'###COMMENT_DATE###' => $this->formatDate($row['crdate']),
 				'###COMMENT_CONTENT###' => nl2br(htmlspecialchars($row['content'])),
 				'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
 				'###RATINGS###' => $this->comments_getComments_getRatings($row),
@@ -924,6 +926,18 @@ class tx_comments_pi1 extends tslib_pibase {
 						'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments')
 					)
 				);
+	}
+
+	/**
+	 * Formats date according to user's preferences
+	 *
+	 * @param	int	$date	Date as Unix timestamp
+	 * @return	string	Formatted date
+	 */
+	function formatDate($date) {
+		return ($this->conf['dateFormatMode'] == 'strftime' ?
+			strftime($this->conf['dateFormat'], $date) :
+			date($this->conf['advanced.']['dateFormat'], $date));
 	}
 }
 

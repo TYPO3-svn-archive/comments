@@ -15,6 +15,9 @@ plugin.tx_comments_pi1 {
 	# cat=plugin.comments: Advanced; type=string; label=Date format:Date format specification. See PHP date() function for details. If empty, uses TYPO3 date format defined in Install tool
 	dateFormat =
 
+	# cat=plugin.comments: Advanced; type=options[date()=date,strftime()=strftime]; label=Date format mode:If "date()", use date() PHP function (traditional default). If "strftime()", use strftime() function (better international support)
+	dateFormatMode = date
+
 	# cat=plugin.comments: Advanced; type=boolean; label=Use FE user data:Check this option if you want to prefill comment form with data from authenticated FE user. Only empty values of the form will be set.
 	preFillFormFromFeUser = 1
 

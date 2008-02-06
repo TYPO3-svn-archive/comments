@@ -25,6 +25,9 @@ plugin.tx_comments_pi1 {
 
 		# Should ratings be used?
 		enableRatings = {$plugin.tx_comments_pi1.enableRatings}
+
+		# Create links inside comment text automatically?
+		autoConvertLinks = {$plugin.tx_comments_pi1.autoConvertLinks}
 	}
 
 	preventDuplicatePosts = 1

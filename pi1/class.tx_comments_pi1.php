@@ -38,32 +38,33 @@
  *
  *
  *
- *   86: class tx_comments_pi1 extends tslib_pibase
- *  117:     function main($content, $conf)
- *  164:     function init()
- *  211:     function mergeConfiguration()
- *  276:     function fetchConfigValue($param)
- *  296:     function checkExternalUid()
- *  311:     function comments()
- *  338:     function comments_getComments(&$rows)
- *  367:     function comments_getComments_getRatings(&$row)
- *  387:     function comments_getComments_getEmail($email)
- *  402:     function comments_getPageBrowser($page, $rpp, $rowCount)
- *  474:     function comments_getPageBrowser_getPageLink($page)
- *  491:     function form()
- *  563:     function form_updatePostVarsWithFeUserData(&$postVars)
- *  610:     function form_getCaptcha()
- *  644:     function form_wrapError($field)
- *  654:     function processSubmission()
- *  756:     function processSubmission_checkTypicalSpam()
- *  798:     function processSubmission_validate()
- *  844:     function sendNotificationEmail($uid, $points)
- *  876:     function isCommentingClosed()
- *  925:     function commentingClosed()
- *  940:     function formatDate($date)
- *  955:     function fixLL()
+ *   87: class tx_comments_pi1 extends tslib_pibase
+ *  118:     function main($content, $conf)
+ *  165:     function init()
+ *  212:     function mergeConfiguration()
+ *  278:     function fetchConfigValue($param)
+ *  298:     function checkExternalUid()
+ *  313:     function comments()
+ *  340:     function comments_getComments(&$rows)
+ *  369:     function comments_getComments_getRatings(&$row)
+ *  389:     function comments_getComments_getEmail($email)
+ *  404:     function comments_getPageBrowser($page, $rpp, $rowCount)
+ *  476:     function comments_getPageBrowser_getPageLink($page)
+ *  493:     function form()
+ *  565:     function form_updatePostVarsWithFeUserData(&$postVars)
+ *  612:     function form_getCaptcha()
+ *  646:     function form_wrapError($field)
+ *  656:     function processSubmission()
+ *  758:     function processSubmission_checkTypicalSpam()
+ *  800:     function processSubmission_validate()
+ *  846:     function sendNotificationEmail($uid, $points)
+ *  878:     function isCommentingClosed()
+ *  927:     function commentingClosed()
+ *  942:     function formatDate($date)
+ *  957:     function fixLL()
+ *  991:     function createLinks($text)
  *
- * TOTAL FUNCTIONS: 23
+ * TOTAL FUNCTIONS: 24
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -220,6 +221,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		$this->fetchConfigValue('advanced.dateFormat');
 		$this->fetchConfigValue('advanced.dateFormatMode');
 		$this->fetchConfigValue('advanced.enableRatings');
+		$this->fetchConfigValue('advanced.autoConvertLinks');
 		$this->fetchConfigValue('spamProtect.requireApproval');
 		$this->fetchConfigValue('spamProtect.useCaptcha');
 		$this->fetchConfigValue('spamProtect.checkTypicalSpam');
@@ -347,7 +349,7 @@ class tx_comments_pi1 extends tslib_pibase {
 				'###LOCATION###' => htmlspecialchars($row['location']),
 				'###HOMEPAGE###' => htmlspecialchars($row['homepage']),
 				'###COMMENT_DATE###' => $this->formatDate($row['crdate']),
-				'###COMMENT_CONTENT###' => nl2br(htmlspecialchars($row['content'])),
+				'###COMMENT_CONTENT###' => nl2br($this->createLinks(htmlspecialchars($row['content']))),
 				'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
 				'###RATINGS###' => $this->comments_getComments_getRatings($row),
 			);
@@ -978,6 +980,18 @@ class tx_comments_pi1 extends tslib_pibase {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Creates links from "http://..." or "www...." phrases.
+	 *
+	 * @param	string		$text	Text to search for links
+	 * @return	string		Text to convert
+	 */
+	function createLinks($text) {
+		return $this->conf['advanced.']['autoConvertLinks'] ?
+			preg_replace('/((http:\/\/)?((?(2)([^\s]+)|(www\.[^\s]+))))/', '<a href="http://\3" rel="nofollow" class="tx-comments-external-autolink">\1</a>', $text) :
+			$text;
 	}
 }
 

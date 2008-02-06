@@ -38,29 +38,32 @@
  *
  *
  *
- *   79: class tx_comments_pi1 extends tslib_pibase
- *  103:     function main($content, $conf)
- *  148:     function init($conf)
- *  192:     function mergeConfiguration($conf)
- *  255:     function fetchConfigValue($param)
- *  275:     function checkExternalUid()
- *  290:     function comments()
- *  317:     function comments_getComments(&$rows)
- *  345:     function comments_getComments_getEmail($email)
- *  360:     function comments_getPageBrowser($page, $rpp, $rowCount)
- *  432:     function comments_getPageBrowser_getPageLink($page)
- *  449:     function form()
- *  521:     function form_updatePostVarsWithFeUserData(&$postVars)
- *  568:     function form_getCaptcha()
- *  602:     function form_wrapError($field)
- *  612:     function processSubmission()
- *  714:     function processSubmission_checkTypicalSpam()
- *  756:     function processSubmission_validate()
- *  802:     function sendNotificationEmail($uid, $points)
- *  834:     function isCommentingClosed()
- *  883:     function commentingClosed()
+ *   86: class tx_comments_pi1 extends tslib_pibase
+ *  117:     function main($content, $conf)
+ *  164:     function init()
+ *  211:     function mergeConfiguration()
+ *  276:     function fetchConfigValue($param)
+ *  296:     function checkExternalUid()
+ *  311:     function comments()
+ *  338:     function comments_getComments(&$rows)
+ *  367:     function comments_getComments_getRatings(&$row)
+ *  387:     function comments_getComments_getEmail($email)
+ *  402:     function comments_getPageBrowser($page, $rpp, $rowCount)
+ *  474:     function comments_getPageBrowser_getPageLink($page)
+ *  491:     function form()
+ *  563:     function form_updatePostVarsWithFeUserData(&$postVars)
+ *  610:     function form_getCaptcha()
+ *  644:     function form_wrapError($field)
+ *  654:     function processSubmission()
+ *  756:     function processSubmission_checkTypicalSpam()
+ *  798:     function processSubmission_validate()
+ *  844:     function sendNotificationEmail($uid, $points)
+ *  876:     function isCommentingClosed()
+ *  925:     function commentingClosed()
+ *  940:     function formatDate($date)
+ *  955:     function fixLL()
  *
- * TOTAL FUNCTIONS: 20
+ * TOTAL FUNCTIONS: 23
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -112,6 +115,8 @@ class tx_comments_pi1 extends tslib_pibase {
 	 * @return	void
 	 */
 	function main($content, $conf) {
+		$this->conf = $conf;
+		$this->fixLL();
 		$this->pi_loadLL();
 
 		// Check if TS template was included
@@ -121,7 +126,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		}
 
 		// Initialize
-		$this->init($conf);
+		$this->init();
 		if (!$this->foreignTableName) {
 			return sprintf($this->pi_getLL('error.undefined.foreign.table'), $this->prefixId, $this->conf['externalPrefix']);
 		}
@@ -156,8 +161,8 @@ class tx_comments_pi1 extends tslib_pibase {
 	 * @param	array		$conf	Configuration from TS
 	 * @return	void
 	 */
-	function init($conf) {
-		$this->mergeConfiguration($conf);
+	function init() {
+		$this->mergeConfiguration();
 
 		// See what we are commenting on
 		if ($this->conf['externalPrefix'] != 'pages') {
@@ -201,12 +206,10 @@ class tx_comments_pi1 extends tslib_pibase {
 	/**
 	 * Merges TS configuration with configuration from flexform (latter takes precedence).
 	 *
-	 * @param	array		$conf	Configuration from TS
 	 * @return	void
 	 */
-	function mergeConfiguration($conf) {
+	function mergeConfiguration() {
 		$this->pi_initPIflexForm();
-		$this->conf = $conf;
 
 		$this->fetchConfigValue('code');
 		$this->fetchConfigValue('storagePid');
@@ -358,8 +361,8 @@ class tx_comments_pi1 extends tslib_pibase {
 	/**
 	 * Retrieves ratings for this comment.
 	 *
-	 * @param	array	$row	Comment row data
-	 * @return	string	Ratings	HTML for this row
+	 * @param	array		$row	Comment row data
+	 * @return	string		Ratings	HTML for this row
 	 */
 	function comments_getComments_getRatings(&$row) {
 		if ($this->ratingsApiObj) {
@@ -931,13 +934,50 @@ class tx_comments_pi1 extends tslib_pibase {
 	/**
 	 * Formats date according to user's preferences
 	 *
-	 * @param	int	$date	Date as Unix timestamp
-	 * @return	string	Formatted date
+	 * @param	int		$date	Date as Unix timestamp
+	 * @return	string		Formatted date
 	 */
 	function formatDate($date) {
 		return ($this->conf['dateFormatMode'] == 'strftime' ?
 			strftime($this->conf['dateFormat'], $date) :
 			date($this->conf['advanced.']['dateFormat'], $date));
+	}
+
+	/**
+	 * This function is workaround for a bug {@link http://bugs.typo3.org/view.php?id=7154 #7154}.
+	 * This plugin uses dot characters in labels, this causes problems when someone
+	 * tries to override labels from TS setup. It is possible to fix this by changing dots
+	 * to underscopes but this will invalidate all translations + any existing TS template.
+	 * Thus this functions converts array back to dotted string.
+	 *
+	 * @return	void
+	 */
+	function fixLL() {
+		if (isset($this->conf['_LOCAL_LANG.'])) {
+			// Walk each language
+			foreach ($this->conf['_LOCAL_LANG.'] as $lang => $LL) {
+				// If any label is set...
+				if (count($LL)) {
+					$ll = array();
+					// Walk all labels
+					foreach ($LL as $key => $value) {
+						if (!is_array($value)) {
+							// Not array
+							$ll[$key] = $value;
+						}
+						// Convert array to plain string
+						$segments = $key;
+						while (is_array($value)) {
+							$segments .= key($value);
+							$value = current($value);
+						}
+						$ll[$segments] = $value;
+					}
+					// Set it back to configration
+					$this->conf['_LOCAL_LANG.'][$lang] = $ll;
+				}
+			}
+		}
 	}
 }
 

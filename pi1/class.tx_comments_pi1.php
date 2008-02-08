@@ -343,13 +343,13 @@ class tx_comments_pi1 extends tslib_pibase {
 		foreach ($rows as $row) {
 			$markerArray = array(
 				'###ALTERNATE###' => '-' . ($alt + 1),
-				'###FIRSTNAME###' => htmlspecialchars($row['firstname']),
-				'###LASTNAME###' => htmlspecialchars($row['lastname']),
-				'###EMAIL###' => $this->comments_getComments_getEmail($row['email']),
-				'###LOCATION###' => htmlspecialchars($row['location']),
-				'###HOMEPAGE###' => htmlspecialchars($row['homepage']),
+				'###FIRSTNAME###' => $this->applyStdWrap(htmlspecialchars($row['firstname']), 'firstName_stdWrap'),
+				'###LASTNAME###' => $this->applyStdWrap(htmlspecialchars($row['lastname']), 'lastName_stdWrap'),
+				'###EMAIL###' => $this->applyStdWrap($this->comments_getComments_getEmail($row['email']), 'email_stdWrap'),
+				'###LOCATION###' => $this->applyStdWrap(htmlspecialchars($row['location']), 'location_stdWrap'),
+				'###HOMEPAGE###' => $this->applyStdWrap(htmlspecialchars($row['homepage']), 'webSite_stdWrap'),
 				'###COMMENT_DATE###' => $this->formatDate($row['crdate']),
-				'###COMMENT_CONTENT###' => nl2br($this->createLinks(htmlspecialchars($row['content']))),
+				'###COMMENT_CONTENT###' => $this->applyStdWrap(nl2br($this->createLinks(htmlspecialchars($row['content']))), 'content_stdWrap'),
 				'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
 				'###RATINGS###' => $this->comments_getComments_getRatings($row),
 			);
@@ -992,6 +992,20 @@ class tx_comments_pi1 extends tslib_pibase {
 		return $this->conf['advanced.']['autoConvertLinks'] ?
 			preg_replace('/((http:\/\/)?((?(2)([^\s]+)|(www\.[^\s]+))))/', '<a href="http://\3" rel="nofollow" class="tx-comments-external-autolink">\1</a>', $text) :
 			$text;
+	}
+
+	/**
+	 * Applies stdWrap to given text
+	 *
+	 * @param	string	$text	Text to apply stdWrap to
+	 * @param	string	$stdWrapName	Name for the stdWrap in $this->conf
+	 * @return	string	Wrapped text
+	 */
+	function applyStdWrap($text, $stdWrapName) {
+		if (is_array($this->conf[$stdWrapName . '.'])) {
+			$text = $this->cObj->stdWrap($text, $this->conf[$stdWrapName . '.']);
+		}
+		return $text;
 	}
 }
 

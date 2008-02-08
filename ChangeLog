@@ -1,5 +1,9 @@
 2008-02-06 Dmitry Dulepov  <dmitry@typo3.org>
 
+	* Added stdWrap properties for comment entries
+
+2008-02-06 Dmitry Dulepov  <dmitry@typo3.org>
+
 	* Added posibility to output only number of votes (without text) in tt_news marker
 	* Updated function index on several files
 	* Updated documentation

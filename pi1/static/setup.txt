@@ -44,10 +44,28 @@ plugin.tx_comments_pi1 {
 		emailTemplate = {$plugin.tx_comments_pi1.emailTemplate}
 	}
 
-	# stdWrap!
+	# stdWrap for error message when required field is empty
 	requiredFields_errorWrap {
 		dataWrap = <span class="tx-comments-required-error">{LLL:EXT:comments/pi1/locallang.xml:error}:&#32;|</span>
 	}
+
+	# stdWrap for "First name" in the comment output
+	firstName_stdWrap =
+
+	# stdWrap for "Last name" in the comment output
+	lastName_stdWrap =
+
+	# stdWrap for "E-mail" in the comment output
+	email_stdWrap =
+
+	# stdWrap for "web site" in the comment output
+	webSite_stdWrap =
+
+	# stdWrap for "Location" in the comment output
+	location_stdWrap =
+
+	# stdWrap for "Content" in the comment output
+	content_stdWrap =
 
 	# maps pi1 to associated tables where pi1 plugin stores records
 	# Note: do not use { } syntax because other plugins may add entries here and they should not be overriden!

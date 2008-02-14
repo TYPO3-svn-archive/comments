@@ -27,7 +27,7 @@
 /**
 * class.tx_comments_pi1.php
 *
-* Commenting system for tt_products.
+* Commenting system.
 *
 * $Id$
 *
@@ -91,7 +91,7 @@ class tx_comments_pi1 extends tslib_pibase {
 	var $extKey = 'comments';
 	var $pi_checkCHash = true;				// Required for proper caching! See in the typo3/sysext/cms/tslib/class.tslib_pibase.php
 
-	var $conf;								// Plugin configuration (merged with flexform)
+//	var $conf;								// Plugin configuration (merged with flexform)
 	var $externalUid;						// UID of external record
 	var $showUidParam = 'showUid';			// Name of 'showUid' GET parameter (different for tt_news!)
 	var $where;								// SQL WHERE for records
@@ -149,6 +149,9 @@ class tx_comments_pi1 extends tslib_pibase {
 						$this->processSubmission();
 						$content = $this->form();
 					}
+					break;
+				default:
+					$content = $this->checkCustomFunctionCodes();
 					break;
 			}
 			$content = $this->pi_wrapInBaseClass($content);
@@ -229,6 +232,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		$this->fetchConfigValue('spamProtect.notificationEmail');
 		$this->fetchConfigValue('spamProtect.fromEmail');
 		$this->fetchConfigValue('spamProtect.emailTemplate');
+		$this->fetchConfigValue('spamProtect.spamCutOffPoint');
 
 		// Post process some values
 		if ($this->conf['code'] == 'FORM') {
@@ -266,6 +270,15 @@ class tx_comments_pi1 extends tslib_pibase {
 			$this->conf['advanced.']['dateFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
 			$this->conf['dateFormatMode'] = 'date';
 		}
+		// Call hook for custom configuration
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['mergeConfiguration'])) {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['mergeConfiguration'] as $userFunc) {
+				$params = array(
+					'pObj' => &$this,
+				);
+				t3lib_div::callUserFunction($userFunc, $params, $this);
+			}
+		}
 	}
 
 	/**
@@ -298,6 +311,7 @@ class tx_comments_pi1 extends tslib_pibase {
 	function checkExternalUid() {
 		$result = ($this->conf['externalPrefix'] == 'pages');
 		if (!$result && $this->externalUid) {
+			// Check other tables
 			list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS t', $this->foreignTableName,
 						'uid=' . intval($this->externalUid) . $this->cObj->enableFields($this->foreignTableName));
 			$result = ($row['t'] == 1);
@@ -326,6 +340,19 @@ class tx_comments_pi1 extends tslib_pibase {
 			'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
 			'###UID###' => $this->externalUid,
 		);
+		// Call hook for custom markers
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['comments'])) {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['comments'] as $userFunc) {
+				$params = array(
+					'pObj' => &$this,
+					'template' => $template,
+					'markers' => $markerArray,
+				);
+				if (is_array($tempMarkers = t3lib_div::callUserFunction($userFunc, $params, $this))) {
+					$markerArray = $tempMarkers;
+				}
+			}
+		}
 
 		$template = $this->cObj->getSubpart($this->templateCode, '###COMMENT_LIST###');
 		return $this->cObj->substituteMarkerArrayCached($template, array(), $markerArray);
@@ -353,6 +380,19 @@ class tx_comments_pi1 extends tslib_pibase {
 				'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
 				'###RATINGS###' => $this->comments_getComments_getRatings($row),
 			);
+			// Call hook for custom markers
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['comments_getComments'])) {
+				foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['comments_getComments'] as $userFunc) {
+					$params = array(
+						'pObj' => &$this,
+						'template' => $template,
+						'markers' => $markerArray,
+					);
+					if (is_array($tempMarkers = t3lib_div::callUserFunction($userFunc, $params, $this))) {
+						$markerArray = $tempMarkers;
+					}
+				}
+			}
 			$entries[] = $this->cObj->substituteMarkerArray($template, $markerArray);
 			$alt = ($alt + 1) % 2;
 		}
@@ -414,7 +454,6 @@ class tx_comments_pi1 extends tslib_pibase {
 		$haveFirst = ($page > 2);
 		$havePrev = ($page > 1);
 
-		$markerArray = array();
 		$sectionArray = array();
 
 		$template = $this->cObj->getSubpart($this->templateCode, '###PAGE_BROWSER###');
@@ -511,48 +550,62 @@ class tx_comments_pi1 extends tslib_pibase {
 		if ($this->conf['advanced.']['preFillFormFromFeUser']) {
 			$this->form_updatePostVarsWithFeUserData($postVars);
 		}
-		return $this->cObj->substituteMarkerArray($template, array(
-							'###TOP_MESSAGE###' => $this->formTopMessage,
-							'##ACTION_URL###' => $actionLink,
-							'###FIRSTNAME###' => htmlspecialchars($postVars['firstname']),
-							'###LASTNAME###' => htmlspecialchars($postVars['lastname']),
-							'###EMAIL###' => htmlspecialchars($postVars['email']),
-							'###LOCATION###' => htmlspecialchars($postVars['location']),
-							'###HOMEPAGE###' => htmlspecialchars($postVars['homepage']),
-							'###CAPTCHA###' => $this->form_getCaptcha(),
-							'###CONTENT###' => htmlspecialchars($postVars['content']),
-							'###JS_USER_DATA###' => $postVars['submit'] ? '' : '<script type="text/javascript">tx_comments_pi1_setUserData()</script>',
+		$markers = array(
+			'###TOP_MESSAGE###' => $this->formTopMessage,
+			'##ACTION_URL###' => $actionLink,
+			'###FIRSTNAME###' => htmlspecialchars($postVars['firstname']),
+			'###LASTNAME###' => htmlspecialchars($postVars['lastname']),
+			'###EMAIL###' => htmlspecialchars($postVars['email']),
+			'###LOCATION###' => htmlspecialchars($postVars['location']),
+			'###HOMEPAGE###' => htmlspecialchars($postVars['homepage']),
+			'###CAPTCHA###' => $this->form_getCaptcha(),
+			'###CONTENT###' => htmlspecialchars($postVars['content']),
+			'###JS_USER_DATA###' => $postVars['submit'] ? '' : '<script type="text/javascript">tx_comments_pi1_setUserData()</script>',
 
-							'###ERROR_FIRSTNAME###' => $this->form_wrapError('firstname'),
-							'###ERROR_LASTNAME###' => $this->form_wrapError('lastname'),
-							'###ERROR_EMAIL###' => $this->form_wrapError('email'),
-							'###ERROR_LOCATION###' => $this->form_wrapError('location'),
-							'###ERROR_HOMEPAGE###' => $this->form_wrapError('homepage'),
-							'###ERROR_CONTENT###' => $this->form_wrapError('content'),
+			'###ERROR_FIRSTNAME###' => $this->form_wrapError('firstname'),
+			'###ERROR_LASTNAME###' => $this->form_wrapError('lastname'),
+			'###ERROR_EMAIL###' => $this->form_wrapError('email'),
+			'###ERROR_LOCATION###' => $this->form_wrapError('location'),
+			'###ERROR_HOMEPAGE###' => $this->form_wrapError('homepage'),
+			'###ERROR_CONTENT###' => $this->form_wrapError('content'),
 
-							'###REQUIRED_FIRSTNAME###' => in_array('firstname', $requiredFields) ? $requiredMark : '',
-							'###REQUIRED_LASTNAME###' => in_array('lastname', $requiredFields) ? $requiredMark : '',
-							'###REQUIRED_EMAIL###' => in_array('email', $requiredFields) ? $requiredMark : '',
-							'###REQUIRED_LOCATION###' => in_array('location', $requiredFields) ? $requiredMark : '',
-							'###REQUIRED_HOMEPAGE###' => in_array('homepage', $requiredFields) ? $requiredMark : '',
-							'###REQUIRED_CONTENT###' => in_array('content', $requiredFields) ? $requiredMark : '',
+			'###REQUIRED_FIRSTNAME###' => in_array('firstname', $requiredFields) ? $requiredMark : '',
+			'###REQUIRED_LASTNAME###' => in_array('lastname', $requiredFields) ? $requiredMark : '',
+			'###REQUIRED_EMAIL###' => in_array('email', $requiredFields) ? $requiredMark : '',
+			'###REQUIRED_LOCATION###' => in_array('location', $requiredFields) ? $requiredMark : '',
+			'###REQUIRED_HOMEPAGE###' => in_array('homepage', $requiredFields) ? $requiredMark : '',
+			'###REQUIRED_CONTENT###' => in_array('content', $requiredFields) ? $requiredMark : '',
 
-							'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
+			'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
 
-							'###TEXT_ADD_COMMENT###' => $this->pi_getLL('pi1_template.add_comment'),
-							'###TEXT_REQUIRED_HINT###' => $this->pi_getLL('pi1_template.required_field'),
-							'###TEXT_FIRST_NAME###' => $this->pi_getLL('pi1_template.first_name'),
-							'###TEXT_LAST_NAME###' => $this->pi_getLL('pi1_template.last_name'),
-							'###TEXT_EMAIL###' => $this->pi_getLL('pi1_template.email'),
-							'###TEXT_WEB_SITE###' => $this->pi_getLL('pi1_template.web_site'),
-							'###TEXT_LOCATION###' => $this->pi_getLL('pi1_template.location'),
-							'###TEXT_CONTENT###' => $this->pi_getLL('pi1_template.content'),
-							'###TEXT_SUBMIT###' => $this->pi_getLL('pi1_template.submit'),
-							'###TEXT_RESET###' => $this->pi_getLL('pi1_template.reset'),
-							'###TEXT_LOCATION###' => $this->pi_getLL('pi1_template.location'),
-							'###TEXT_LOCATION###' => $this->pi_getLL('pi1_template.location'),
-							'###TEXT_LOCATION###' => $this->pi_getLL('pi1_template.location'),
-							));
+			'###TEXT_ADD_COMMENT###' => $this->pi_getLL('pi1_template.add_comment'),
+			'###TEXT_REQUIRED_HINT###' => $this->pi_getLL('pi1_template.required_field'),
+			'###TEXT_FIRST_NAME###' => $this->pi_getLL('pi1_template.first_name'),
+			'###TEXT_LAST_NAME###' => $this->pi_getLL('pi1_template.last_name'),
+			'###TEXT_EMAIL###' => $this->pi_getLL('pi1_template.email'),
+			'###TEXT_WEB_SITE###' => $this->pi_getLL('pi1_template.web_site'),
+			'###TEXT_LOCATION###' => $this->pi_getLL('pi1_template.location'),
+			'###TEXT_CONTENT###' => $this->pi_getLL('pi1_template.content'),
+			'###TEXT_SUBMIT###' => $this->pi_getLL('pi1_template.submit'),
+			'###TEXT_RESET###' => $this->pi_getLL('pi1_template.reset'),
+			'###TEXT_LOCATION###' => $this->pi_getLL('pi1_template.location'),
+			'###TEXT_LOCATION###' => $this->pi_getLL('pi1_template.location'),
+			'###TEXT_LOCATION###' => $this->pi_getLL('pi1_template.location'),
+		);
+		// Call hook for custom markers
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['form'])) {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['form'] as $userFunc) {
+				$params = array(
+					'pObj' => &$this,
+					'template' => $template,
+					'markers' => $markers,
+				);
+				if (is_array($tempMarkers = t3lib_div::callUserFunction($userFunc, $params, $this))) {
+					$markers = $tempMarkers;
+				}
+			}
+		}
+		return $this->cObj->substituteMarkerArray($template, $markers);
 	}
 
 
@@ -685,58 +738,65 @@ class tx_comments_pi1 extends tslib_pibase {
 			}
 			else {
 				$isSpam = $this->processSubmission_checkTypicalSpam();
-				$isApproved = !$isSpam && intval($this->conf['spamProtect.']['requireApproval'] ? 0 : 1);
+				$cutOffPoint = $this->conf['spamProtect.']['spamCutOffPoint'] ? $this->conf['spamProtect.']['spamCutOffPoint'] : $isSpam + 1;
+				if ($isSpam < $cutOffPoint) {
+					$isApproved = !$isSpam && intval($this->conf['spamProtect.']['requireApproval'] ? 0 : 1);
 
-				// Add rest of the fields
-				$record['crdate'] = $record['tstamp'] = time();
-				$record['approved'] = $isApproved;
-				$record['double_post_check'] = $double_post_check;
+					// Add rest of the fields
+					$record['crdate'] = $record['tstamp'] = time();
+					$record['approved'] = $isApproved;
+					$record['double_post_check'] = $double_post_check;
 
-				$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_comments_comments', $record);
-				$newUid = $GLOBALS['TYPO3_DB']->sql_insert_id();
+					$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_comments_comments', $record);
+					$newUid = $GLOBALS['TYPO3_DB']->sql_insert_id();
 
-				// Update reference index. This will show in theList view that someone refers to external record.
-				$refindex = t3lib_div::makeInstance('t3lib_refindex');
-				/* @var $refindex t3lib_refindex */
-				$refindex->updateRefIndexTable('tx_comments_comments', $newUid);
+					// Update reference index. This will show in theList view that someone refers to external record.
+					$refindex = t3lib_div::makeInstance('t3lib_refindex');
+					/* @var $refindex t3lib_refindex */
+					$refindex->updateRefIndexTable('tx_comments_comments', $newUid);
 
-				// Set cookies
-				foreach (array('firstname', 'lastname', 'email', 'location', 'homepage') as $field) {
-					setcookie($this->prefixId . '_' . $field, $this->piVars[$field], time() + 365*24*60*60, '/');
-				}
-
-				// See what to do next
-				if (!$isApproved) {
-					// Show message
-					$this->formTopMessage = $this->pi_getLL('requires.approval');
-					$this->sendNotificationEmail($newUid, $isSpam);
-				}
-				else {
-					// Clear cache
-					$clearCache = t3lib_div::trimExplode(',', $this->conf['additionalClearCachePages'], true);
-					$clearCache[] = $GLOBALS['TSFE']->id;
-					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-					/* @var $tce t3lib_TCEmain */
-					foreach (array_unique($clearCache) as $pid) {
-						$tce->clear_cacheCmd($pid);
+					// Set cookies
+					foreach (array('firstname', 'lastname', 'email', 'location', 'homepage') as $field) {
+						setcookie($this->prefixId . '_' . $field, $this->piVars[$field], time() + 365*24*60*60, '/');
 					}
 
-					// Go to last page using redirect
-					$rpp = intval($this->conf['advanced.']['commentsPerPage']);
-					list($info) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS t',
-							'tx_comments_comments', $this->where);
-					$redirectLink = $this->cObj->typoLink_URL(array(
-						'parameter' => $GLOBALS['TSFE']->id,
-						'addQueryString' => 1,
-						'addQueryString.' => array(
-							'exclude' => $this->prefixId . '[page],cHash,no_cache',
-						),
-						'additionalParams' => '&no_cache=1&' . $this->prefixId . '[page]=' . (intval($info['t']/$rpp) + (($info['t'] % $rpp) ? 1 : 0)),
-						'useCacheHash' => true,
-					));
-					@ob_end_clean();
-					header('Location: ' . t3lib_div::locationHeaderUrl($redirectLink));
-					exit;
+					// See what to do next
+					if (!$isApproved) {
+						// Show message
+						$this->formTopMessage = $this->pi_getLL('requires.approval');
+						$this->sendNotificationEmail($newUid, $isSpam);
+					}
+					else {
+						// Clear cache
+						$clearCache = t3lib_div::trimExplode(',', $this->conf['additionalClearCachePages'], true);
+						$clearCache[] = $GLOBALS['TSFE']->id;
+						$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+						/* @var $tce t3lib_TCEmain */
+						foreach (array_unique($clearCache) as $pid) {
+							$tce->clear_cacheCmd($pid);
+						}
+
+						// Go to last page using redirect
+						$rpp = intval($this->conf['advanced.']['commentsPerPage']);
+						list($info) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS t',
+								'tx_comments_comments', $this->where);
+						$redirectLink = $this->cObj->typoLink_URL(array(
+							'parameter' => $GLOBALS['TSFE']->id,
+							'addQueryString' => 1,
+							'addQueryString.' => array(
+								'exclude' => $this->prefixId . '[page],cHash,no_cache',
+							),
+							'additionalParams' => '&no_cache=1&' . $this->prefixId . '[page]=' . (intval($info['t']/$rpp) + (($info['t'] % $rpp) ? 1 : 0)),
+							'useCacheHash' => true,
+						));
+						@ob_end_clean();
+						header('Location: ' . t3lib_div::locationHeaderUrl($redirectLink));
+						exit;
+					}
+				}
+				else {
+					// Spam cut off point reached
+					$this->formTopMessage = $this->pi_getLL('error_too_many_spam_points');
 				}
 			}
 		}
@@ -782,9 +842,13 @@ class tx_comments_pi1 extends tslib_pibase {
 		}
 
 		// External spam checkers
-		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['ext/comments/class.tx_comments_pi1.php']['externalSpamCheck'])) {
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['ext/comments/class.tx_comments_pi1.php']['externalSpamCheck'] as $_funcRef) {
-				$params = array('formdata' => $this->piVars);
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['externalSpamCheck'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['externalSpamCheck'] as $_funcRef) {
+				$params = array(
+					'pObj' => &$this,
+					'formdata' => $this->piVars,
+					'points' => $points,
+				);
 				$points += t3lib_div::callUserFunction($_funcRef, $params, $this);
 			}
 		}
@@ -849,23 +913,36 @@ class tx_comments_pi1 extends tslib_pibase {
 		if (t3lib_div::validEmail($toEmail) && t3lib_div::validEmail($fromEmail)) {
 			$template = $this->cObj->fileResource($this->conf['spamProtect.']['emailTemplate']);
 			$check = md5($uid . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
-			$content = $this->cObj->substituteMarkerArray($template,
-					array(
-						'###URL###' => t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),
-						'###POINTS###' => $points,
-						'###FIRSTNAME###' => $this->piVars['firstname'],
-						'###LASTNAME###' => $this->piVars['lastname'],
-						'###EMAIL###' => $this->piVars['email'],
-						'###LOCATION###' => $this->piVars['location'],
-						'###HOMEPAGE###' => $this->piVars['homepage'],
-						'###CONTENT###' => $this->piVars['content'],
-						'###REMOTE_ADDR###' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
-						'###APPROVE_LINK###' => t3lib_div::locationHeaderUrl('/index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=approve'),
-						'###DELETE_LINK###' => t3lib_div::locationHeaderUrl('/index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=delete'),
-						'###KILL_LINK###' => t3lib_div::locationHeaderUrl('/index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=kill'),
-						'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
-					)
-				);
+			$markers = array(
+				'###URL###' => t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),
+				'###POINTS###' => $points,
+				'###FIRSTNAME###' => $this->piVars['firstname'],
+				'###LASTNAME###' => $this->piVars['lastname'],
+				'###EMAIL###' => $this->piVars['email'],
+				'###LOCATION###' => $this->piVars['location'],
+				'###HOMEPAGE###' => $this->piVars['homepage'],
+				'###CONTENT###' => $this->piVars['content'],
+				'###REMOTE_ADDR###' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
+				'###APPROVE_LINK###' => t3lib_div::locationHeaderUrl('/index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=approve'),
+				'###DELETE_LINK###' => t3lib_div::locationHeaderUrl('/index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=delete'),
+				'###KILL_LINK###' => t3lib_div::locationHeaderUrl('/index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=kill'),
+				'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
+			);
+			// Call hook for custom markers
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['sendNotificationMail'])) {
+				foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['sendNotificationMail'] as $userFunc) {
+					$params = array(
+						'pObj' => &$this,
+						'template' => $template,
+						'check' => $check,
+						'markers' => $markers,
+					);
+					if (is_array($tempMarkers = t3lib_div::callUserFunction($userFunc, $params, $this))) {
+						$markers = $tempMarkers;
+					}
+				}
+			}
+			$content = $this->cObj->substituteMarkerArray($template, $markers);
 			t3lib_div::plainMailEncoded($toEmail, $this->pi_getLL('email.subject'), $content, 'From: ' . $this->conf['spamProtect.']['fromEmail']);
 		}
 	}
@@ -877,16 +954,24 @@ class tx_comments_pi1 extends tslib_pibase {
 	 */
 	function isCommentingClosed() {
 		// See if there are any hooks
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments/pi1/class.tx_comments_pi1.php'][$this->foreignTableName]['closeCommentsAfter'])) {
-			$params['uid'] = $this->externalUid;
-			$time = t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments/pi1/class.tx_comments_pi1.php'][$this->foreignTableName]['closeCommentsAfter'], $params, $this);
-			if ($time !== false) {
-				if ($time <= $GLOBALS['EXEC_TIME']) {
-					return true;	// Commenting closed
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['closeCommentsAfter'])) {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['closeCommentsAfter'] as $userFunc) {
+				$params = array(
+					'pObj' => &$this,
+					'table' => $this->foreignTableName,
+					'uid' => $this->externalUid,
+				);
+
+				$time = t3lib_div::callUserFunction($userFunc, $params, $this);
+				if ($time !== false && t3lib_div::testInt($time)) {
+					$time = intval($time);
+					if ($time <= $GLOBALS['EXEC_TIME']) {
+						return true;	// Commenting closed
+					}
+					// Expire this page cache when comments will be closed
+					$GLOBALS['TSFE']->set_cache_timeout_default($time - $GLOBALS['EXEC_TIME']);
+					return false;
 				}
-				// Expire this page cache when commets will be closed
-				$GLOBALS['TSFE']->set_cache_timeout_default($time - $GLOBALS['EXEC_TIME']);
-				return false;
 			}
 		}
 
@@ -1006,6 +1091,28 @@ class tx_comments_pi1 extends tslib_pibase {
 			$text = $this->cObj->stdWrap($text, $this->conf[$stdWrapName . '.']);
 		}
 		return $text;
+	}
+
+	/**
+	 * Checks and processes custom function codes.
+	 *
+	 * @param	string	$code	Code
+	 * @return	string	HTML code
+	 */
+	function checkCustomFunctionCodes($code) {
+		// Call hook
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['customFunctionCode'])) {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['customFunctionCode'] as $userFunc) {
+				$params = array(
+					'pObj' => &$this,
+					'code' => $code,
+				);
+				if (($html = t3lib_div::callUserFunction($userFunc, $params, $this))) {
+					return $html;
+				}
+			}
+		}
+		return '';
 	}
 }
 

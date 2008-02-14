@@ -11,6 +11,7 @@
     </meta>
     <data type="array">
         <languageKey index="default" type="array">
+        	<label index="error_too_many_spam_points">Message cannot be posted because it looks like spam.</label>
             <label index="tt_content.list_type_pi1">Commenting system</label>
 			<label index="pi1_plus_wiz_description">Commenting system for pages and records (news, images, etc)</label>
             <label index="tt_content.tx_comments_pi1.code">Mode:</label>

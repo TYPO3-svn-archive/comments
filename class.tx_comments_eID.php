@@ -112,6 +112,15 @@ class tx_comments_eID {
 				echo $GLOBALS['LANG']->getLL('commented_killed');
 				break;
 		}
+		// Call hooks
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['eID_postProc'])) {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['eID_postProc'] as $userFunc) {
+				$params = array(
+					'pObj' => &$this,
+				);
+				t3lib_div::callUserFunction($userFunc, $params, $this);
+			}
+		}
 		// Clear cache. TCEmain requires $TCA for this, so we just do it ourselves.
 		$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('DISTINCT(pid)', 'tt_content', 'list_type=\'comments_pi1\' AND deleted=0 AND hidden=0');
 		$pids = array();

@@ -42,6 +42,7 @@ plugin.tx_comments_pi1 {
 		notificationEmail = {$plugin.tx_comments_pi1.notificationEmail}
 		fromEmail = {$plugin.tx_comments_pi1.fromEmail}
 		emailTemplate = {$plugin.tx_comments_pi1.emailTemplate}
+		spamCutOffPoint = {$plugin.tx_comments_pi1.spamCutOffPoint}
 	}
 
 	# stdWrap for error message when required field is empty

@@ -495,7 +495,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		if ($haveLast) {
 			$subTemplate = $this->cObj->getSubpart($template, '###LINK_LAST_WRAP###');
 			$sectionArray['###LINK_LAST_WRAP###'] = $this->cObj->substituteMarkerArray($subTemplate, array(
-								'###LINK_LAST###', $this->comments_getPageBrowser_getPageLink($lastPage),
+								'###LINK_LAST###' => $this->comments_getPageBrowser_getPageLink($lastPage),
 								'###TEXT_LAST###' => $this->pi_getLL('pi1_template.last'),
 							));
 		}

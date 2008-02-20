@@ -1,6 +1,7 @@
 2008-02-20 Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #7593: Firstname replaced by Lastname
+	* Fixed bug #7574: Pagebrowser ###LINK_LAST### not rendered
 
 2008-02-14 Dmitry Dulepov  <dmitry@typo3.org>
 

@@ -634,7 +634,7 @@ class tx_comments_pi1 extends tslib_pibase {
 			}
 			if (!$postVars['lastname']) {
 				if ($hasExtendedData && $TSFE->fe_user->user['last_name']) {
-					$postVars['firstname'] = $TSFE->fe_user->user['last_name'];
+					$postVars['lastname'] = $TSFE->fe_user->user['last_name'];
 				}
 			}
 			if (!$postVars['email']) {

@@ -1,6 +1,7 @@
 2008-02-21 Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added URL log for future "List" feature
+	* Changed storagePid to be a list of values (for "List" feature)
 
 2008-02-20 Dmitry Dulepov  <dmitry@typo3.org>
 

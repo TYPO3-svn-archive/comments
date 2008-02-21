@@ -1,7 +1,7 @@
 plugin.tx_comments_pi1 {
 
-	# cat=plugin.comments: Basic; type=int+; label=Storage PID:The PID where comments are stored
-	storagePid = 0
+	# cat=plugin.comments: Basic; type=string; label=Storage PID:The PID where comments are stored or a comma-separated list of PIDs (see manual!)
+	storagePid =
 
 	# cat=plugin.comments: Basic; type=string; label=Comment trigger:If this prefix to showUid URL parameter exists, it will trigger commenting system
 	externalPrefix = tx_ttnews

@@ -198,7 +198,8 @@ class tx_comments_pi1 extends tslib_pibase {
 
 		$this->where_dpck = 'external_prefix=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->conf['externalPrefix'], 'tx_comments_comments') .
 					' AND external_ref=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->foreignTableName . '_' . $this->externalUid, 'tx_comments_comments') .
-					' AND pid=' . intval($this->conf['storagePid']) .
+					' AND ' . (t3lib_div::testInt($this->conf['storagePid']) ?
+							'pid=' . $this->conf['storagePid'] : 'pid IN (' . $this->conf['storagePid'] . ')') .
 					 $this->cObj->enableFields('tx_comments_comments');
 		$this->where = 'approved=1 AND ' . $this->where_dpck;
 
@@ -261,11 +262,27 @@ class tx_comments_pi1 extends tslib_pibase {
 				$this->conf['advanced.']['closeCommentsAfter'] = '+ ' . $value . ' ' . $suffix;
 			}
 		}
+
+		// storagePid can be either single pid or list of pids. Validate and exclude bad elements.
+		$this->conf['storagePid'] = trim($this->conf['storagePid']);
+		if (t3lib_div::testInt($this->conf['storagePid'])) {
+			$this->conf['storagePid'] = intval($this->conf['storagePid']);
+		}
+		else {
+			$list = t3lib_div::trimExplode(',', $this->conf['storagePid'], true);
+			$newList = array();
+			foreach ($list as $value) {
+				if (t3lib_div::testInt($value)) {
+					$newList[] = $value;
+				}
+			}
+			$this->conf['storagePid'] = implode(',', $newList);
+		}
 		// If storage pid is not set, use current page
-		$this->conf['storagePid'] = intval($this->conf['storagePid']);
-		if ($this->conf['storagePid'] == 0) {
+		if ($this->conf['storagePid'] == '') {
 			$this->conf['storagePid'] = $GLOBALS['TSFE']->id;
 		}
+
 		// Set date
 		if (trim($this->conf['advanced.']['dateFormat']) == '') {
 			$this->conf['advanced.']['dateFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];

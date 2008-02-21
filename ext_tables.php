@@ -47,7 +47,26 @@ t3lib_extMgm::allowTableOnStandardPages('tx_comments_comments');
 t3lib_extMgm::addToInsertRecords('tx_comments_comments');
 t3lib_extMgm::addLLrefForTCAdescr('tx_comments_comments', 'EXT:comments/locallang_csh.php');
 
+// URL log table
+$TCA['tx_comments_urllog'] = array(
+	'ctrl' => array (
+		'title' => 'LLL:EXT:comments/locallang_db.xml:tx_comments_urllog',
+		'label' => 'external_ref',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'sortby' => 'external_ref',
+		'delete' => 'deleted',
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
+		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'icon_urllog.gif',
+	)
+);
+t3lib_extMgm::allowTableOnStandardPages('tx_comments_urllog');
+t3lib_extMgm::addToInsertRecords('tx_comments_urllog');
+t3lib_extMgm::addLLrefForTCAdescr('tx_comments_urllog', 'EXT:comments/locallang_csh.php');
+
+
 if (TYPO3_MODE == 'BE') {
 	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_comments_pi1_wizicon'] = t3lib_extMgm::extPath($_EXTKEY).'pi1/class.tx_comments_pi1_wizicon.php';
 }
+
 ?>

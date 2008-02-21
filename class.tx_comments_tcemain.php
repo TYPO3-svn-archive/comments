@@ -61,23 +61,34 @@ class tx_comments_tcemain {
 	function processCmdmap_postProcess($command, $table, $id, $value, &$pObj) {
 		/* @var $pObj t3lib_TCEmain */
 		if ($command == 'delete' && $table != 'tx_comments_comments') {
+			$cmdmap = array();
 			$external_ref = $table . '_' . $id;
 			// Note: disabling mysql query cache for this query because it is executed only once
 			//		and there is no need to flood cache with such queries!
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('/*! SQL_NO_CACHE */ uid', 'tx_comments_comments',
 						'external_ref=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($external_ref, 'tx_comments_comments') .
 						t3lib_BEfunc::deleteClause('tx_comments_comments'));
-			$cmdmap = array();
 			foreach ($rows as $row) {
 				$cmdmap['tx_comments_comments'][$row['uid']]['delete'] = true;
+			}
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('/*! SQL_NO_CACHE */ uid', 'tx_comments_urllog',
+						'external_ref=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($external_ref, 'tx_comments_urllog') .
+						t3lib_BEfunc::deleteClause('tx_comments_urllog'));
+			foreach ($rows as $row) {
+				$cmdmap['tx_comments_urllog'][$row['uid']]['delete'] = true;
 			}
 			if (count($cmdmap)) {
 				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 				/* @var $tce t3lib_TCEmain */
 				$tce->start(false, $cmdmap, $pObj->BE_USER);
+				$GLOBALS['TYPO3_DB']->sql_query('START TRANSACTION');
 				$tce->process_cmdmap();
 				if (count($tce->errorLog)) {
+					$GLOBALS['TYPO3_DB']->sql_query('ROLLBACK');
 					$pObj->errorLog = array_merge($pObj->errorLog, $tce->errorLog);
+				}
+				else {
+					$GLOBALS['TYPO3_DB']->sql_query('COMMIT');
 				}
 			}
 		}

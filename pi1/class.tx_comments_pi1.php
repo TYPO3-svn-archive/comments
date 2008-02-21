@@ -225,6 +225,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		$this->fetchConfigValue('advanced.dateFormatMode');
 		$this->fetchConfigValue('advanced.enableRatings');
 		$this->fetchConfigValue('advanced.autoConvertLinks');
+		$this->fetchConfigValue('advanced.enableUrlLog');
 		$this->fetchConfigValue('spamProtect.requireApproval');
 		$this->fetchConfigValue('spamProtect.useCaptcha');
 		$this->fetchConfigValue('spamProtect.checkTypicalSpam');
@@ -550,9 +551,13 @@ class tx_comments_pi1 extends tslib_pibase {
 		if ($this->conf['advanced.']['preFillFormFromFeUser']) {
 			$this->form_updatePostVarsWithFeUserData($postVars);
 		}
+		$itemUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
 		$markers = array(
+			'###CURRENT_URL###' => htmlspecialchars($itemUrl),
+			'###CURRENT_URL_CHK###' => md5($itemUrl . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']),
 			'###TOP_MESSAGE###' => $this->formTopMessage,
-			'##ACTION_URL###' => $actionLink,
+			'###ACTION_URL###' => htmlspecialchars($actionLink),	// this must go before ##ACTION_URL### for proper replacement!
+			'##ACTION_URL###' => htmlspecialchars($actionLink),	// compatibility with previous versions
 			'###FIRSTNAME###' => htmlspecialchars($postVars['firstname']),
 			'###LASTNAME###' => htmlspecialchars($postVars['lastname']),
 			'###EMAIL###' => htmlspecialchars($postVars['email']),
@@ -708,10 +713,11 @@ class tx_comments_pi1 extends tslib_pibase {
 	 */
 	function processSubmission() {
 		if ($this->piVars['submit'] && $this->processSubmission_validate()) {
+			$external_ref = $this->foreignTableName . '_' . $this->externalUid;
 			// Create record
 			$record = array(
 				'pid' => intval($this->conf['storagePid']),
-				'external_ref' => $this->foreignTableName . '_' . $this->externalUid,	// t3lib_loaddbgroup should be used but it is very complicated for FE... So we just do it with brute force.
+				'external_ref' => $external_ref,	// t3lib_loaddbgroup should be used but it is very complicated for FE... So we just do it with brute force.
 				'external_prefix' => trim($this->conf['externalPrefix']),
 				'firstname' => trim($this->piVars['firstname']),
 				'lastname' => trim($this->piVars['lastname']),
@@ -747,13 +753,41 @@ class tx_comments_pi1 extends tslib_pibase {
 					$record['approved'] = $isApproved;
 					$record['double_post_check'] = $double_post_check;
 
+					// Insert comment record
 					$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_comments_comments', $record);
+					$dbError = ($GLOBALS['TYPO3_DB']->sql_error() != '');
 					$newUid = $GLOBALS['TYPO3_DB']->sql_insert_id();
 
 					// Update reference index. This will show in theList view that someone refers to external record.
 					$refindex = t3lib_div::makeInstance('t3lib_refindex');
 					/* @var $refindex t3lib_refindex */
 					$refindex->updateRefIndexTable('tx_comments_comments', $newUid);
+
+					// Insert URL (if exists)
+					if ($this->conf['advanced.']['enableUrlLog'] && $this->hasValidItemUrl()) {
+						// See if exists
+						$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,url', 'tx_comments_urllog',
+										'external_ref=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($external_ref, 'tx_comments_urllog') .
+										$this->cObj->enableFields('tx_comments_urllog'));
+						if (count($rows) == 0) {
+							$record = array(
+								'crdate' => time(),
+								'tstamp' => time(),
+								'pid' => intval($this->conf['storagePid']),
+								'external_ref' => $external_ref,
+								'url' => $this->piVars['itemurl'],
+							);
+							$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_comments_urllog', $record);
+							$refindex->updateRefIndexTable('tx_comments_urllog', $GLOBALS['TYPO3_DB']->sql_insert_id());
+						}
+						elseif ($rows[0]['url'] != $this->piVars['itemurl'] && !$this->isNoCacheUrl($this->piVars['itemurl'])) {
+							$record = array(
+								'tstamp' => time(),
+								'url' => $this->piVars['itemurl'],
+							);
+							$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_comments_urllog', 'uid=' . $rows[0]['uid'], $record);
+						}
+					}
 
 					// Set cookies
 					foreach (array('firstname', 'lastname', 'email', 'location', 'homepage') as $field) {
@@ -1113,6 +1147,45 @@ class tx_comments_pi1 extends tslib_pibase {
 			}
 		}
 		return '';
+	}
+
+	/**
+	 * Checks if this URL is "no_cache" URL
+	 *
+	 * @param	string	$url	URL
+	 * @return	boolean	true if URL is "no_cache" URL
+	 */
+	function isNoCacheUrl($url) {
+		$parts = parse_url($url);
+		// Brute force
+		if (preg_match('/(^|&)no_cache=1/', $parts['query'])) {
+			return true;
+		}
+		// Ideally we should have checked for alternative methods but they require TSFE
+		// to be passed and therefore corrupted. So we do not do it now until we discover
+		// how to make it without corrupting TSFE.
+		return false;
+	}
+
+	/**
+	 * Checks if valid item url is present.
+	 * Valid item url is not empty, starts with http:// or https:// and
+	 * its checksum match with passed checksum value
+	 *
+	 * @return	boolean	true if item url is valid
+	 */
+	function hasValidItemUrl() {
+		$this->piVars['itemurl'] = trim($this->piVars['itemurl']);
+		if (!$this->piVars['itemurl']) {
+			return false;
+		}
+		if (!preg_match('/^https?:\/\//', $this->piVars['itemurl'])) {
+			return false;
+		}
+		if ($this->piVars['itemurlchk'] != md5($this->piVars['itemurl'] . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
+			return false;
+		}
+		return true;
 	}
 }
 

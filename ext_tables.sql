@@ -23,6 +23,24 @@ CREATE TABLE tx_comments_comments (
 	double_post_check varchar(32) DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid)
+	KEY parent (pid),
+	KEY tcemainhook (external_ref(32),deleted)
+);
+
+#
+# Table structure for table 'tx_comments_urllog'
+#
+CREATE TABLE tx_comments_urllog (
+	uid int(11) unsigned NOT NULL auto_increment,
+	pid int(11) unsigned DEFAULT '0' NOT NULL,
+	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
+	crdate int(11) unsigned DEFAULT '0' NOT NULL,
+	deleted tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	external_ref varchar(255) DEFAULT '' NOT NULL,
+#	external_prefix varchar(255) DEFAULT '' NOT NULL,
+	url text NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid),
 	KEY tcemainhook (external_ref(32),deleted)
 );

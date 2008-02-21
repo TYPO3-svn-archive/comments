@@ -87,7 +87,9 @@
 <div class="tx-comments-comment-form">
 	<h4>###TEXT_ADD_COMMENT###</h4>
 	###TOP_MESSAGE###
-	<form action="##ACTION_URL###" method="post">
+	<form action="###ACTION_URL###" method="post">
+		<input type="hidden" name="tx_comments_pi1[itemurl]" value="###CURRENT_URL###" />
+		<input type="hidden" name="tx_comments_pi1[itemurlchk]" value="###CURRENT_URL_CHK###" />
 		<p>
     		<span class="tx-comments-required-mark">*</span> ###TEXT_REQUIRED_HINT###
 		</p>

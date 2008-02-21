@@ -28,6 +28,9 @@ plugin.tx_comments_pi1 {
 
 		# Create links inside comment text automatically?
 		autoConvertLinks = {$plugin.tx_comments_pi1.autoConvertLinks}
+
+		# Enable URL log (for "List" mode)
+		enableUrlLog = 1
 	}
 
 	preventDuplicatePosts = 1

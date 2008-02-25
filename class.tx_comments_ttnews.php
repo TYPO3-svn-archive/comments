@@ -73,6 +73,7 @@ class tx_comments_ttnews {
 				if (($template = $this->getTemplate($templateName, $lConf, $pObj))) {
 					$lang = t3lib_div::makeInstance('language');
 					/* @var $lang language */
+					$lang->init($GLOBALS['TSFE']->lang);
 					$markerArray['###TX_COMMENTS_COUNT###'] = $pObj->cObj->substituteMarkerArray(
 						$template, array(
 							'###COMMENTS_COUNT_NUMBER###' => $commentCount,

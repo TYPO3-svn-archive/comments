@@ -1,3 +1,7 @@
+2008-02-25 Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug: tt_news marker cannot be localized
+
 2008-02-21 Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added URL log for future "List" feature

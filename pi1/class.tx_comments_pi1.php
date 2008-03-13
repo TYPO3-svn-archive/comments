@@ -712,7 +712,8 @@ class tx_comments_pi1 extends tslib_pibase {
 			return $this->cObj->substituteMarkerArray($template, array_merge($freeCap->makeCaptcha(), array(
 							'###REQUIRED_CAPTCHA###' => $this->cObj->getSubpart($this->templateCode, '###REQUIRED_FIELD###'),
 							'###ERROR_CAPTCHA###' => $this->form_wrapError('captcha'),
-							'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments')
+							'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
+							'###TEXT_ENTER_CODE###' => $this->pi_getLL('pi1_template.enter_code'),
 						)));
 		}
 		return '';

@@ -1103,23 +1103,27 @@ class tx_comments_pi1 extends tslib_pibase {
 				// If any label is set...
 				if (count($LL)) {
 					$ll = array();
-					// Walk all labels
-					foreach ($LL as $key => $value) {
-						if (!is_array($value)) {
-							// Not array
-							$ll[$key] = $value;
-						}
-						// Convert array to plain string
-						$segments = $key;
-						while (is_array($value)) {
-							$segments .= key($value);
-							$value = current($value);
-						}
-						$ll[$segments] = $value;
-					}
-					// Set it back to configration
+					$this->fixLL_internal($LL, $ll);
 					$this->conf['_LOCAL_LANG.'][$lang] = $ll;
 				}
+			}
+		}
+	}
+
+	/**
+	 * Helper function for fixLL. Called recursively.
+	 *
+	 * @param array	$LL	Current array
+	 * @param array	$ll	Result array
+	 * @param string	$prefix	Prefix
+	 * @return	void
+	 */
+	function fixLL_internal($LL, &$ll, $prefix = '') {
+		while (list($key, $val) = each($LL)) {
+			if (is_array($val))	{
+				$this->fixLL_internal($val, $ll, $prefix . $key);
+			} else {
+				$ll[$prefix.$key] = $val;
 			}
 		}
 	}

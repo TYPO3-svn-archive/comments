@@ -1,3 +1,7 @@
+2008-03-13	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed bug #6999: Add sorting for comments
+
 2008-02-25 Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug: tt_news marker cannot be localized

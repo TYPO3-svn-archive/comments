@@ -227,6 +227,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		$this->fetchConfigValue('advanced.enableRatings');
 		$this->fetchConfigValue('advanced.autoConvertLinks');
 		$this->fetchConfigValue('advanced.enableUrlLog');
+		$this->fetchConfigValue('advanced.reverseSorting');
 		$this->fetchConfigValue('spamProtect.requireApproval');
 		$this->fetchConfigValue('spamProtect.useCaptcha');
 		$this->fetchConfigValue('spamProtect.checkTypicalSpam');
@@ -349,8 +350,12 @@ class tx_comments_pi1 extends tslib_pibase {
 		$start = $rpp*($page - 1);
 
 		// Get records
+		$sorting = 'crdate';
+		if ($this->conf['advanced.']['reverseSorting']) {
+			$sorting .= ' DESC';
+		}
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,approved,crdate,firstname,lastname,homepage,location,email,content',
-					'tx_comments_comments', $this->where, '', 'crdate', $start . ',' . $rpp);
+					'tx_comments_comments', $this->where, '', $sorting, $start . ',' . $rpp);
 
 		$markerArray = array(
 			'###SINGLE_COMMENT###' => $this->comments_getComments($rows),

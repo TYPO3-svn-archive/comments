@@ -27,6 +27,9 @@ plugin.tx_comments_pi1 {
 	# cat=plugin.comments: Advanced; type=boolean; label=Create links in comments:If enabled, will search comment text for links (using "http://" or "www." as trigger) and create HTML links automatically.
 	autoConvertLinks = 1
 
+	# cat=plugin.comments: Advanced; type=boolean; label=Show last comments first:Reverses sorting order to show last comments first
+	reverseSorting = 0
+
 	# cat=plugin.comments: Spam protection; type=boolean; label=Require approval:Comments must be approved by moderator before showing them to other users
 	requireApproval = 1
 

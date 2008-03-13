@@ -46,6 +46,15 @@
 				</config>
 				</TCEforms>
 			</enableRatings>
+			<reverseSorting>
+				<TCEforms>
+				<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.reverseSorting</label>
+				<config>
+					<type>check</type>
+					<default></default>
+				</config>
+				</TCEforms>
+			</reverseSorting>
 		</el>
 	</ROOT>
 </T3DataStructure>

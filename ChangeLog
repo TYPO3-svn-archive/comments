@@ -1,6 +1,7 @@
 2008-03-13	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed bug #6999: Add sorting for comments
+	* Fixed bug #7645: after entering bad code from captcha "content" is not loaded again into textarea
 
 2008-02-25 Dmitry Dulepov  <dmitry@typo3.org>
 

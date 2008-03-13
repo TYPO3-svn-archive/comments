@@ -567,8 +567,9 @@ class tx_comments_pi1 extends tslib_pibase {
 		$requiredMark = $this->cObj->getSubpart($this->templateCode, '##REQUIRED_FIELD###');
 		// We specially use _POST here instead of piVars. Do not change!
 		$postVars = ($GLOBALS['TSFE']->no_cache ? t3lib_div::_POST($this->prefixId) : array());
-		if (count($this->formValidationErrors['content']) == 0) {
-			unset($postVars['content']);
+		if (count($this->formValidationErrors) == 0) {
+			// All fine, clear content field
+			$postVars['content'] = '';
 		}
 		if ($this->conf['advanced.']['preFillFormFromFeUser']) {
 			$this->form_updatePostVarsWithFeUserData($postVars);

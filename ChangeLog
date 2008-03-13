@@ -6,6 +6,7 @@
 	* Fixed bug #7491: Typos in pi1/locallang_csh.xml
 	* Fixed bug #7578: Translation not possible
 	* Fixed bug #7680: ###TEXT_ENTER_CODE### not rendered with sr_freecap
+	* Fixed bug #7675: Hook-Request: additional fields in record before save/processing
 
 2008-02-25 Dmitry Dulepov  <dmitry@typo3.org>
 

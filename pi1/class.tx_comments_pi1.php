@@ -752,6 +752,19 @@ class tx_comments_pi1 extends tslib_pibase {
 				'remote_addr' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
 			);
 
+			// Call hook for additional fields in record (by Frank Naegler)
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['processSubmission'])) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['processSubmission'] as $userFunc) {
+					$params = array(
+						'record' => $record,
+						'pObj' => &$this,
+					);
+					if (($newRecord = t3lib_div::callUserFunction($userFunc, $params, $this))) {
+						$record = $newRecord;
+					}
+				}
+			}
+
 			// Check for double post
 			$double_post_check = md5(implode(',', $record));
 			if ($this->conf['preventDuplicatePosts']) {

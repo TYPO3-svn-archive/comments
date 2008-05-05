@@ -1,3 +1,7 @@
+2008-05-05	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed: strftime was never be used
+
 2008-03-13	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed bug #6999: Add sorting for comments

@@ -1096,8 +1096,8 @@ class tx_comments_pi1 extends tslib_pibase {
 	 * @return	string		Formatted date
 	 */
 	function formatDate($date) {
-		return ($this->conf['dateFormatMode'] == 'strftime' ?
-			strftime($this->conf['dateFormat'], $date) :
+		return ($this->conf['advanced.']['dateFormatMode'] == 'strftime' ?
+			strftime($this->conf['advanced.']['dateFormat'], $date) :
 			date($this->conf['advanced.']['dateFormat'], $date));
 	}
 

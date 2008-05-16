@@ -1,3 +1,7 @@
+2008-05-14	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed: hidden column defined for tx_comments_urllog but does not exist in the database
+
 2008-05-05	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed: strftime was never be used

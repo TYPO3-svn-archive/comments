@@ -131,14 +131,6 @@ $TCA['tx_comments_urllog'] = array(
 		'maxDBListItems' => 60,
 	),
 	'columns' => array(
-		'hidden' => Array (
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
-			'config' => Array (
-				'type' => 'check',
-				'default' => '0'
-			)
-		),
 		'external_ref' => array(
 			'label' => 'LLL:EXT:comments/locallang_db.xml:tx_comments_comments.external_ref',
 			'config' => array(

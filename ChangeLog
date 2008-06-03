@@ -1,3 +1,7 @@
+2008-06-03	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed: wrong number of comments in tt_news (includes non-approved comments)
+
 2008-05-14	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed: hidden column defined for tx_comments_urllog but does not exist in the database

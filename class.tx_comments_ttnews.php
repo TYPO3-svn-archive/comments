@@ -103,7 +103,7 @@ class tx_comments_ttnews {
 		$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS t', 'tx_comments_comments',
 				'external_prefix=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('tx_ttnews', 'tx_comments_comments') .
 				' AND external_ref=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('tt_news_' . $newsUid, 'tx_comments_comments') .
-				'approved=1 AND ' .
+				' AND approved=1 ' .
 				$pObj->cObj->enableFields('tx_comments_comments'));
 		return $recs[0]['t'];
 	}

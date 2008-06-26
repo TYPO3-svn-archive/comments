@@ -20,35 +20,41 @@
 <a name="tx-comments-comments-###UID###"></a>
 <div class="tx-comments-comments">
 
-	<!-- ###SINGLE_COMMENT### begin
-		A single comment in the list. Possible markers:
-			ALTERNATE		- "-1" for odd and "-2" for even entries, allows to have alternating styles
-			FIRSTNAME		- first name
-			LASTNAME		- last name
-			EMAIL			- email (spam protect works!)
-			LOCATION		- location
-			HOMEPAGE		- homepage
-			COMMENT_DATE	- date when posted
-			COMMENT_CONTENT	- content of the comment (nl2br + htmlspecialchars)
-	-->
-	<div class="tx-comments-comment###ALTERNATE###">
-		<span class="tx-comments-comment-name"><a href="###EMAIL###">###FIRSTNAME###</a></span>, <span class="tx-comments-comment-date">###COMMENT_DATE###</span>:
-		<hr size="1" />
-		<div class="tx-comments-comment-content">
-			###COMMENT_CONTENT###
-		</div>
-		<div class="tx-comments-rating">
-		###RATINGS###
-		</div>
-		<!-- ###REPORT_SUB### -->
-		<!--
-		<div class="tx-comments-comment-report">
-			&bull; <a href="###REPORT_LINK###">Report</a> this comment as inappropriate
-		</div>
+	<!-- ###CONTENT### begin -->
+		<!-- ###SINGLE_COMMENT### begin
+			A single comment in the list. Possible markers:
+				ALTERNATE		- "-1" for odd and "-2" for even entries, allows to have alternating styles
+				FIRSTNAME		- first name
+				LASTNAME		- last name
+				EMAIL			- email (spam protect works!)
+				LOCATION		- location
+				HOMEPAGE		- homepage
+				COMMENT_DATE	- date when posted
+				COMMENT_CONTENT	- content of the comment (nl2br + htmlspecialchars)
 		-->
-		<!-- ###REPORT_SUB### -->
-	</div>
-	<!-- ###SINGLE_COMMENT### end -->
+		<div class="tx-comments-comment###ALTERNATE###">
+			<span class="tx-comments-comment-name"><a href="###EMAIL###">###FIRSTNAME###</a></span>, <span class="tx-comments-comment-date">###COMMENT_DATE###</span>:
+			<hr size="1" />
+			<div class="tx-comments-comment-content">
+				###COMMENT_CONTENT###
+			</div>
+			<div class="tx-comments-rating">
+			###RATINGS###
+			</div>
+			<!-- ###REPORT_SUB### -->
+			<!--
+			<div class="tx-comments-comment-report">
+				&bull; <a href="###REPORT_LINK###">Report</a> this comment as inappropriate
+			</div>
+			-->
+			<!-- ###REPORT_SUB### -->
+		</div>
+		<!-- ###SINGLE_COMMENT### end -->
+	<!-- ###CONTENT### end -->
+
+	<!-- ###NO_COMMENTS### begin -->
+	###TEXT_NO_COMMENTS###
+	<!-- ###NO_COMMENTS### end -->
 
 	<!-- ###PAGE_BROWSER### begin
 		Page browser for comments. Possible markers are:
@@ -79,6 +85,12 @@
 <!-- ###COMMENT_LIST### end -->
 <hr size="1" />
 
+<h4>No comments (replaces ###SINGLE_COMMENT###)</h4>
+<!-- ###NO_COMMENTS### begin -->
+###TEXT_NO_COMMENTS###
+<!-- ###NO_COMMENTS### end -->
+<hr size="1" />
+
 <h4>Comment form subpart</h4>
 <hr size="1" />
 <!-- ###COMMENT_FORM### begin
@@ -91,7 +103,7 @@
 		<input type="hidden" name="tx_comments_pi1[itemurl]" value="###CURRENT_URL###" />
 		<input type="hidden" name="tx_comments_pi1[itemurlchk]" value="###CURRENT_URL_CHK###" />
 		<p>
-    		<span class="tx-comments-required-mark">*</span> ###TEXT_REQUIRED_HINT###
+			<span class="tx-comments-required-mark">*</span> ###TEXT_REQUIRED_HINT###
 		</p>
 		<label for="tx_comments_pi1[firstname]">###TEXT_FIRST_NAME###</label>
 		<input autocomplete="off" class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[firstname]" id="tx_comments_pi1_firstname" value="###FIRSTNAME###" /> ###REQUIRED_FIRSTNAME### ###ERROR_FIRSTNAME###<br />

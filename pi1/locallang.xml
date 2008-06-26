@@ -63,6 +63,7 @@
 			<label index="pi1_template.reset">Reset</label>
 			<label index="pi1_template.enter_code">Enter the code:</label>
 			<label index="pi1_template.content">Content:</label>
+			<label index="text_no_comments">No comments</label>
 		</languageKey>
 	</data>
 </T3locallang>

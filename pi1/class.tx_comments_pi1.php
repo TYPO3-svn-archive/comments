@@ -357,28 +357,34 @@ class tx_comments_pi1 extends tslib_pibase {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,approved,crdate,firstname,lastname,homepage,location,email,content',
 					'tx_comments_comments', $this->where, '', $sorting, $start . ',' . $rpp);
 
-		$markerArray = array(
+		$subParts = array(
 			'###SINGLE_COMMENT###' => $this->comments_getComments($rows),
 			'###PAGE_BROWSER###' => $this->comments_getPageBrowser($page, $rpp, count($rows)),
 			'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
 			'###UID###' => $this->externalUid,
 		);
+		$markers = array();
+
 		// Call hook for custom markers
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['comments'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['comments'] as $userFunc) {
 				$params = array(
 					'pObj' => &$this,
 					'template' => $template,
-					'markers' => $markerArray,
+					'markers' => $subParts,
+					'plainMarkers' => $markers,
 				);
 				if (is_array($tempMarkers = t3lib_div::callUserFunction($userFunc, $params, $this))) {
-					$markerArray = $tempMarkers;
+					$subParts = $tempMarkers;
 				}
 			}
 		}
 
+		// Fetch template
 		$template = $this->cObj->getSubpart($this->templateCode, '###COMMENT_LIST###');
-		return $this->cObj->substituteMarkerArrayCached($template, array(), $markerArray);
+
+		// Merge
+		return $this->substituteMarkersAndSubparts($template, $markers, $markerArray);
 	}
 
 	/**
@@ -388,6 +394,12 @@ class tx_comments_pi1 extends tslib_pibase {
 	 * @return	string		Generated HTML
 	 */
 	function comments_getComments(&$rows) {
+		if (count($rows) == 0) {
+			$template = $this->cObj->getSubpart($this->templateCode, '###NO_COMMENTS###');
+			if ($template) {
+				return $this->cObj->substituteMarker($template, '###TEXT_NO_COMMENTS###', $this->pi_getLL('text_no_comments'));
+			}
+		}
 		$entries = array(); $alt = 1;
 		$template = $this->cObj->getSubpart($this->templateCode, '###SINGLE_COMMENT###');
 		foreach ($rows as $row) {
@@ -410,6 +422,7 @@ class tx_comments_pi1 extends tslib_pibase {
 						'pObj' => &$this,
 						'template' => $template,
 						'markers' => $markerArray,
+						'row' => $row,
 					);
 					if (is_array($tempMarkers = t3lib_div::callUserFunction($userFunc, $params, $this))) {
 						$markerArray = $tempMarkers;
@@ -526,7 +539,7 @@ class tx_comments_pi1 extends tslib_pibase {
 			$sectionArray['###LINK_LAST_WRAP###'] = '';
 		}
 
-		return $this->cObj->substituteMarkerArrayCached($template, array('###CUR_PAGE###' => $page), $sectionArray);
+		return $this->substituteMarkersAndSubparts($template, array('###CUR_PAGE###' => $page), $sectionArray);
 	}
 
 	/**
@@ -1227,6 +1240,25 @@ class tx_comments_pi1 extends tslib_pibase {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Replaces $this->cObj->substituteArrayMarkerCached() because substitued
+	 * function polutes cache_hash table a lot.
+	 *
+	 * @param	string	$template	Template
+	 * @param	array	$markers	Markers
+	 * @param	array	$subparts	Subparts
+	 * @return	string	HTML
+	 */
+	function substituteMarkersAndSubparts($template, array $markers, array $subparts) {
+		$content = $this->cObj->substituteMarkerArray($template, $markers);
+		if (count($subparts) > 0) {
+			foreach ($subparts as $name => $subpart) {
+				$content = $this->cObj->substituteSubpart($content, $name, $subpart);
+			}
+		}
+		return $content;
 	}
 }
 

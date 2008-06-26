@@ -62,7 +62,7 @@
 					<config>
 						<type>input</type>
 						<eval>trim</eval>
-						<default>EXT:comments/res/pi1_template.html</default>
+						<default></default>
 						<wizards type="array">
 							<_PADDING>2</_PADDING>
 							<link type="array">

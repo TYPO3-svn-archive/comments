@@ -91,7 +91,7 @@
 					<config>
 						<type>input</type>
 						<eval>trim</eval>
-						<default>EXT:comments/res/email.txt</default>
+						<default></default>
 						<wizards type="array">
 							<_PADDING>2</_PADDING>
 							<link type="array">

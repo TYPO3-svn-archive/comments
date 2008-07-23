@@ -390,7 +390,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		$template = $this->cObj->getSubpart($this->templateCode, '###COMMENT_LIST###');
 
 		// Merge
-		return $this->substituteMarkersAndSubparts($template, $markers, $markerArray);
+		return $this->substituteMarkersAndSubparts($template, $markers, $subParts);
 	}
 
 	/**

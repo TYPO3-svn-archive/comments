@@ -1,3 +1,7 @@
+2008-07-23	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Updated function index in files
+
 2008-06-03	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed: wrong number of comments in tt_news (includes non-approved comments)

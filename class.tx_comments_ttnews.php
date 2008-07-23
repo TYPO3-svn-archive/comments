@@ -33,9 +33,9 @@
  *
  *   54: class tx_comments_ttnews
  *   64:     function extraItemMarkerProcessor($markerArray, $row, $lConf, &$pObj)
- *  100:     function getNumberOfComments($newsUid, &$pObj)
- *  118:     function getTemplate($section, $conf, &$pObj)
- *  148:     function getItemLink($marker, $itemUid, &$pObj)
+ *  101:     function getNumberOfComments($newsUid, &$pObj)
+ *  120:     function getTemplate($section, $conf, &$pObj)
+ *  150:     function getItemLink($marker, $itemUid, &$pObj)
  *
  * TOTAL FUNCTIONS: 4
  * (This index is automatically created/updated by the extension "extdeveval")

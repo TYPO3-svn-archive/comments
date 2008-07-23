@@ -38,33 +38,39 @@
  *
  *
  *
- *   87: class tx_comments_pi1 extends tslib_pibase
- *  118:     function main($content, $conf)
- *  165:     function init()
- *  212:     function mergeConfiguration()
- *  278:     function fetchConfigValue($param)
- *  298:     function checkExternalUid()
- *  313:     function comments()
- *  340:     function comments_getComments(&$rows)
- *  369:     function comments_getComments_getRatings(&$row)
- *  389:     function comments_getComments_getEmail($email)
- *  404:     function comments_getPageBrowser($page, $rpp, $rowCount)
- *  476:     function comments_getPageBrowser_getPageLink($page)
- *  493:     function form()
- *  565:     function form_updatePostVarsWithFeUserData(&$postVars)
- *  612:     function form_getCaptcha()
- *  646:     function form_wrapError($field)
- *  656:     function processSubmission()
- *  758:     function processSubmission_checkTypicalSpam()
- *  800:     function processSubmission_validate()
- *  846:     function sendNotificationEmail($uid, $points)
- *  878:     function isCommentingClosed()
- *  927:     function commentingClosed()
- *  942:     function formatDate($date)
- *  957:     function fixLL()
- *  991:     function createLinks($text)
+ *   93: class tx_comments_pi1 extends tslib_pibase
+ *  124:     function main($content, $conf)
+ *  174:     function init()
+ *  222:     function mergeConfiguration()
+ *  316:     function fetchConfigValue($param)
+ *  336:     function checkExternalUid()
+ *  352:     function comments()
+ *  402:     function comments_getComments(&$rows)
+ *  451:     function comments_getComments_getRatings(&$row)
+ *  471:     function comments_getComments_getEmail($email)
+ *  486:     function comments_getPageBrowser($page, $rpp, $rowCount)
+ *  557:     function comments_getPageBrowser_getPageLink($page)
+ *  574:     function form()
+ *  665:     function form_updatePostVarsWithFeUserData(&$postVars)
+ *  712:     function form_getCaptcha()
+ *  747:     function form_wrapError($field)
+ *  757:     function processSubmission()
+ *  908:     function processSubmission_checkTypicalSpam()
+ *  954:     function processSubmission_validate()
+ * 1000:     function sendNotificationEmail($uid, $points)
+ * 1045:     function isCommentingClosed()
+ * 1102:     function commentingClosed()
+ * 1117:     function formatDate($date)
+ * 1132:     function fixLL()
+ * 1154:     function fixLL_internal($LL, &$ll, $prefix = '')
+ * 1170:     function createLinks($text)
+ * 1183:     function applyStdWrap($text, $stdWrapName)
+ * 1196:     function checkCustomFunctionCodes($code)
+ * 1218:     function isNoCacheUrl($url)
+ * 1237:     function hasValidItemUrl()
+ * 1260:     function substituteMarkersAndSubparts($template, array $markers, array $subparts)
  *
- * TOTAL FUNCTIONS: 24
+ * TOTAL FUNCTIONS: 30
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -1140,9 +1146,9 @@ class tx_comments_pi1 extends tslib_pibase {
 	/**
 	 * Helper function for fixLL. Called recursively.
 	 *
-	 * @param array	$LL	Current array
-	 * @param array	$ll	Result array
-	 * @param string	$prefix	Prefix
+	 * @param	array		$LL	Current array
+	 * @param	array		$ll	Result array
+	 * @param	string		$prefix	Prefix
 	 * @return	void
 	 */
 	function fixLL_internal($LL, &$ll, $prefix = '') {
@@ -1170,9 +1176,9 @@ class tx_comments_pi1 extends tslib_pibase {
 	/**
 	 * Applies stdWrap to given text
 	 *
-	 * @param	string	$text	Text to apply stdWrap to
-	 * @param	string	$stdWrapName	Name for the stdWrap in $this->conf
-	 * @return	string	Wrapped text
+	 * @param	string		$text	Text to apply stdWrap to
+	 * @param	string		$stdWrapName	Name for the stdWrap in $this->conf
+	 * @return	string		Wrapped text
 	 */
 	function applyStdWrap($text, $stdWrapName) {
 		if (is_array($this->conf[$stdWrapName . '.'])) {
@@ -1184,8 +1190,8 @@ class tx_comments_pi1 extends tslib_pibase {
 	/**
 	 * Checks and processes custom function codes.
 	 *
-	 * @param	string	$code	Code
-	 * @return	string	HTML code
+	 * @param	string		$code	Code
+	 * @return	string		HTML code
 	 */
 	function checkCustomFunctionCodes($code) {
 		// Call hook
@@ -1206,8 +1212,8 @@ class tx_comments_pi1 extends tslib_pibase {
 	/**
 	 * Checks if this URL is "no_cache" URL
 	 *
-	 * @param	string	$url	URL
-	 * @return	boolean	true if URL is "no_cache" URL
+	 * @param	string		$url	URL
+	 * @return	boolean		true if URL is "no_cache" URL
 	 */
 	function isNoCacheUrl($url) {
 		$parts = parse_url($url);
@@ -1226,7 +1232,7 @@ class tx_comments_pi1 extends tslib_pibase {
 	 * Valid item url is not empty, starts with http:// or https:// and
 	 * its checksum match with passed checksum value
 	 *
-	 * @return	boolean	true if item url is valid
+	 * @return	boolean		true if item url is valid
 	 */
 	function hasValidItemUrl() {
 		$this->piVars['itemurl'] = trim($this->piVars['itemurl']);
@@ -1246,10 +1252,10 @@ class tx_comments_pi1 extends tslib_pibase {
 	 * Replaces $this->cObj->substituteArrayMarkerCached() because substitued
 	 * function polutes cache_hash table a lot.
 	 *
-	 * @param	string	$template	Template
-	 * @param	array	$markers	Markers
-	 * @param	array	$subparts	Subparts
-	 * @return	string	HTML
+	 * @param	string		$template	Template
+	 * @param	array		$markers	Markers
+	 * @param	array		$subparts	Subparts
+	 * @return	string		HTML
 	 */
 	function substituteMarkersAndSubparts($template, array $markers, array $subparts) {
 		$content = $this->cObj->substituteMarkerArray($template, $markers);

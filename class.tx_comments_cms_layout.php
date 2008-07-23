@@ -45,12 +45,12 @@
  */
 class tx_comments_cms_layout {
 	/**
- * Returns information about this extension's pi1 plugin
- *
- * @param	array		$params	Parameters to the hook
- * @param	object		$pObj	A reference to calling object
- * @return	string		Information about pi1 plugin
- */
+	 * Returns information about this extension's pi1 plugin
+	 *
+	 * @param	array		$params	Parameters to the hook
+	 * @param	object		$pObj	A reference to calling object
+	 * @return	string		Information about pi1 plugin
+	 */
 	function getExtensionSummary($params, &$pObj) {
 		global $LANG;
 

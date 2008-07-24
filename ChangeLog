@@ -1,3 +1,7 @@
+2008-07-24	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed error in default template (###NO_COMMENTS### in the wrong place)
+
 2008-07-23	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Updated function index in files

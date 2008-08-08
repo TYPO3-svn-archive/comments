@@ -811,7 +811,6 @@ class tx_comments_pi1 extends tslib_pibase {
 
 					// Insert comment record
 					$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_comments_comments', $record);
-					$dbError = ($GLOBALS['TYPO3_DB']->sql_error() != '');
 					$newUid = $GLOBALS['TYPO3_DB']->sql_insert_id();
 
 					// Update reference index. This will show in theList view that someone refers to external record.
@@ -857,6 +856,18 @@ class tx_comments_pi1 extends tslib_pibase {
 						$this->sendNotificationEmail($newUid, $isSpam);
 					}
 					else {
+
+						// Call hook for custom actions (requested by Cyrill Helg)
+						if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['processValidComment'])) {
+							foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['processValidComment'] as $userFunc) {
+								$params = array(
+									'pObj' => &$this,
+									'uid' => intval($newUid),
+								);
+								t3lib_div::callUserFunction($userFunc, $params, $this);
+							}
+						}
+
 						// Clear cache
 						$clearCache = t3lib_div::trimExplode(',', $this->conf['additionalClearCachePages'], true);
 						$clearCache[] = $GLOBALS['TSFE']->id;

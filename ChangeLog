@@ -1,6 +1,7 @@
 2008-08-08	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed bug #9054: remove email from default required fields
+	* Fixed bug #8145: wrong links in notification mail if typo3 runs in a subdir of domain
 
 2008-07-24	Dmitry Dulepov	<dmitry@typo3.org>
 

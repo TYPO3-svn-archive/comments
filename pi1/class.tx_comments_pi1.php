@@ -1013,9 +1013,9 @@ class tx_comments_pi1 extends tslib_pibase {
 				'###HOMEPAGE###' => $this->piVars['homepage'],
 				'###CONTENT###' => $this->piVars['content'],
 				'###REMOTE_ADDR###' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
-				'###APPROVE_LINK###' => t3lib_div::locationHeaderUrl('/index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=approve'),
-				'###DELETE_LINK###' => t3lib_div::locationHeaderUrl('/index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=delete'),
-				'###KILL_LINK###' => t3lib_div::locationHeaderUrl('/index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=kill'),
+				'###APPROVE_LINK###' => t3lib_div::locationHeaderUrl('index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=approve'),
+				'###DELETE_LINK###' => t3lib_div::locationHeaderUrl('index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=delete'),
+				'###KILL_LINK###' => t3lib_div::locationHeaderUrl('index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=kill'),
 				'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
 			);
 			// Call hook for custom markers

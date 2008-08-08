@@ -38,7 +38,7 @@ plugin.tx_comments_pi1 {
 
 	preventDuplicatePosts = 1
 
-	requiredFields = firstname,email,content
+	requiredFields = firstname,content
 
 	spamProtect {
 		requireApproval = {$plugin.tx_comments_pi1.requireApproval}

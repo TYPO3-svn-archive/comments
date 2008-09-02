@@ -1,3 +1,7 @@
+2008-09-02	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Changed minimum PHP version to 5.2.0 because Debian still does not have 5.2.1
+
 2008-08-08	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed bug #9054: remove email from default required fields

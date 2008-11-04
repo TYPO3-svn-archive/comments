@@ -56,19 +56,25 @@ class tx_comments_cms_layout {
 
 		if ($params['row']['list_type'] == 'comments_pi1') {
 			$data = t3lib_div::xml2array($params['row']['pi_flexform']);
+			$result = array();
 			if (is_array($data)) {
 				$mode = $data['data']['sDEF']['lDEF']['code']['vDEF'];
-				switch ($mode) {
-					case 'COMMENTS':
-						$result = $LANG->sL('LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.code.I.0');
-						break;
-					case 'FORM':
-						$result = $LANG->sL('LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.code.I.1');
-						break;
+				foreach (t3lib_div::trimExplode(',', $mode, true) as $code) {
+					switch ($code) {
+						case 'COMMENTS':
+							$result[] = $LANG->sL('LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.code.I.0');
+							break;
+						case 'FORM':
+							$result[] = $LANG->sL('LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.code.I.1');
+							break;
+					}
 				}
 			}
-			if (!$result) {
+			if (!count($result)) {
 				$result = $LANG->sL('LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.code.I.u');
+			}
+			else {
+				$result = implode(', ', $result);
 			}
 		}
 		return $result;

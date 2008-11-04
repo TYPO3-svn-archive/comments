@@ -36,7 +36,7 @@
 			<label index="tt_content.tx_comments_pi1.enableRatings">Enable ratings:</label>
 			<label index="tt_content.tx_comments_pi1.requireApproval">Require approval of each comment:</label>
 			<label index="tt_content.tx_comments_pi1.checkTypicalSpam">Check for typical spam:</label>
-			<label index="tt_content.tx_comments_pi1.considerReferer">Check referer:</label>
+			<label index="tt_content.tx_comments_pi1.considerReferer">Check referrer:</label>
 			<label index="tt_content.tx_comments_pi1.notificationEmail">Send notification to this e-mail:</label>
 			<label index="tt_content.tx_comments_pi1.fromEmail">Send e-mail from this address:</label>
 			<label index="tt_content.tx_comments_pi1.emailTemplate">Template file for e-mails:</label>
@@ -64,6 +64,7 @@
 			<label index="pi1_template.enter_code">Enter the code:</label>
 			<label index="pi1_template.content">Content:</label>
 			<label index="text_no_comments">No comments</label>
+			<label index="no_page_browser">Page browser configuration is absent. Please, make sure that you added TS template from the 'pagebrowse' extensiion &lt;strong&gt;before&lt;/strong&gt; TS template from comments extension.</label>
 		</languageKey>
 	</data>
 </T3locallang>

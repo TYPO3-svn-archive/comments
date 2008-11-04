@@ -1,7 +1,11 @@
 plugin.tx_comments_pi1 = USER
+[globalVar = GP:typo3_user_int = 1]
+plugin.tx_comments_pi1 = USER_INT
+[global]
 plugin.tx_comments_pi1 {
+	includeLibs = EXT:comments/pi1/class.tx_comments_pi1.php
 	userFunc = tx_comments_pi1->main
-	code = COMMENTS
+	code = FORM,COMMENTS
 	storagePid = {$plugin.tx_comments_pi1.storagePid}
 	externalPrefix = {$plugin.tx_comments_pi1.externalPrefix}
 	templateFile = {$plugin.tx_comments_pi1.templateFile}
@@ -85,4 +89,6 @@ plugin.tx_comments_pi1 {
 	# some extensions may use url parameter other than showUid to show single record. Mapping here shows table to parameter mapping
 	# Note: do not use { } syntax because other plugins may add entries here and they should not be overriden!
 	showUidMap.tx_ttnews = tt_news
+
+	pageBrowser < plugin.tx_pagebrowse_pi1
 }

@@ -51,7 +51,7 @@
  *  486:     function comments_getPageBrowser($page, $rpp, $rowCount)
  *  557:     function comments_getPageBrowser_getPageLink($page)
  *  574:     function form()
- *  665:     function form_updatePostVarsWithFeUserData(&$postVars)
+ *  665:     function form_updatePostVarsWithFeUserData(&$this->piVars)
  *  712:     function form_getCaptcha()
  *  747:     function form_wrapError($field)
  *  757:     function processSubmission()
@@ -142,23 +142,30 @@ class tx_comments_pi1 extends tslib_pibase {
 
 		// check if we need to go at all
 		if ($this->checkExternalUid()) {
-			switch ($this->conf['code']) {
-				case 'COMMENTS':
-					$content = $this->comments();
-					break;
-				case 'FORM':
-					if ($this->isCommentingClosed()) {
-						$content = $this->commentingClosed();
-					}
-					else {
-						// check form submission
-						$this->processSubmission();
-						$content = $this->form();
-					}
-					break;
-				default:
-					$content = $this->checkCustomFunctionCodes();
-					break;
+			if (t3lib_div::inList($this->conf['code'], 'FORM')) {
+				$commentingClosed = $this->isCommentingClosed();
+				if (!$commentingClosed) {
+					$this->processSubmission();
+				}
+			}
+			foreach (t3lib_div::trimExplode(',', $this->conf['code'], true) as $code) {
+				switch ($code) {
+					case 'COMMENTS':
+						$content .= $this->comments();
+						break;
+					case 'FORM':
+						if ($commentingClosed) {
+							$content .= $this->commentingClosed();
+						}
+						else {
+							// check form submission
+							$content .= $this->form();
+						}
+						break;
+					default:
+						$content .= $this->checkCustomFunctionCodes();
+						break;
+				}
 			}
 			$content = $this->pi_wrapInBaseClass($content);
 		}
@@ -203,10 +210,11 @@ class tx_comments_pi1 extends tslib_pibase {
 		}
 
 		$this->where_dpck = 'external_prefix=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->conf['externalPrefix'], 'tx_comments_comments') .
-					' AND external_ref=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->foreignTableName . '_' . $this->externalUid, 'tx_comments_comments') .
+					($this->conf['externalPrefix'] == 'pages' ? '' :
+					' AND external_ref=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->foreignTableName . '_' . $this->externalUid, 'tx_comments_comments')) .
 					' AND ' . (t3lib_div::testInt($this->conf['storagePid']) ?
 							'pid=' . $this->conf['storagePid'] : 'pid IN (' . $this->conf['storagePid'] . ')') .
-					 $this->cObj->enableFields('tx_comments_comments');
+					$this->cObj->enableFields('tx_comments_comments');
 		$this->where = 'approved=1 AND ' . $this->where_dpck;
 
 		if ($this->conf['advanced.']['enableRatings'] && t3lib_extMgm::isLoaded('ratings')) {
@@ -276,14 +284,7 @@ class tx_comments_pi1 extends tslib_pibase {
 			$this->conf['storagePid'] = intval($this->conf['storagePid']);
 		}
 		else {
-			$list = t3lib_div::trimExplode(',', $this->conf['storagePid'], true);
-			$newList = array();
-			foreach ($list as $value) {
-				if (t3lib_div::testInt($value)) {
-					$newList[] = $value;
-				}
-			}
-			$this->conf['storagePid'] = implode(',', $newList);
+			$this->conf['storagePid'] = $GLOBALS['TYPO3_DB']->cleanIntList($this->conf['storagePid']);
 		}
 		// If storage pid is not set, use current page
 		if ($this->conf['storagePid'] == '') {
@@ -351,9 +352,9 @@ class tx_comments_pi1 extends tslib_pibase {
 	 */
 	function comments() {
 		// Find starting record
-		$page = max(1, intval($this->piVars['page']));
+		$page = max(0, intval($this->piVars['page']));
 		$rpp = intval($this->conf['advanced.']['commentsPerPage']);
-		$start = $rpp*($page - 1);
+		$start = $rpp*$page;
 
 		// Get records
 		$sorting = 'crdate';
@@ -365,18 +366,31 @@ class tx_comments_pi1 extends tslib_pibase {
 
 		$subParts = array(
 			'###SINGLE_COMMENT###' => $this->comments_getComments($rows),
-			'###PAGE_BROWSER###' => $this->comments_getPageBrowser($page, $rpp, count($rows)),
 			'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
 			'###UID###' => $this->externalUid,
 		);
-		$markers = array();
+
+		// Fetch template
+		$template = $this->cObj->getSubpart($this->templateCode, '###COMMENT_LIST###');
+
+		if ($this->cObj->getSubpart($template, '###PAGE_BROWSER###') != '') {
+			// Old template have page browser as subpart. We replace that completely
+			$subParts['###PAGE_BROWSER###'] = $this->comments_getPageBrowser($rpp);
+			$markers = array();
+		}
+		else {
+			// New template have only a marker
+			$markers = array(
+				'###PAGE_BROWSER###' => $this->comments_getPageBrowser($rpp),
+			);
+		}
 
 		// Call hook for custom markers
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['comments'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['comments'] as $userFunc) {
 				$params = array(
 					'pObj' => &$this,
-					'template' => $template,
+					'template' => $this->templateCode,
 					'markers' => $subParts,
 					'plainMarkers' => $markers,
 				);
@@ -385,9 +399,6 @@ class tx_comments_pi1 extends tslib_pibase {
 				}
 			}
 		}
-
-		// Fetch template
-		$template = $this->cObj->getSubpart($this->templateCode, '###COMMENT_LIST###');
 
 		// Merge
 		return $this->substituteMarkersAndSubparts($template, $markers, $subParts);
@@ -478,92 +489,31 @@ class tx_comments_pi1 extends tslib_pibase {
 	/**
 	 * Creates a page browser
 	 *
-	 * @param	int		$page	Page numer
 	 * @param	int		$rpp	Record per page
 	 * @param	int		$rowCount	Numer of rown on the current page
 	 * @return	string		Generated HTML
 	 */
-	function comments_getPageBrowser($page, $rpp, $rowCount) {
-		$haveNext = $haveLast = false;
-		if ($rowCount == $rpp) {
-			// Possibly next page
-			list($info) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('(COUNT(*)-' . ($page*$rpp) . ') AS t',
+	function comments_getPageBrowser($rpp) {
+		list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS counter',
 					'tx_comments_comments', $this->where);
-			$haveLast = ($info['t'] > $rpp);
-			$haveNext = ($info['t'] > 0);
-			$lastPage = $page + intval($info['t']/$rpp) + (($info['t'] % $rpp) ? 1 : 0);
-		}
-		$haveFirst = ($page > 2);
-		$havePrev = ($page > 1);
-
-		$sectionArray = array();
-
-		$template = $this->cObj->getSubpart($this->templateCode, '###PAGE_BROWSER###');
-
-		if (!$havePrev && !$haveNext) {
-			return '';
-		}
-
-		if ($haveFirst) {
-			$subTemplate = $this->cObj->getSubpart($template, '###LINK_FIRST_WRAP###');
-			$sectionArray['###LINK_FIRST_WRAP###'] = $this->cObj->substituteMarkerArray($subTemplate, array(
-								'###LINK_FIRST###' => $this->comments_getPageBrowser_getPageLink(1),
-								'###TEXT_FIRST###' => $this->pi_getLL('pi1_template.first'),
-							));
+		$numberOfPages = intval($row['counter']/$rpp) + (($row['counter'] % $rpp) == 0 ? 0 : 1);
+		$pageBrowserKind = $this->conf['pageBrowser'];
+		$pageBrowserConfig = $this->conf['pageBrowser.'];
+		if (!$pageBrowserKind || !is_array($pageBrowserConfig)) {
+			$result = $this->pi_getLL('no_page_browser');
 		}
 		else {
-			$sectionArray['###LINK_FIRST_WRAP###'] = '';
+			$pageBrowserConfig += array(
+				'pageParameterName' => $this->prefixId . '|page',
+				'numberOfPages' => $numberOfPages,
+			);
+			// Get page browser
+			$cObj = t3lib_div::makeInstance('tslib_cObj');
+			/* @var $cObj tslib_cObj */
+			$cObj->start(array(), '');
+			$result = $cObj->cObjGetSingle($pageBrowserKind, $pageBrowserConfig);
 		}
-		if ($havePrev) {
-			$subTemplate = $this->cObj->getSubpart($template, '###LINK_PREV_WRAP###');
-			$sectionArray['###LINK_PREV_WRAP###'] = $this->cObj->substituteMarkerArray($subTemplate, array(
-								'###LINK_PREV###' => $this->comments_getPageBrowser_getPageLink($page - 1),
-								'###TEXT_PREVIOUS###' => $this->pi_getLL('pi1_template.previous'),
-							));
-		}
-		else {
-			$sectionArray['###LINK_PREV_WRAP###'] = '';
-		}
-		if ($haveNext) {
-			$subTemplate = $this->cObj->getSubpart($template, '###LINK_NEXT_WRAP###');
-			$sectionArray['###LINK_NEXT_WRAP###'] = $this->cObj->substituteMarkerArray($subTemplate, array(
-								'###LINK_NEXT###' => $this->comments_getPageBrowser_getPageLink($page + 1),
-								'###TEXT_NEXT###' => $this->pi_getLL('pi1_template.next'),
-							));
-		}
-		else {
-			$sectionArray['###LINK_NEXT_WRAP###'] = '';
-		}
-		if ($haveLast) {
-			$subTemplate = $this->cObj->getSubpart($template, '###LINK_LAST_WRAP###');
-			$sectionArray['###LINK_LAST_WRAP###'] = $this->cObj->substituteMarkerArray($subTemplate, array(
-								'###LINK_LAST###' => $this->comments_getPageBrowser_getPageLink($lastPage),
-								'###TEXT_LAST###' => $this->pi_getLL('pi1_template.last'),
-							));
-		}
-		else {
-			$sectionArray['###LINK_LAST_WRAP###'] = '';
-		}
-
-		return $this->substituteMarkersAndSubparts($template, array('###CUR_PAGE###' => $page), $sectionArray);
-	}
-
-	/**
-	 * Generates page link. Keeps all current URL parameters except for cHash and tx_comments_pi1[page].
-	 *
-	 * @param	int		$page	Page number starting from 1
-	 * @return	string		Generated link
-	 */
-	function comments_getPageBrowser_getPageLink($page) {
-		return $this->cObj->typoLink_URL(array(
-			'parameter' => $GLOBALS['TSFE']->id,
-			'addQueryString' => 1,
-			'addQueryString.' => array(
-				'exclude' => $this->prefixId . '[page],cHash,no_cache',
-			),
-			'additionalParams' => '&' . $this->prefixId . '[page]=' . $page,
-			'useCacheHash' => true,
-		));
+		return $result;
 	}
 
 	/**
@@ -573,41 +523,29 @@ class tx_comments_pi1 extends tslib_pibase {
 	 */
 	function form() {
 		$template = $this->cObj->getSubpart($this->templateCode, '###COMMENT_FORM###');
-		$actionLink = $this->cObj->typoLink_URL(array(
-			'parameter' => $GLOBALS['TSFE']->id,
-			'addQueryString' => 1,
-			'addQueryString.' => array(
-				'exclude' => 'cHash,no_cache',
-			),
-			'additionalParams' => '&no_cache=1',
-			'useCacheHash' => false,
-		));
+		$actionLink = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
 		$requiredFields = t3lib_div::trimExplode(',', $this->conf['requiredFields'], true);
 		$requiredMark = $this->cObj->getSubpart($this->templateCode, '##REQUIRED_FIELD###');
-		// We specially use _POST here instead of piVars. Do not change!
-		$postVars = ($GLOBALS['TSFE']->no_cache ? t3lib_div::_POST($this->prefixId) : array());
-		if (count($this->formValidationErrors) == 0) {
-			// All fine, clear content field
-			$postVars['content'] = '';
-		}
+		$content = (count($this->formValidationErrors) == 0 ? '' : $this->piVars['content']);
 		if ($this->conf['advanced.']['preFillFormFromFeUser']) {
-			$this->form_updatePostVarsWithFeUserData($postVars);
+			$this->form_updatePostVarsWithFeUserData();
 		}
 		$itemUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
+		$userIntMarker = '<input type="hidden" name="typo3_user_int" value="1" />';
 		$markers = array(
 			'###CURRENT_URL###' => htmlspecialchars($itemUrl),
 			'###CURRENT_URL_CHK###' => md5($itemUrl . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']),
 			'###TOP_MESSAGE###' => $this->formTopMessage,
 			'###ACTION_URL###' => htmlspecialchars($actionLink),	// this must go before ##ACTION_URL### for proper replacement!
 			'##ACTION_URL###' => htmlspecialchars($actionLink),	// compatibility with previous versions
-			'###FIRSTNAME###' => htmlspecialchars($postVars['firstname']),
-			'###LASTNAME###' => htmlspecialchars($postVars['lastname']),
-			'###EMAIL###' => htmlspecialchars($postVars['email']),
-			'###LOCATION###' => htmlspecialchars($postVars['location']),
-			'###HOMEPAGE###' => htmlspecialchars($postVars['homepage']),
+			'###FIRSTNAME###' => htmlspecialchars($this->piVars['firstname']),
+			'###LASTNAME###' => htmlspecialchars($this->piVars['lastname']),
+			'###EMAIL###' => htmlspecialchars($this->piVars['email']),
+			'###LOCATION###' => htmlspecialchars($this->piVars['location']),
+			'###HOMEPAGE###' => htmlspecialchars($this->piVars['homepage']),
 			'###CAPTCHA###' => $this->form_getCaptcha(),
-			'###CONTENT###' => htmlspecialchars($postVars['content']),
-			'###JS_USER_DATA###' => $postVars['submit'] ? '' : '<script type="text/javascript">tx_comments_pi1_setUserData()</script>',
+			'###CONTENT###' => htmlspecialchars($content),
+			'###JS_USER_DATA###' => $userIntMarker . ($this->piVars['submit'] ? '' : '<script type="text/javascript">tx_comments_pi1_setUserData()</script>'),
 
 			'###ERROR_FIRSTNAME###' => $this->form_wrapError('firstname'),
 			'###ERROR_LASTNAME###' => $this->form_wrapError('lastname'),
@@ -657,12 +595,11 @@ class tx_comments_pi1 extends tslib_pibase {
 
 
 	/**
-	 * Examines $postVars and fills missing fields with FE user data.
+	 * Examines $this->piVars and fills missing fields with FE user data.
 	 *
-	 * @param	array		$postVars	Data as submitted by form (can be empty array). Passed by reference and modified directly.
 	 * @return	void
 	 */
-	function form_updatePostVarsWithFeUserData(&$postVars) {
+	function form_updatePostVarsWithFeUserData() {
 		global $TSFE;
 
 		if ($TSFE->fe_user->user['uid']) {
@@ -671,23 +608,23 @@ class tx_comments_pi1 extends tslib_pibase {
 			// in the record. This is intentional because if sr_feuser_register is removed,
 			// columns will remain in database but may contain outdated values. So we use
 			// these values only if we can assume they are updatable.
-			if (!$postVars['firstname']) {
+			if (!$this->piVars['firstname']) {
 				if ($hasExtendedData && $TSFE->fe_user->user['first_name']) {
-					$postVars['firstname'] = $TSFE->fe_user->user['first_name'];
+					$this->piVars['firstname'] = $TSFE->fe_user->user['first_name'];
 				}
 				else {
-					$postVars['firstname'] = $TSFE->fe_user->user['name'];
+					$this->piVars['firstname'] = $TSFE->fe_user->user['name'];
 				}
 			}
-			if (!$postVars['lastname']) {
+			if (!$this->piVars['lastname']) {
 				if ($hasExtendedData && $TSFE->fe_user->user['last_name']) {
-					$postVars['lastname'] = $TSFE->fe_user->user['last_name'];
+					$this->piVars['lastname'] = $TSFE->fe_user->user['last_name'];
 				}
 			}
-			if (!$postVars['email']) {
-				$postVars['email'] = $TSFE->fe_user->user['email'];
+			if (!$this->piVars['email']) {
+				$this->piVars['email'] = $TSFE->fe_user->user['email'];
 			}
-			if (!$postVars['location']) {
+			if (!$this->piVars['location']) {
 				$data = array();
 				if ($TSFE->fe_user->user['city']) {
 					$data[] = $TSFE->fe_user->user['city'];
@@ -695,11 +632,11 @@ class tx_comments_pi1 extends tslib_pibase {
 				if ($TSFE->fe_user->user['country']) {
 					$data[] = $TSFE->fe_user->user['country'];
 				}
-				$postVars['location'] = implode(', ', $data);
+				$this->piVars['location'] = implode(', ', $data);
 				unset($data);
 			}
-			if (!$postVars['homepage']) {
-				$postVars['homepage'] = $TSFE->fe_user->user['www'];
+			if (!$this->piVars['homepage']) {
+				$this->piVars['homepage'] = $TSFE->fe_user->user['www'];
 			}
 		}
 	}
@@ -877,17 +814,29 @@ class tx_comments_pi1 extends tslib_pibase {
 							$tce->clear_cacheCmd($pid);
 						}
 
-						// Go to last page using redirect
-						$rpp = intval($this->conf['advanced.']['commentsPerPage']);
-						list($info) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS t',
-								'tx_comments_comments', $this->where);
+						// Go to first/last page using redirect
+						$queryParams = $_GET;
+						foreach (array('no_cache', 'cHash') as $var) {
+							unset($queryParams[$var]);
+						}
+						if ($this->conf['advanced.']['reverseSorting']) {
+							unset($queryParams[$this->prefixId]['page']);
+						}
+						else {
+							$rpp = intval($this->conf['advanced.']['commentsPerPage']);
+							list($info) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS t',
+									'tx_comments_comments', $this->where);
+							$page = intval($info['t']/$rpp) + (($info['t'] % $rpp) ? 1 : 0) - 1;
+							if ($page > 0) {
+								$queryParams[$this->prefixId]['page'] = $page;
+							}
+							else {
+								unset($queryParams[$this->prefixId]['page']);
+							}
+						}
 						$redirectLink = $this->cObj->typoLink_URL(array(
 							'parameter' => $GLOBALS['TSFE']->id,
-							'addQueryString' => 1,
-							'addQueryString.' => array(
-								'exclude' => $this->prefixId . '[page],cHash,no_cache',
-							),
-							'additionalParams' => '&no_cache=1&' . $this->prefixId . '[page]=' . (intval($info['t']/$rpp) + (($info['t'] % $rpp) ? 1 : 0)),
+							'additionalParams' => t3lib_div::implodeArrayForUrl('', $queryParams),
 							'useCacheHash' => true,
 						));
 						@ob_end_clean();

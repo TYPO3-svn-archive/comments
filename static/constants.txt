@@ -7,7 +7,7 @@ plugin.tx_comments_pi1 {
 	externalPrefix = tx_ttnews
 
 	# cat=plugin.comments: Basic; type=string; label=Template file:Template file for commenting system
-	templateFile = EXT:comments/res/pi1_template.html
+	templateFile = EXT:comments/resources/template/pi1_template.html
 
 	# cat=plugin.comments: Basic; type=int+; label=Comments per page:Number of comments per page
 	commentsPerPage = 10

@@ -1,3 +1,7 @@
+2008-11-19	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Better message about page browser missing
+
 2008-09-02	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Changed minimum PHP version to 5.2.0 because Debian still does not have 5.2.1

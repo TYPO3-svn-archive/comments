@@ -64,7 +64,7 @@
 			<label index="pi1_template.enter_code">Enter the code:</label>
 			<label index="pi1_template.content">Content:</label>
 			<label index="text_no_comments">No comments</label>
-			<label index="no_page_browser">Page browser configuration is absent. Please, make sure that you added TS template from the 'pagebrowse' extensiion &lt;strong&gt;before&lt;/strong&gt; TS template from comments extension.</label>
+			<label index="no_page_browser">&lt;strong&gt;Warning:&lt;/strong&gt; Page browser configuration is absent. Please, make sure that you added TS template from the 'pagebrowse' extension &lt;strong&gt;before&lt;/strong&gt; TS template from the 'comments' extension. See the example below.</label>
 		</languageKey>
 	</data>
 </T3locallang>

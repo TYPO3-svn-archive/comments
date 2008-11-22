@@ -499,8 +499,11 @@ class tx_comments_pi1 extends tslib_pibase {
 		$numberOfPages = intval($row['counter']/$rpp) + (($row['counter'] % $rpp) == 0 ? 0 : 1);
 		$pageBrowserKind = $this->conf['pageBrowser'];
 		$pageBrowserConfig = $this->conf['pageBrowser.'];
-		if (!$pageBrowserKind || !is_array($pageBrowserConfig)) {
-			$result = $this->pi_getLL('no_page_browser');
+		if (!$pageBrowserKind || !is_array($pageBrowserConfig) || !$pageBrowserConfig['templateFile']) {
+			$result = $this->pi_getLL('no_page_browser') . '<br />' .
+				'<img src="' . t3lib_extMgm::siteRelPath('comments') .
+					'res/pagebrowser-correct.png" alt="" ' .
+					'style="border: 1px solid black; margin: 5px 20px;" />';
 		}
 		else {
 			$pageBrowserConfig += array(

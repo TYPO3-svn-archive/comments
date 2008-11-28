@@ -366,6 +366,8 @@ class tx_comments_pi1 extends tslib_pibase {
 		$subParts = array(
 			'###SINGLE_COMMENT###' => $this->comments_getComments($rows),
 			'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
+		);
+		$markers = array(
 			'###UID###' => $this->externalUid,
 		);
 
@@ -375,13 +377,10 @@ class tx_comments_pi1 extends tslib_pibase {
 		if ($this->cObj->getSubpart($template, '###PAGE_BROWSER###') != '') {
 			// Old template have page browser as subpart. We replace that completely
 			$subParts['###PAGE_BROWSER###'] = $this->comments_getPageBrowser($rpp);
-			$markers = array();
 		}
 		else {
 			// New template have only a marker
-			$markers = array(
-				'###PAGE_BROWSER###' => $this->comments_getPageBrowser($rpp),
-			);
+			$markers['###PAGE_BROWSER###'] = $this->comments_getPageBrowser($rpp);
 		}
 
 		// Call hook for custom markers

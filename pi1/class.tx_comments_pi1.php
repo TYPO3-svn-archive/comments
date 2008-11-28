@@ -1130,7 +1130,7 @@ class tx_comments_pi1 extends tslib_pibase {
 	 */
 	function createLinks($text) {
 		return $this->conf['advanced.']['autoConvertLinks'] ?
-			preg_replace('/((http:\/\/)?((?(2)([^\s]+)|(www\.[^\s]+))))/', '<a href="http://\3" rel="nofollow" class="tx-comments-external-autolink">\1</a>', $text) :
+			preg_replace('/((https?:\/\/)?((?(2)([^\s]+)|(www\.[^\s]+))))/', '<a href="http://\3" rel="nofollow" class="tx-comments-external-autolink">\1</a>', $text) :
 			$text;
 	}
 

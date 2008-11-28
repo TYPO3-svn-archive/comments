@@ -210,8 +210,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		}
 
 		$this->where_dpck = 'external_prefix=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->conf['externalPrefix'], 'tx_comments_comments') .
-					($this->conf['externalPrefix'] == 'pages' ? '' :
-					' AND external_ref=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->foreignTableName . '_' . $this->externalUid, 'tx_comments_comments')) .
+					' AND external_ref=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->foreignTableName . '_' . $this->externalUid, 'tx_comments_comments') .
 					' AND ' . (t3lib_div::testInt($this->conf['storagePid']) ?
 							'pid=' . $this->conf['storagePid'] : 'pid IN (' . $this->conf['storagePid'] . ')') .
 					$this->cObj->enableFields('tx_comments_comments');

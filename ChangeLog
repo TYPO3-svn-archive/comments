@@ -3,6 +3,7 @@
 	* Fixed bug #9760: Multiple pages with comment form - one storage folder
 	* Fixed bug #9635: ###UID### is not replaced in tx_comments template
 	* Fixed bug #9456: https Links won'be detected
+	* Released version 1.5.1
 
 2008-11-19	Dmitry Dulepov	<dmitry@typo3.org>
 

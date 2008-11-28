@@ -210,8 +210,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		}
 
 		$this->where_dpck = 'external_prefix=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->conf['externalPrefix'], 'tx_comments_comments') .
-					($this->conf['externalPrefix'] == 'pages' ? '' :
-					' AND external_ref=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->foreignTableName . '_' . $this->externalUid, 'tx_comments_comments')) .
+					' AND external_ref=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->foreignTableName . '_' . $this->externalUid, 'tx_comments_comments') .
 					' AND ' . (t3lib_div::testInt($this->conf['storagePid']) ?
 							'pid=' . $this->conf['storagePid'] : 'pid IN (' . $this->conf['storagePid'] . ')') .
 					$this->cObj->enableFields('tx_comments_comments');
@@ -367,6 +366,8 @@ class tx_comments_pi1 extends tslib_pibase {
 		$subParts = array(
 			'###SINGLE_COMMENT###' => $this->comments_getComments($rows),
 			'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
+		);
+		$markers = array(
 			'###UID###' => $this->externalUid,
 		);
 
@@ -376,13 +377,10 @@ class tx_comments_pi1 extends tslib_pibase {
 		if ($this->cObj->getSubpart($template, '###PAGE_BROWSER###') != '') {
 			// Old template have page browser as subpart. We replace that completely
 			$subParts['###PAGE_BROWSER###'] = $this->comments_getPageBrowser($rpp);
-			$markers = array();
 		}
 		else {
 			// New template have only a marker
-			$markers = array(
-				'###PAGE_BROWSER###' => $this->comments_getPageBrowser($rpp),
-			);
+			$markers['###PAGE_BROWSER###'] = $this->comments_getPageBrowser($rpp);
 		}
 
 		// Call hook for custom markers
@@ -499,8 +497,11 @@ class tx_comments_pi1 extends tslib_pibase {
 		$numberOfPages = intval($row['counter']/$rpp) + (($row['counter'] % $rpp) == 0 ? 0 : 1);
 		$pageBrowserKind = $this->conf['pageBrowser'];
 		$pageBrowserConfig = $this->conf['pageBrowser.'];
-		if (!$pageBrowserKind || !is_array($pageBrowserConfig)) {
-			$result = $this->pi_getLL('no_page_browser');
+		if (!$pageBrowserKind || !is_array($pageBrowserConfig) || !$pageBrowserConfig['templateFile']) {
+			$result = $this->pi_getLL('no_page_browser') . '<br />' .
+				'<img src="' . t3lib_extMgm::siteRelPath('comments') .
+					'res/pagebrowser-correct.png" alt="" ' .
+					'style="border: 1px solid black; margin: 5px 20px;" />';
 		}
 		else {
 			$pageBrowserConfig += array(
@@ -1129,7 +1130,7 @@ class tx_comments_pi1 extends tslib_pibase {
 	 */
 	function createLinks($text) {
 		return $this->conf['advanced.']['autoConvertLinks'] ?
-			preg_replace('/((http:\/\/)?((?(2)([^\s]+)|(www\.[^\s]+))))/', '<a href="http://\3" rel="nofollow" class="tx-comments-external-autolink">\1</a>', $text) :
+			preg_replace('/((https?:\/\/)?((?(2)([^\s]+)|(www\.[^\s]+))))/', '<a href="http://\3" rel="nofollow" class="tx-comments-external-autolink">\1</a>', $text) :
 			$text;
 	}
 

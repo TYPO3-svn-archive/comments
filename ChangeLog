@@ -1,3 +1,7 @@
+2008-12-13  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Removed non-standard autocomplete attribute from template
+
 2008-11-28  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #9760: Multiple pages with comment form - one storage folder

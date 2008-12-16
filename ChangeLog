@@ -1,3 +1,7 @@
+2008-12-16  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Changed cache clearing in eID to be compatible with TYPO3 4.3
+
 2008-12-13  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Removed non-standard autocomplete attribute from template

@@ -3,6 +3,7 @@
 	* Changed cache clearing in eID to be compatible with TYPO3 4.3
 	* Removed old styles
 	* Changed default order of codes to show form after the comments
+	* Added clearCache to eID links, reordered check for storagePid
 
 2008-12-13  Dmitry Dulepov  <dmitry@typo3.org>
 

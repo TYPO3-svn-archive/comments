@@ -279,15 +279,15 @@ class tx_comments_pi1 extends tslib_pibase {
 
 		// storagePid can be either single pid or list of pids. Validate and exclude bad elements.
 		$this->conf['storagePid'] = trim($this->conf['storagePid']);
-		if (t3lib_div::testInt($this->conf['storagePid'])) {
+		// If storage pid is not set, use current page
+		if ($this->conf['storagePid'] == '') {
+			$this->conf['storagePid'] = $GLOBALS['TSFE']->id;
+		}
+		elseif (t3lib_div::testInt($this->conf['storagePid'])) {
 			$this->conf['storagePid'] = intval($this->conf['storagePid']);
 		}
 		else {
 			$this->conf['storagePid'] = $GLOBALS['TYPO3_DB']->cleanIntList($this->conf['storagePid']);
-		}
-		// If storage pid is not set, use current page
-		if ($this->conf['storagePid'] == '') {
-			$this->conf['storagePid'] = $GLOBALS['TSFE']->id;
 		}
 
 		// Set date
@@ -964,6 +964,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		if (t3lib_div::validEmail($toEmail) && t3lib_div::validEmail($fromEmail)) {
 			$template = $this->cObj->fileResource($this->conf['spamProtect.']['emailTemplate']);
 			$check = md5($uid . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+			$clearCache = '&clearCache=' . $GLOBALS['TSFE']->id;
 			$markers = array(
 				'###URL###' => t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),
 				'###POINTS###' => $points,
@@ -974,9 +975,9 @@ class tx_comments_pi1 extends tslib_pibase {
 				'###HOMEPAGE###' => $this->piVars['homepage'],
 				'###CONTENT###' => $this->piVars['content'],
 				'###REMOTE_ADDR###' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
-				'###APPROVE_LINK###' => t3lib_div::locationHeaderUrl('index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=approve'),
-				'###DELETE_LINK###' => t3lib_div::locationHeaderUrl('index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=delete'),
-				'###KILL_LINK###' => t3lib_div::locationHeaderUrl('index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=kill'),
+				'###APPROVE_LINK###' => t3lib_div::locationHeaderUrl('index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=approve' . $clearCache),
+				'###DELETE_LINK###' => t3lib_div::locationHeaderUrl('index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=delete' . $clearCache),
+				'###KILL_LINK###' => t3lib_div::locationHeaderUrl('index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=kill' . $clearCache),
 				'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
 			);
 			// Call hook for custom markers

@@ -5,7 +5,7 @@ plugin.tx_comments_pi1 = USER_INT
 plugin.tx_comments_pi1 {
 	includeLibs = EXT:comments/pi1/class.tx_comments_pi1.php
 	userFunc = tx_comments_pi1->main
-	code = FORM,COMMENTS
+	code = COMMENTS,FORM
 	storagePid = {$plugin.tx_comments_pi1.storagePid}
 	externalPrefix = {$plugin.tx_comments_pi1.externalPrefix}
 	templateFile = {$plugin.tx_comments_pi1.templateFile}

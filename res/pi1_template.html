@@ -1,4 +1,5 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <!-- ###HEADER_ADDITIONS### begin
 		This section will be appended to html headers of the output. Allows you to include CSS, JS, etc
@@ -6,13 +7,13 @@
 			SITE_REL_PATH	- path to file relative to web root, ending with slash
 -->
 <link rel="stylesheet" href="###SITE_REL_PATH###res/pi1.css" />
-<script type="text/javascript" src="###SITE_REL_PATH###res/pi1.js" ></script>
+<script type="text/javascript" src="###SITE_REL_PATH###res/pi1.js"></script>
 <!-- ###HEADER_ADDITIONS### end -->
 </head>
 <body>
 
 <h4>Comment listing subpart</h4>
-<hr size="1" />
+<hr />
 <!-- ###COMMENT_LIST### begin
 	This subpart formats comments
 -->
@@ -33,7 +34,7 @@
 		-->
 		<div class="tx-comments-comment###ALTERNATE###">
 			<span class="tx-comments-comment-name"><a href="###EMAIL###">###FIRSTNAME###</a></span>, <span class="tx-comments-comment-date">###COMMENT_DATE###</span>:
-			<hr size="1" />
+			<hr />
 			<div class="tx-comments-comment-content">
 				###COMMENT_CONTENT###
 			</div>
@@ -54,16 +55,16 @@
 	###PAGE_BROWSER###
 </div>
 <!-- ###COMMENT_LIST### end -->
-<hr size="1" />
+<hr />
 
 <h4>No comments (replaces ###SINGLE_COMMENT###)</h4>
 <!-- ###NO_COMMENTS### begin -->
 ###TEXT_NO_COMMENTS###
 <!-- ###NO_COMMENTS### end -->
-<hr size="1" />
+<hr />
 
 <h4>Comment form subpart</h4>
-<hr size="1" />
+<hr />
 <!-- ###COMMENT_FORM### begin
 	This subpart formats comment form
 -->
@@ -71,46 +72,48 @@
 	<h4>###TEXT_ADD_COMMENT###</h4>
 	###TOP_MESSAGE###
 	<form action="###ACTION_URL###" method="post">
-		<input type="hidden" name="tx_comments_pi1[itemurl]" value="###CURRENT_URL###" />
-		<input type="hidden" name="tx_comments_pi1[itemurlchk]" value="###CURRENT_URL_CHK###" />
-		<p>
-			<span class="tx-comments-required-mark">*</span> ###TEXT_REQUIRED_HINT###
-		</p>
-		<label for="tx_comments_pi1_firstname">###TEXT_FIRST_NAME###</label>
-		<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[firstname]" id="tx_comments_pi1_firstname" value="###FIRSTNAME###" /> ###REQUIRED_FIRSTNAME### ###ERROR_FIRSTNAME###<br />
-		<label for="tx_comments_pi1_lastname">###TEXT_LAST_NAME###</label>
-		<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[lastname]" id="tx_comments_pi1_lastname" value="###LASTNAME###" /> ###REQUIRED_LASTNAME### ###ERROR_LASTNAME###<br />
-		<label for="tx_comments_pi1_email">###TEXT_EMAIL###</label>
-		<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[email]" id="tx_comments_pi1_email" value="###EMAIL###" /> ###REQUIRED_EMAIL### ###ERROR_EMAIL###<br />
-		<label for="tx_comments_pi1_homepage">###TEXT_WEB_SITE###</label>
-		<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[homepage]" id="tx_comments_pi1_homepage" value="###HOMEPAGE###" /> ###REQUIRED_HOMEPAGE### ###ERROR_HOMEPAGE###<br />
-		<label for="tx_comments_pi1_location">###TEXT_LOCATION###</label>
-		<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[location]" id="tx_comments_pi1_location" value="###LOCATION###" /> ###REQUIRED_LOCATION### ###ERROR_LOCATION###<br />
-		###CAPTCHA###
-		<label for="tx_comments_pi1_content">###TEXT_CONTENT###</label>
-		<textarea cols="32" rows="7" name="tx_comments_pi1[content]" id="tx_comments_pi1_content">###CONTENT###</textarea> ###REQUIRED_CONTENT### ###ERROR_CONTENT###<br />
-		<label for="tx_comments_pi1_submit">&nbsp;</label>
-		<input type="submit" name="tx_comments_pi1[submit]" id="tx_comments_pi1_submit" value="###TEXT_SUBMIT###" />
-		<input type="reset" value="###TEXT_RESET###" />
-		###JS_USER_DATA###
+		<fieldset>
+			<input type="hidden" name="tx_comments_pi1[itemurl]" value="###CURRENT_URL###" />
+			<input type="hidden" name="tx_comments_pi1[itemurlchk]" value="###CURRENT_URL_CHK###" />
+			<p>
+				<span class="tx-comments-required-mark">*</span> ###TEXT_REQUIRED_HINT###
+			</p>
+			<label for="tx_comments_pi1_firstname">###TEXT_FIRST_NAME###</label>
+			<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[firstname]" id="tx_comments_pi1_firstname" value="###FIRSTNAME###" /> ###REQUIRED_FIRSTNAME### ###ERROR_FIRSTNAME###<br />
+			<label for="tx_comments_pi1_lastname">###TEXT_LAST_NAME###</label>
+			<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[lastname]" id="tx_comments_pi1_lastname" value="###LASTNAME###" /> ###REQUIRED_LASTNAME### ###ERROR_LASTNAME###<br />
+			<label for="tx_comments_pi1_email">###TEXT_EMAIL###</label>
+			<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[email]" id="tx_comments_pi1_email" value="###EMAIL###" /> ###REQUIRED_EMAIL### ###ERROR_EMAIL###<br />
+			<label for="tx_comments_pi1_homepage">###TEXT_WEB_SITE###</label>
+			<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[homepage]" id="tx_comments_pi1_homepage" value="###HOMEPAGE###" /> ###REQUIRED_HOMEPAGE### ###ERROR_HOMEPAGE###<br />
+			<label for="tx_comments_pi1_location">###TEXT_LOCATION###</label>
+			<input class="tx-comments-comment-input" type="text" size="35" name="tx_comments_pi1[location]" id="tx_comments_pi1_location" value="###LOCATION###" /> ###REQUIRED_LOCATION### ###ERROR_LOCATION###<br />
+			###CAPTCHA###
+			<label for="tx_comments_pi1_content">###TEXT_CONTENT###</label>
+			<textarea cols="32" rows="7" name="tx_comments_pi1[content]" id="tx_comments_pi1_content">###CONTENT###</textarea> ###REQUIRED_CONTENT### ###ERROR_CONTENT###<br />
+			<label for="tx_comments_pi1_submit">&nbsp;</label>
+			<input type="submit" name="tx_comments_pi1[submit]" id="tx_comments_pi1_submit" value="###TEXT_SUBMIT###" />
+			<input type="reset" value="###TEXT_RESET###" />
+			###JS_USER_DATA###
+		</fieldset>
 	</form>
 </div>
 <!-- ###COMMENT_FORM### end -->
 
-<hr size="1" />
+<hr />
 
 <h4>Required field mark</h4>
-<hr size="1" />
+<hr />
 <!-- ###REQUIRED_FIELD### begin
 	This subpart formats mark for required field
 -->
 <span class="tx-comments-required-mark">*</span>
 <!-- ###REQUIRED_FIELD### end -->
 
-<hr size="1" />
+<hr />
 
 <h4>Form top message block</h4>
-<hr size="1" />
+<hr />
 
 <!-- ###FORM_TOP_MESSAGE### begin
 	This subpart formats mark for required field

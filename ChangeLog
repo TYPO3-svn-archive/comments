@@ -1,3 +1,7 @@
+2009-01-05  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Template is now valid "XMTML 1.0 strict"
+
 2008-12-16  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Changed cache clearing in eID to be compatible with TYPO3 4.3

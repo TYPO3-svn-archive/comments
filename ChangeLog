@@ -2,6 +2,7 @@
 
 	* Merge with 1_x_x branch
 	* Added base model and implemented "save" method
+	* Added base data store and comments data store
 
 2009-01-07  Dmitry Dulepov  <dmitry@typo3.org>
 

@@ -1,0 +1,94 @@
+plugin.tx_comments_pi1 = USER
+[globalVar = GP:typo3_user_int = 1]
+plugin.tx_comments_pi1 = USER_INT
+[global]
+plugin.tx_comments_pi1 {
+	includeLibs = EXT:comments/pi1/class.tx_comments_pi1.php
+	userFunc = tx_comments_pi1->main
+	code = FORM,COMMENTS
+	storagePid = {$plugin.tx_comments_pi1.storagePid}
+	externalPrefix = {$plugin.tx_comments_pi1.externalPrefix}
+	templateFile = {$plugin.tx_comments_pi1.templateFile}
+	additionalClearCachePages =
+
+	advanced {
+		# Number of comments per page
+		commentsPerPage = {$plugin.tx_comments_pi1.commentsPerPage}
+
+		# Comments can be automatically closed after X months, days or hours. Specify integer number followed by m, d or h. Empty means "no limit"
+		closeCommentsAfter =
+
+		# Date format specification. See PHP date() function for details. If empty, uses TYPO3 date format defined in Install tool
+		dateFormat = {$plugin.tx_comments_pi1.dateFormat}
+
+		# Date format mode. Can be either "date" or "strftime" (without quuotes). Means what PHP function to use for date formatting
+		dateFormatMode = {$plugin.tx_comments_pi1.dateFormatMode}
+
+		# Should FE user data be set to form automatically?
+		preFillFormFromFeUser = {$plugin.tx_comments_pi1.preFillFormFromFeUser}
+
+		# Should ratings be used?
+		enableRatings = {$plugin.tx_comments_pi1.enableRatings}
+
+		# Create links inside comment text automatically?
+		autoConvertLinks = {$plugin.tx_comments_pi1.autoConvertLinks}
+
+		# Enable URL log (for "List" mode)
+		enableUrlLog = 1
+
+		# If set, reverses sortng to show last comments first
+		reverseSorting = {$plugin.tx_comments_pi1.reverseSorting}
+	}
+
+	preventDuplicatePosts = 1
+
+	requiredFields = firstname,content
+
+	spamProtect {
+		requireApproval = {$plugin.tx_comments_pi1.requireApproval}
+		useCaptcha = {$plugin.tx_comments_pi1.useCaptcha}
+		checkTypicalSpam = {$plugin.tx_comments_pi1.checkTypicalSpam}
+		considerReferer = 0
+		notificationEmail = {$plugin.tx_comments_pi1.notificationEmail}
+		fromEmail = {$plugin.tx_comments_pi1.fromEmail}
+		emailTemplate = {$plugin.tx_comments_pi1.emailTemplate}
+		spamCutOffPoint = {$plugin.tx_comments_pi1.spamCutOffPoint}
+	}
+
+	# stdWrap for error message when required field is empty
+	requiredFields_errorWrap {
+		dataWrap = <span class="tx-comments-required-error">{LLL:EXT:comments/pi1/locallang.xml:error}:&#32;|</span>
+	}
+
+	# stdWrap for "First name" in the comment output
+	firstName_stdWrap =
+
+	# stdWrap for "Last name" in the comment output
+	lastName_stdWrap =
+
+	# stdWrap for "E-mail" in the comment output
+	email_stdWrap =
+
+	# stdWrap for "web site" in the comment output
+	webSite_stdWrap =
+
+	# stdWrap for "Location" in the comment output
+	location_stdWrap =
+
+	# stdWrap for "Content" in the comment output
+	content_stdWrap =
+
+	# maps pi1 to associated tables where pi1 plugin stores records
+	# Note: do not use { } syntax because other plugins may add entries here and they should not be overriden!
+	prefixToTableMap.tx_album3x_pi1 = tx_album3x_images
+	prefixToTableMap.tx_commerce_pi1 = tx_commerce_products
+	prefixToTableMap.tx_irfaq_pi1 = tx_irfaq_q
+	prefixToTableMap.tx_mininews_pi1 = tx_mininews_news
+	prefixToTableMap.tx_ttnews = tt_news
+
+	# some extensions may use url parameter other than showUid to show single record. Mapping here shows table to parameter mapping
+	# Note: do not use { } syntax because other plugins may add entries here and they should not be overriden!
+	showUidMap.tx_ttnews = tt_news
+
+	pageBrowser < plugin.tx_pagebrowse_pi1
+}

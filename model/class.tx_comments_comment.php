@@ -28,6 +28,9 @@
  * $Id$
  */
 
+if (!class_exists('tx_comments_basemodel', false)) {
+	require_once(t3lib_extMgm::extPath('comments', 'model/class.tx_comments_basemodel.php'));
+}
 
 /**
  * This class is a data record for comments.
@@ -36,69 +39,16 @@
  * @package	TYPO3
  * @subpackage	tx_comments
  */
-class tx_comments_comment {
-
-	/**
-	 * Data behind this instance
-	 *
-	 * @var	array
-	 */
-	protected $row;
-
-	/**
-	 * Changed data behind this instance
-	 *
-	 * @var	array
-	 */
-	protected $updatedRow;
+class tx_comments_comment extends tx_comments_basemodel {
 
 	/**
 	 * Creates an instance of this class
 	 *
 	 * @param	array	$row	Data row
 	 */
-	public function __construct($row = array()) {
-		$this->updatedRow = $this->row = $row;
-	}
-
-	/**
-	 * Retrieves ID of the comment record
-	 *
-	 * @return	int	ID of the record
-	 */
-	public function getId() {
-		return $this->updatedRow['id'];
-	}
-
-	/**
-	 * Sets id of the record. This function must be called only for new items!
-	 *
-	 * @param	int	$id	New id of the record
-	 * @return	void
-	 */
-	public function setId($id) {
-		if (!isset($this->updatedRow['id'])) {
-			$this->updatedRow['id'] = $id;
-		}
-	}
-
-	/**
-	 * Retrieves comment record page id
-	 *
-	 * @return	int	Page id
-	 */
-	public function getPid() {
-		return $this->updatedRow['pid'];
-	}
-
-	/**
-	 * Sets page id of the record
-	 *
-	 * @param	int	$pid	Page id of the record
-	 * @return	void
-	 */
-	public function setPid($pid) {
-		$this->updatedRow['pid'] = $pid;
+	public function __construct(array $row = array()) {
+		parent::__construct($row);
+		$this->tableName = 'tx_comments_comments';
 	}
 
 	/**

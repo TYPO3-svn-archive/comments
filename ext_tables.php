@@ -56,6 +56,7 @@ $TCA['tx_comments_urllog'] = array(
 		'crdate' => 'crdate',
 		'sortby' => 'external_ref',
 		'delete' => 'deleted',
+		'hideTable' => true,
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'icon_urllog.gif',
 	)

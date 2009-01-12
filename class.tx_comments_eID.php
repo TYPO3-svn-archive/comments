@@ -121,14 +121,16 @@ class tx_comments_eID {
 				t3lib_div::callUserFunction($userFunc, $params, $this);
 			}
 		}
-		// Clear cache. TCEmain requires $TCA for this, so we just do it ourselves.
-		$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('DISTINCT(pid)', 'tt_content', 'list_type=\'comments_pi1\' AND deleted=0 AND hidden=0');
-		$pids = array();
-		foreach ($pages as $pid) {
-			$pids[] = $pid['pid'];
+		// Clear cache
+		$pidList = t3lib_div::intExplode(',', t3lib_div::_GET('clearCache'));
+		t3lib_div::requireOnce(PATH_t3lib . 'class.t3lib_tcemain.php');
+		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		/* @var $tce t3lib_TCEmain */
+		foreach ($pidList as $pid) {
+			if ($pid != 0) {
+				$tce->clear_cacheCmd($pid);
+			}
 		}
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id IN ('.implode(',', $pids).')');
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id IN ('.implode(',', $pids).')');
 	}
 }
 

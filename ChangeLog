@@ -1,3 +1,37 @@
+2009-01-12  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Merge with 1_x_x branch
+
+2009-01-07  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Released version 1.5.2
+
+2009-01-05  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Template is now valid "XMTML 1.0 strict"
+
+2008-12-16  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Changed cache clearing in eID to be compatible with TYPO3 4.3
+	* Removed old styles
+	* Changed default order of codes to show form after the comments
+	* Added clearCache to eID links, reordered check for storagePid
+
+2008-12-13  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Removed non-standard autocomplete attribute from template
+
+2008-11-28  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #9760: Multiple pages with comment form - one storage folder
+	* Fixed bug #9635: ###UID### is not replaced in tx_comments template
+	* Fixed bug #9456: https Links won'be detected
+	* Released version 1.5.1
+
+2008-11-19	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Better message about page browser missing
+
 2008-11-04	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Initial work on comment model object

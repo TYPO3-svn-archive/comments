@@ -71,7 +71,8 @@ abstract class tx_comments_basemodel {
 	}
 
 	/**
-	 * Retrieves ID of the comment record
+	 * Retrieves ID of the record. This function does not have a corresponding
+	 * "set" method!
 	 *
 	 * @return	int	ID of the record
 	 */

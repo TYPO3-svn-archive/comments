@@ -28,6 +28,13 @@
  * $Id: $
  */
 
+require_once(t3lib_extMgm::extPath('lang', 'lang.php'));
+
+$tx_comments_path = t3lib_extMgm::extPath('comments');
+require_once($tx_comments_path . 'view/class.tx_comments_error_view.php');
+require_once($tx_comments_path . 'view/class.tx_comments_form_view.php');
+require_once($tx_comments_path . 'view/class.tx_comments_comments_view.php');
+unset($tx_comments_path);
 
 /**
  * This class implements the main Frontend controller for the comments extension
@@ -54,6 +61,23 @@ class tx_comments_fecontroller {
 	protected $conf = array();
 
 	/**
+	 * Language object
+	 *
+	 * @var	language
+	 */
+	protected $lang;
+
+	/**
+	 * Creates an instance of this class.
+	 *
+	 * @return	void
+	 */
+	public function __construct() {
+		$this->lang = t3lib_div::makeInstance('language');
+		$this->lang->init($GLOBALS['TSFE']->lang);
+	}
+
+	/**
 	 * Processes requests to this controller.
 	 *
 	 * @param	string	$content	Content (normally empty)
@@ -63,9 +87,34 @@ class tx_comments_fecontroller {
 	public function main($content, array $conf) {
 		$content = '';
 
+		// Process configuration and check for errors
 		$errors = $this->processConfiguration($conf);
+		if (count($errors) > 0) {
+			$content = $this->errorView($errors);
+		}
+
+		// Dispatch the request
+		$content = $this->dispatchRequest();
 
 		return $content;
+	}
+
+	/**
+	 * Obtains content object for this plugin
+	 *
+	 * @return	tslib_cObj	Content object
+	 */
+	public function getCObj() {
+		return $this->cObj;
+	}
+
+	/**
+	 * Obtains configuration for this plugin
+	 *
+	 * @return	array	Configuration for this plugin
+	 */
+	public function getConfiguration() {
+		return $this->conf;
 	}
 
 	/**
@@ -77,7 +126,134 @@ class tx_comments_fecontroller {
 	protected function processConfiguration(array $conf) {
 		$errors = array();
 
+		// Check that TS for this extension is added to site's TS
+		if (!isset($conf['templateFile'])) {
+			// No TS template included
+			$errors[] = $this->lang->sL('LLL:EXT:comments/pi1/locallang.xml:error.no.ts.template');
+		}
+		else {
+			// Merge flexform and TS configurations
+			$this->mergeConfiguration($conf);
+
+			// Process&validate some values
+		}
 		return $errors;
+	}
+
+	/**
+	 * Dispatches request using the mode from the configuration.
+	 *
+	 * @return	string	Generated content
+	 */
+	protected function dispatchRequest() {
+		$modes = t3lib_div::trimExplode(',', $this->conf['code']);
+		foreach ($modes as $mode) {
+			switch($mode) {
+				case 'FORM':
+					$this->formView();
+					break;
+				case 'COMMENTS':
+					$this->commentsView();
+					break;
+				default:
+
+			}
+		}
+		return '';
+	}
+
+	/**
+	 * Merges configuration from TypoScript
+	 *
+	 * @param	array	$conf	Configuration from TypoScript
+	 * @return	void
+	 */
+	protected function mergeConfiguration(array $conf) {
+		$flexformArray = $this->parseFlexform();
+		if (count($flexformArray)) {
+			// We have flexform configuration and need to merge it
+			$this->conf = t3lib_div::array_merge_recursive_overrule($conf, $flexformArray);
+		}
+		else {
+			// No flexform, so just assign TS configuration
+			$this->conf = $conf;
+		}
+	}
+
+	/**
+	 * Parses flexform configuration into the TS-like array
+	 *
+	 * @return	array	Parsed flexform
+	 */
+	protected function parseFlexform() {
+		$result = array();
+		// Check if we were called as a content element from the page. If not,
+		// flexform will not be set.
+		if (isset($this->cObj->data['pi_flexform'])) {
+			$flexArray = t3lib_div::xml2array($this->cObj->data['pi_flexform']);
+			if (is_array($flexArray) && isset($flexArray['data'])) {
+				foreach ($flexArray['data'] as $sheetName => $sheetData) {
+					// Data must be an array too with 'lDEF' member as array
+					if (is_array($sheetData) && isset($sheetData['lDEF']) && is_array($sheetData['lDEF'])) {
+						// Convert sheet name
+						if ($sheetName != 'sDEF') {
+							// This is is not a 'sDEF' sheet, so entries will
+							// go into a subarray
+							if (preg_match('/^s[A-Z]/', $sheetName)) {
+								$sectionName = strtolower(substr($sheetName, 1, 1)) .
+									substr($sheetName, 2) . '.';
+							}
+							else {
+								$sectionName = $sheetName . '.';
+							}
+							$result[$sectionName] = array();
+							$array = &$result[$sectionName];
+						}
+						else {
+							// For the sDEF sheet entries go directly to the $result
+							$array = &$result;
+						}
+						// Go for values. We support only 'lDEF' due to the
+						// <meta> definition in the flexform data source.
+						foreach ($sheetData['lDEF'] as $field => $value) {
+							$array[$field] = $value;
+						}
+					}
+				}
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Shows errors for this plugin
+	 *
+	 * @param	array	$errors	Errors to display
+	 * @return	string	Generated HTML
+	 */
+	protected function errorView(array $errors) {
+		$errorViewClassName = t3lib_div::makeInstanceClassName('tx_comments_error_view');
+		$errorView = new $errorViewClassName($this, $errors);
+		/* @var $errorView tx_comments_error_view */
+		return $errorView->render();
+	}
+
+	/**
+	 * Shows form view for this plugin
+	 *
+	 * @return	string	Generated HTML
+	 */
+	protected function formView() {
+		return 'form view here...';
+	}
+
+	/**
+	 * Shows comments view for this plugin
+	 *
+	 * @return	string	Generated HTML
+	 */
+	protected function commentsView() {
+		return 'comments view here...';
 	}
 }
 

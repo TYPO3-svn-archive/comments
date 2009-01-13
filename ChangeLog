@@ -1,3 +1,7 @@
+2009-01-13  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Implementation of FE controller: created base functions and configuration processing
+
 2009-01-12  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Merge with 1_x_x branch

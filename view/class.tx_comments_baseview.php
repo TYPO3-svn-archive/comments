@@ -47,12 +47,20 @@ abstract class tx_comments_baseview {
 	protected $controller;
 
 	/**
+	 * Fetches template file content for the configured template
+	 *
+	 * @var	string
+	 */
+	protected $templateCode;
+
+	/**
 	 * Creates an instance of this class
 	 *
 	 * @return	void
 	 */
-	function __construct(tx_comments_basecontroller &$controller) {
+	public function __construct(tx_comments_basecontroller &$controller) {
 		$this->controller = $controller;
+		$this->fetchTemplateCode();
 	}
 
 	/**
@@ -60,7 +68,18 @@ abstract class tx_comments_baseview {
 	 *
 	 * @return	string	HTML
 	 */
-	abstract function render();
+	abstract public function render();
+
+	/**
+	 * Obtains template file content for this plugin
+	 *
+	 * @return	void
+	 */
+	protected function fetchTemplateCode() {
+		$conf = $this->controller->getConfiguration();
+		$fileName = $conf['templateFile'];
+		$this->templateCode = $this->controller->getCObj()->fileResource($fileName);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/comments/view/class.tx_comments_baseview.php'])	{

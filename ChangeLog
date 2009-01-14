@@ -1,6 +1,7 @@
 2009-01-14  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added base view and controller classes
+	* Created view for errors
 
 2009-01-13  Dmitry Dulepov  <dmitry@typo3.org>
 

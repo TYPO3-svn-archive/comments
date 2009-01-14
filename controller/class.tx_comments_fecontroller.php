@@ -25,7 +25,7 @@
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
- * $Id: $
+ * $Id$
  */
 
 require_once(t3lib_extMgm::extPath('lang', 'lang.php'));

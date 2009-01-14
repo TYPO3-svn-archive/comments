@@ -31,6 +31,7 @@
 require_once(t3lib_extMgm::extPath('lang', 'lang.php'));
 
 $tx_comments_path = t3lib_extMgm::extPath('comments');
+require_once($tx_comments_path . 'controller/class.tx_comments_basecontroller.php');
 require_once($tx_comments_path . 'view/class.tx_comments_error_view.php');
 require_once($tx_comments_path . 'view/class.tx_comments_form_view.php');
 require_once($tx_comments_path . 'view/class.tx_comments_comments_view.php');
@@ -43,39 +44,7 @@ unset($tx_comments_path);
  * @package	TYPO3
  * @subpackage	tx_comments
  */
-class tx_comments_fecontroller {
-
-	/**
-	 * Content object for this class. This is set by tslib_cObj::callUserFunc()
-	 * directly after creating the instance of this class.
-	 *
-	 * @var	tslib_cObj
-	 */
-	public $cObj;
-
-	/**
-	 * Configuration of this plugin instance
-	 *
-	 * @var	array
-	 */
-	protected $conf = array();
-
-	/**
-	 * Language object
-	 *
-	 * @var	language
-	 */
-	protected $lang;
-
-	/**
-	 * Creates an instance of this class.
-	 *
-	 * @return	void
-	 */
-	public function __construct() {
-		$this->lang = t3lib_div::makeInstance('language');
-		$this->lang->init($GLOBALS['TSFE']->lang);
-	}
+class tx_comments_fecontroller extends tx_comments_basecontroller {
 
 	/**
 	 * Processes requests to this controller.
@@ -97,24 +66,6 @@ class tx_comments_fecontroller {
 		$content = $this->dispatchRequest();
 
 		return $content;
-	}
-
-	/**
-	 * Obtains content object for this plugin
-	 *
-	 * @return	tslib_cObj	Content object
-	 */
-	public function getCObj() {
-		return $this->cObj;
-	}
-
-	/**
-	 * Obtains configuration for this plugin
-	 *
-	 * @return	array	Configuration for this plugin
-	 */
-	public function getConfiguration() {
-		return $this->conf;
 	}
 
 	/**

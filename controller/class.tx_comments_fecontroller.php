@@ -47,6 +47,20 @@ unset($tx_comments_path);
 class tx_comments_fecontroller extends tx_comments_basecontroller {
 
 	/**
+	 * Submitted comment
+	 *
+	 * @var	tx_comments_comment
+	 */
+	protected $submittedComment = null;
+
+	/**
+	 * Captcha status (true if captcha check was successful)
+	 *
+	 * @var	boolean
+	 */
+	protected $captchaStatus = true;
+
+	/**
 	 * Processes requests to this controller.
 	 *
 	 * @param	string	$content	Content (normally empty)
@@ -66,6 +80,39 @@ class tx_comments_fecontroller extends tx_comments_basecontroller {
 		$content = $this->dispatchRequest();
 
 		return $content;
+	}
+
+	/**
+	 * Retrieves captcha processing status. This will be true if captcha as
+	 * checked successfully or nothing was submitted.
+	 *
+	 * @return	boolean	true if captcha check was successful
+	 */
+	public function getCaptchaStatus() {
+		return $this->captchaStatus;
+	}
+
+	/**
+	 * Obtains plugin's post data
+	 *
+	 * @return	array	Post data
+	 */
+	protected function getPostData() {
+		// TODO Use the name according to the compatibility mode?
+		$data = t3lib_div::_POST('tx_comments');
+		if (!is_array($data)) {
+			$data = (array)t3lib_div::_POST('tx_comments_pi1');
+		}
+		return $data;
+	}
+
+	/**
+	 * Retrieves submitted comment
+	 *
+	 * @return	tx_comments_comment	Submitted comment or null if nothing was submitted
+	 */
+	public function getSubmittedComment() {
+		return $this->submittedComment;
 	}
 
 	/**
@@ -98,6 +145,9 @@ class tx_comments_fecontroller extends tx_comments_basecontroller {
 	 */
 	protected function dispatchRequest() {
 		$modes = t3lib_div::trimExplode(',', $this->conf['code']);
+		if (t3lib_div::inList($modes, 'FORM')) {
+			$this->processForm();
+		}
 		foreach ($modes as $mode) {
 			switch($mode) {
 				case 'FORM':
@@ -205,6 +255,42 @@ class tx_comments_fecontroller extends tx_comments_basecontroller {
 	 */
 	protected function commentsView() {
 		return 'comments view here...';
+	}
+
+	/**
+	 * Processes form submission. The result is in the $this->submittedComment.
+	 *
+	 * @return	void
+	 */
+	protected function processForm() {
+		$postData = $this->getPostData();
+
+		if (count($postData) > 0) {
+			// Check that submitted data is valid and it is for this instance
+			$url = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
+			if ($postData['itemurlchk'] == md5($url . $this->cObj->data['uid'] . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
+				$this->submittedComment = t3lib_div::makeInstance('tx_comments_comment');
+
+				$this->submittedComment->setPid($this->conf['storagePid']);
+				$this->submittedComment->setFirstName((string)$postData['firstname']);
+				$this->submittedComment->setLastName((string)$postData['lastname']);
+				$this->submittedComment->setEmail((string)$postData['email']);
+				$this->submittedComment->setHomePage((string)$postData['homepage']);
+				$this->submittedComment->setLocation((string)$postData['location']);
+				$this->submittedComment->setContent((string)$postData['content']);
+
+				// TODO Captcha check
+
+				// TODO Call a hook to set custom fields
+
+				if ($this->submittedComment->validate($this->conf['requiredFields'])) {
+					// TODO Spam check
+					// TODO Pre-save hook
+					$this->submittedComment->save();
+					// TODO Post-save hook
+				}
+			}
+		}
 	}
 }
 

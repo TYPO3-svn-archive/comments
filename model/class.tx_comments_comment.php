@@ -42,6 +42,13 @@ if (!class_exists('tx_comments_basemodel', false)) {
 class tx_comments_comment extends tx_comments_basemodel {
 
 	/**
+	 * Validation results
+	 *
+	 * @var	array
+	 */
+	protected	$validationResults = array();
+
+	/**
 	 * Creates an instance of this class
 	 *
 	 * @param	array	$row	Data row
@@ -52,12 +59,31 @@ class tx_comments_comment extends tx_comments_basemodel {
 	}
 
 	/**
+	 * Retrieves comment validation results as array
+	 *
+	 * @return	array	Keys are field names, values are errors
+	 */
+	public function getValidationResults() {
+		return $this->validationResults;
+	}
+
+	/**
+	 * Validates the comment
+	 *
+	 * @param	string	A comma-separated list of required fields
+	 * @return	boolean	true if comment is valid
+	 */
+	public function validate($requiredFields) {
+		return true;
+	}
+
+	/**
 	 * Retrieves comment record approval flag
 	 *
 	 * @return	boolean	true if comment is approved
 	 */
 	public function isApproved() {
-		return (boolean)$this->updatedRow['approved'];
+		return (boolean)$this->currentRow['approved'];
 	}
 
 	/**
@@ -66,7 +92,7 @@ class tx_comments_comment extends tx_comments_basemodel {
 	 * @param	boolean	$approved	true if approved
 	 */
 	public function setApproved($approved = true) {
-		$this->updatedRow['approved'] = $approved ? 1 : 0;
+		$this->currentRow['approved'] = $approved ? 1 : 0;
 	}
 
 	/**
@@ -75,7 +101,7 @@ class tx_comments_comment extends tx_comments_basemodel {
 	 * @return	string	First name
 	 */
 	public function getFirstName() {
-		return $this->updatedRow['firstname'];
+		return $this->currentRow['firstname'];
 	}
 
 	/**
@@ -85,7 +111,7 @@ class tx_comments_comment extends tx_comments_basemodel {
 	 * @return	void
 	 */
 	public function setFirstName($firstName) {
-		$this->updatedRow['firstname'] = $firstName;
+		$this->currentRow['firstname'] = $firstName;
 	}
 
 	/**
@@ -94,7 +120,7 @@ class tx_comments_comment extends tx_comments_basemodel {
 	 * @return	string	Last name
 	 */
 	public function getLastName() {
-		return $this->updatedRow['lastname'];
+		return $this->currentRow['lastname'];
 	}
 
 	/**
@@ -104,7 +130,7 @@ class tx_comments_comment extends tx_comments_basemodel {
 	 * @return	void
 	 */
 	public function setLastName($lastName) {
-		$this->updatedRow['lastname'] = $lastName;
+		$this->currentRow['lastname'] = $lastName;
 	}
 
 	/**
@@ -113,7 +139,7 @@ class tx_comments_comment extends tx_comments_basemodel {
 	 * @return	string	E-mail
 	 */
 	public function getEmail() {
-		return $this->updatedRow['email'];
+		return $this->currentRow['email'];
 	}
 
 	/**
@@ -123,7 +149,43 @@ class tx_comments_comment extends tx_comments_basemodel {
 	 * @return	void
 	 */
 	public function setEmail($email) {
-		$this->updatedRow['e-mail'] = $email;
+		$this->currentRow['e-mail'] = $email;
+	}
+
+	/**
+	 * Obtains home page
+	 *
+	 * @return	string	Home page
+	 */
+	public function getHomePage() {
+		return $this->currentRow['homepage'];
+	}
+
+	/**
+	 * Sets home page
+	 *
+	 * @param	string	$homepage	Home page
+	 */
+	public function setHomePage($homepage) {
+		$this->currentRow['homepage'] = $homepage;
+	}
+
+	/**
+	 * Obtains location
+	 *
+	 * @return	string	Home page
+	 */
+	public function getLocation() {
+		return $this->currentRow['location'];
+	}
+
+	/**
+	 * Sets home page
+	 *
+	 * @param	string	$homepage	Home page
+	 */
+	public function setLocation($location) {
+		$this->currentRow['location'] = $location;
 	}
 }
 

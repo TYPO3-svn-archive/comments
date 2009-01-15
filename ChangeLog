@@ -2,6 +2,7 @@
 
 	* Added base view and controller classes
 	* Created view for errors
+	* Implementation of the form view
 
 2009-01-13  Dmitry Dulepov  <dmitry@typo3.org>
 

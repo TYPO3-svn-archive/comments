@@ -77,7 +77,7 @@ abstract class tx_comments_basecontroller {
 	 *
 	 * @return	tslib_cObj	Content object
 	 */
-	public function getCObj() {
+	public function &getCObj() {
 		return $this->cObj;
 	}
 

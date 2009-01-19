@@ -1,3 +1,7 @@
+2009-01-19  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Continued implementation of form view
+
 2009-01-14  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Added base view and controller classes

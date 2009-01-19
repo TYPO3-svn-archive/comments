@@ -43,6 +43,51 @@ require_once(t3lib_extMgm::extPath('comments', 'view/class.tx_comments_baseview.
 class tx_comments_formview extends tx_comments_baseview {
 
 	/**
+	 * Form validation results (provided by a controller)
+	 *
+	 * @var	array
+	 */
+	protected $formValidationResults;
+
+	/**
+	 * An instance of Frontend controller class
+	 *
+	 * @var	tx_comments_fecontroller
+	 */
+	protected $controller;
+
+	/**
+	 * Content object
+	 *
+	 * @var	tslib_cObj
+	 */
+	protected $cObj;
+
+	/**
+	 * Language object
+	 *
+	 * @var	language
+	 */
+	protected $lang;
+
+	/**
+	 * Plugin configuration
+	 *
+	 * @var	array
+	 */
+	protected $conf;
+
+	/**
+	 * Creates an instance of this class. This constructor is redefined to ensure
+	 * that proper controller class is passed to it.
+	 *
+	 * @param	tx_comments_fecontroller	$controller	Controller
+	 */
+	public function __construct(tx_comments_fecontroller &$controller) {
+		parent::__construct($controller);
+	}
+
+	/**
 	 * Renders form for the comments extension
 	 *
 	 * @return	string	Generated HTML
@@ -50,8 +95,10 @@ class tx_comments_formview extends tx_comments_baseview {
 	public function render() {
 		$content = '';
 
-		$cObj = &$this->controller->getCObj();
-		$lang = &$this->controller->getLang();
+		$this->cObj = &$this->controller->getCObj();
+		$this->lang = &$this->controller->getLang();
+		$this->formValidationResults = $this->controller->getFormValidationResults();
+		$this->conf = $this->controller->getConfiguration();
 
 		// Get subpart
 		$subpart = $cObj->getSubpart($this->templateCode, '###COMMENT_FORM###');
@@ -62,8 +109,8 @@ class tx_comments_formview extends tx_comments_baseview {
 		$validationErrors = $currentComment->getValidationResults();
 		$markers = array(
 			'###ACTION_URL###' => htmlspecialchars($url),
-			'###CAPTCHA###' => $this->getCaptcha($cObj, $lang),
-			'###CONTENT###' => count($validationErrors) > 0 ? htmlspecialchars($currentComment->getContent()) : '',
+			'###CAPTCHA###' => $this->getCaptcha(),
+			'###CONTENT###' => count($validationErrors) > 0 && $currentComment ? htmlspecialchars($currentComment->getContent()) : '',
 			'###CURRENT_URL###' => htmlspecialchars($url),
 			'###CURRENT_URL_CHK###' => md5($url . $cObj->data['uid'] . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']),
 			'###EMAIL###' => htmlspecialchars($currentComment->getEmail()),
@@ -73,11 +120,11 @@ class tx_comments_formview extends tx_comments_baseview {
 			'###ERROR_HOMEPAGE###' => (isset($validationErrors['homepage']) ? htmlspecialchars($validationErrors['homepage']) : ''),
 			'###ERROR_LASTNAME###' => (isset($validationErrors['lastname']) ? htmlspecialchars($validationErrors['lastname']) : ''),
 			'###ERROR_LOCATION###' => (isset($validationErrors['location']) ? htmlspecialchars($validationErrors['location']) : ''),
-			'###FIRSTNAME###' => htmlspecialchars($currentComment->getFirstName()),
+			'###FIRSTNAME###' => $currentComment ? htmlspecialchars($currentComment->getFirstName()) : '',
 			'###JS_USER_DATA###' => '',
-			'###HOMEPAGE###' => htmlspecialchars($currentComment->getHomePage()),
-			'###LASTNAME###' => htmlspecialchars($currentComment->getLastName()),
-			'###LOCATION###' => htmlspecialchars($currentComment->getLocation()),
+			'###HOMEPAGE###' => $currentComment ? htmlspecialchars($currentComment->getHomePage()) : '',
+			'###LASTNAME###' => $currentComment ? htmlspecialchars($currentComment->getLastName()) : '',
+			'###LOCATION###' => $currentComment ? htmlspecialchars($currentComment->getLocation()) : '',
 			'###TEXT_ADD_COMMENT###' => $lang->sL('LLL:EXT:comments/pi1/locallang.xml:pi1_template.add_comment'),
 			'###TEXT_CONTENT###' => $lang->sL('LLL:EXT:comments/pi1/locallang.xml:pi1_template.content'),
 			'###TEXT_EMAIL###' => $lang->sL('LLL:EXT:comments/pi1/locallang.xml:pi1_template.email'),
@@ -99,19 +146,17 @@ class tx_comments_formview extends tx_comments_baseview {
 	/**
 	 * Obtains captcha code according to the configuration
 	 *
-	 * @param	tslib_cObj	$cObj	Content object
 	 * @return	string	Generated captcha HTML code
 	 */
-	protected function getCaptca(tslib_cObj &$cObj, language &$lang) {
+	protected function getCaptca() {
 		$result = '';
-		$conf = $this->controller->getConfiguration();
-		if ($conf['spamProtect.']['useCaptcha']) {
-			$subpart = $cObj->getSubpart($this->templateCode, '###CAPTCHA_SUB###');
-			if ($conf['spamProtect.']['useCaptcha'] == 1 && t3lib_extMgm::isLoaded('captcha')) {
-				$result = $this->getCaptchaFromCaptchaExt($cObj, $lang, $conf, $subpart);
+		if ($this->conf['spamProtect.']['useCaptcha']) {
+			$subpart = $this->cObj->getSubpart($this->templateCode, '###CAPTCHA_SUB###');
+			if ($this->conf['spamProtect.']['useCaptcha'] == 1 && t3lib_extMgm::isLoaded('captcha')) {
+				$result = $this->getCaptchaFromCaptchaExt($subpart);
 			}
-			elseif ($conf['spamProtect.']['useCaptcha'] == 2 && t3lib_extMgm::isLoaded('sr_freecap')) {
-				$result = $this->getCaptchaFromSrFreeCap($cObj, $lang, $conf, $subpart);
+			elseif ($this->conf['spamProtect.']['useCaptcha'] == 2 && t3lib_extMgm::isLoaded('sr_freecap')) {
+				$result = $this->getCaptchaFromSrFreeCap($subpart);
 			}
 		}
 		return $result;
@@ -120,20 +165,17 @@ class tx_comments_formview extends tx_comments_baseview {
 	/**
 	 * Obtains captcha from captcha extension
 	 *
-	 * @param	tslib_cObj	$cObj	Content object
-	 * @param	language	$lang	Language object
-	 * @param	array	$conf	Configuration
 	 * @param	string	$subpart	Subpart
 	 * @return	string	Generated HTML
 	 */
-	protected function getCaptchaFromCaptchaExt(tslib_cObj &$cObj, language &$lang, $conf, $subpart) {
-		$code = $cObj->substituteMarkerArray($subpart, array(
+	protected function getCaptchaFromCaptchaExt($subpart) {
+		$code = $this->cObj->substituteMarkerArray($subpart, array(
 						'###SR_FREECAP_IMAGE###' => '<img src="' . t3lib_extMgm::siteRelPath('captcha') . 'captcha/captcha.php" alt="" />',
 						'###SR_FREECAP_CANT_READ###' => '',
-						'###REQUIRED_CAPTCHA###' => $cObj->getSubpart($this->templateCode, '###REQUIRED_FIELD###'),
-//						'###ERROR_CAPTCHA###' => $this->form_wrapError('captcha'),
+						'###REQUIRED_CAPTCHA###' => $this->cObj->getSubpart($this->templateCode, '###REQUIRED_FIELD###'),
+						'###ERROR_CAPTCHA###' => $this->wrapMissingFieldError('captcha'),
 						'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
-						'###TEXT_ENTER_CODE###' => $lang->sL('LLL:EXT:comments/pi1/locallang.xml:pi1_template.enter_code'),
+						'###TEXT_ENTER_CODE###' => $this->lang->sL('LLL:EXT:comments/pi1/locallang.xml:pi1_template.enter_code'),
 					));
 		return str_replace('<br /><br />', '<br />', $code);
 	}
@@ -141,33 +183,36 @@ class tx_comments_formview extends tx_comments_baseview {
 	/**
 	 * Obtains captcha from captcha extension
 	 *
-	 * @param	tslib_cObj	$cObj	Content object
-	 * @param	language	$lang	Language object
-	 * @param	array	$conf	Configuration
 	 * @param	string	$subpart	Subpart
 	 * @return	string	Generated HTML
 	 */
-	protected function getCaptchaFromSrFreeCap(tslib_cObj &$cObj, language &$lang, $subpart) {
+	protected function getCaptchaFromSrFreeCap($subpart) {
 		require_once(t3lib_extMgm::extPath('sr_freecap') . 'pi2/class.tx_srfreecap_pi2.php');
 		$freeCap = t3lib_div::makeInstance('tx_srfreecap_pi2');
 		/* @var $freeCap tx_srfreecap_pi2 */
 		return $this->cObj->substituteMarkerArray($subpart, array_merge($freeCap->makeCaptcha(), array(
-						'###REQUIRED_CAPTCHA###' => $cObj->getSubpart($this->templateCode, '###REQUIRED_FIELD###'),
+						'###REQUIRED_CAPTCHA###' => $this->cObj->getSubpart($this->templateCode, '###REQUIRED_FIELD###'),
 						'###ERROR_CAPTCHA###' => $this->wrapMissingFieldError('captcha'),
 						'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
-						'###TEXT_ENTER_CODE###' => $lang->sL('LLL:EXT:comments/pi1/locallang.xml:pi1_template.enter_code'),
+						'###TEXT_ENTER_CODE###' => $this->lang->sL('LLL:EXT:comments/pi1/locallang.xml:pi1_template.enter_code'),
 					)));
 	}
 
 	/**
-	 * Wraps error message with the stdWrap.
+	 * Wraps error message with the stdWrap. This happens if:
+	 * - form was subbmitted
+	 * - there are validation errors for the form field
 	 *
-	 * @param	string	$text	Text
+	 * @param	string	$field	Field
 	 * @return	string	HTML
 	 */
-	protected function wrapMissingFieldError(tslib_cObj &$cObj, array $conf, $field) {
-		// ?????
-		return $cObj->stdWrap(htmlspecialchars($text), $conf['requiredFields_errorWrap.']);
+	protected function wrapMissingFieldError($field) {
+		$result = '';
+		if (isset($this->formValidationResults[$field]) && $this->controller->isFormSubmitted()) {
+			$result = $this->cObj->stdWrap(htmlspecialchars($this->formValidationResults[$field]),
+				$this->conf['requiredFields_errorWrap.']);
+		}
+		return $result;
 	}
 }
 

@@ -54,11 +54,18 @@ class tx_comments_fecontroller extends tx_comments_basecontroller {
 	protected $submittedComment = null;
 
 	/**
-	 * Captcha status (true if captcha check was successful)
+	 * Form validation results
 	 *
-	 * @var	boolean
+	 * @var	array
 	 */
-	protected $captchaStatus = true;
+	protected $formValidationResults = array();
+
+	/**
+	 * Post data for this plugin
+	 *
+	 * @var	array
+	 */
+	protected $postData = array();
 
 	/**
 	 * Processes requests to this controller.
@@ -70,40 +77,50 @@ class tx_comments_fecontroller extends tx_comments_basecontroller {
 	public function main($content, array $conf) {
 		$content = '';
 
+		$this->fetchPostData();
+
 		// Process configuration and check for errors
 		$errors = $this->processConfiguration($conf);
 		if (count($errors) > 0) {
 			$content = $this->errorView($errors);
 		}
-
-		// Dispatch the request
-		$content = $this->dispatchRequest();
-
+		else {
+			// Dispatch the request
+			$content = $this->dispatchRequest();
+		}
 		return $content;
 	}
 
 	/**
-	 * Retrieves captcha processing status. This will be true if captcha as
-	 * checked successfully or nothing was submitted.
+	 * Retrieves form validation results.
 	 *
-	 * @return	boolean	true if captcha check was successful
+	 * @return	array	Form validation results. Key is field, value is error message
 	 */
-	public function getCaptchaStatus() {
-		return $this->captchaStatus;
+	public function getFormValidationResults() {
+		return $this->formValidationResults;
+	}
+
+	/**
+	 * Checks if form submission happened
+	 *
+	 * @return	boolean	true if the form was submitted
+	 */
+	public function isFormSubmitted() {
+		return (count($this->postData) > 0);
 	}
 
 	/**
 	 * Obtains plugin's post data
 	 *
-	 * @return	array	Post data
+	 * @return	void
 	 */
-	protected function getPostData() {
+	protected function fetchPostData() {
 		// TODO Use the name according to the compatibility mode?
 		$data = t3lib_div::_POST('tx_comments');
 		if (!is_array($data)) {
 			$data = (array)t3lib_div::_POST('tx_comments_pi1');
 		}
-		return $data;
+		$this->postData = $data;
 	}
 
 	/**

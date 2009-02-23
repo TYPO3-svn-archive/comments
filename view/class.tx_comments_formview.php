@@ -57,25 +57,11 @@ class tx_comments_formview extends tx_comments_baseview {
 	protected $controller;
 
 	/**
-	 * Content object
-	 *
-	 * @var	tslib_cObj
-	 */
-	protected $cObj;
-
-	/**
 	 * Language object
 	 *
 	 * @var	language
 	 */
 	protected $lang;
-
-	/**
-	 * Plugin configuration
-	 *
-	 * @var	array
-	 */
-	protected $conf;
 
 	/**
 	 * Creates an instance of this class. This constructor is redefined to ensure
@@ -85,6 +71,9 @@ class tx_comments_formview extends tx_comments_baseview {
 	 */
 	public function __construct(tx_comments_fecontroller &$controller) {
 		parent::__construct($controller);
+
+		$this->lang = &$this->controller->getLang();
+		$this->formValidationResults = $this->controller->getFormValidationResults();
 	}
 
 	/**
@@ -95,11 +84,6 @@ class tx_comments_formview extends tx_comments_baseview {
 	public function render() {
 		$content = '';
 
-		$this->cObj = &$this->controller->getCObj();
-		$this->lang = &$this->controller->getLang();
-		$this->formValidationResults = $this->controller->getFormValidationResults();
-		$this->conf = $this->controller->getConfiguration();
-
 		// Get subpart
 		$subpart = $cObj->getSubpart($this->templateCode, '###COMMENT_FORM###');
 
@@ -107,6 +91,7 @@ class tx_comments_formview extends tx_comments_baseview {
 		$currentComment = $this->controller->getSubmittedComment();
 		/* @var $currentComment tx_comments_comment */
 		$validationErrors = $currentComment->getValidationResults();
+		$userIntMarker = '<input type="hidden" name="typo3_user_int" value="1" />';
 		$markers = array(
 			'###ACTION_URL###' => htmlspecialchars($url),
 			'###CAPTCHA###' => $this->getCaptcha(),
@@ -121,7 +106,7 @@ class tx_comments_formview extends tx_comments_baseview {
 			'###ERROR_LASTNAME###' => (isset($validationErrors['lastname']) ? htmlspecialchars($validationErrors['lastname']) : ''),
 			'###ERROR_LOCATION###' => (isset($validationErrors['location']) ? htmlspecialchars($validationErrors['location']) : ''),
 			'###FIRSTNAME###' => $currentComment ? htmlspecialchars($currentComment->getFirstName()) : '',
-			'###JS_USER_DATA###' => '',
+			'###JS_USER_DATA###' => $userIntMarker . ($this->piVars['submit'] ? '' : '<script type="text/javascript">tx_comments_pi1_setUserData()</script>'),
 			'###HOMEPAGE###' => $currentComment ? htmlspecialchars($currentComment->getHomePage()) : '',
 			'###LASTNAME###' => $currentComment ? htmlspecialchars($currentComment->getLastName()) : '',
 			'###LOCATION###' => $currentComment ? htmlspecialchars($currentComment->getLocation()) : '',

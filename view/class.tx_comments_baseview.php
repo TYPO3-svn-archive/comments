@@ -54,12 +54,28 @@ abstract class tx_comments_baseview {
 	protected $templateCode;
 
 	/**
+	 * Content object
+	 *
+	 * @var	tslib_cObj
+	 */
+	protected $cObj;
+
+	/**
+	 * Plugin configuration
+	 *
+	 * @var	array
+	 */
+	protected $conf;
+
+	/**
 	 * Creates an instance of this class
 	 *
 	 * @return	void
 	 */
 	public function __construct(tx_comments_basecontroller &$controller) {
 		$this->controller = $controller;
+		$this->cObj = &$this->controller->getCObj();
+		$this->conf = $this->controller->getConfiguration();
 		$this->fetchTemplateCode();
 	}
 
@@ -76,8 +92,7 @@ abstract class tx_comments_baseview {
 	 * @return	void
 	 */
 	protected function fetchTemplateCode() {
-		$conf = $this->controller->getConfiguration();
-		$fileName = $conf['templateFile'];
+		$fileName = $this->conf['templateFile'];
 		$this->templateCode = $this->controller->getCObj()->fileResource($fileName);
 	}
 }

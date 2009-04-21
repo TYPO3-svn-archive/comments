@@ -68,6 +68,13 @@ class tx_comments_fecontroller extends tx_comments_basecontroller {
 	protected $postData = array();
 
 	/**
+	 * Select key for comment records. Typically it looks like 'tt_news_20'.
+	 *
+	 * @var	string
+	 */
+	protected $selectKey = '';
+
+	/**
 	 * Processes requests to this controller.
 	 *
 	 * @param	string	$content	Content (normally empty)
@@ -306,6 +313,31 @@ class tx_comments_fecontroller extends tx_comments_basecontroller {
 					$this->submittedComment->save();
 					// TODO Post-save hook
 				}
+			}
+		}
+	}
+
+	/**
+	 * Creates a select key from the configuration (externalPrefix) and current
+	 * value passed as GET or POST var
+	 *
+	 * @return	void
+	 */
+	protected function createSelectKey() {
+		if ($this->conf['externalPrefix']) {
+			if ($this->conf['externalPrefix'] != 'pages') {
+				if ($this->conf['showUidMap.'][$this->conf['externalPrefix']]) {
+					$showUidParam = $this->conf['showUidMap.'][$this->conf['externalPrefix']];
+
+					$ar = t3lib_div::_GP($this->conf['externalPrefix']);
+					$id = (is_array($ar) ? intval($ar[$showUidParam]) : false);
+					if ($id) {
+						$this->selectKey = $this->conf['externalPrefix'] . '_' . $id;
+					}
+				}
+			}
+			else {
+				$this->selectKey = 'pages_' . $GLOBALS['TSFE']->id;
 			}
 		}
 	}

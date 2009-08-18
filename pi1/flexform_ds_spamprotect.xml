@@ -58,8 +58,12 @@
 								<n0>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.useCaptcha.I.2</n0>
 								<n1>2</n1>
 							</n2>
+							<n3>
+								<n0>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.useCaptcha.I.3</n0>
+								<n1>3</n1>
+							</n3>
 						</items>
-						<default>0</default>
+						<default>3</default>
 					</config>
 				</TCEforms>
 			</useCaptcha>

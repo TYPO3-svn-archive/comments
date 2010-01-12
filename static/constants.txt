@@ -4,7 +4,7 @@ plugin.tx_comments_pi1 {
 	storagePid =
 
 	# cat=plugin.comments: Basic; type=string; label=Comment trigger:If this prefix to showUid URL parameter exists, it will trigger commenting system
-	externalPrefix = tx_ttnews
+	externalPrefix = pages
 
 	# cat=plugin.comments: Basic; type=string; label=Template file:Template file for commenting system
 	templateFile = EXT:comments/resources/template/pi1_template.html

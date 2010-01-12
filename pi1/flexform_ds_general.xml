@@ -38,8 +38,7 @@
 				<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.trigger.prefix</label>
 				<config>
 					<type>input</type>
-					<default>tx_ttnews</default>
-					<eval>required,trim,lower,alphanum_x</eval>
+					<eval>trim,lower,alphanum_x</eval>
 					<size>15</size>
 				</config>
 				</TCEforms>

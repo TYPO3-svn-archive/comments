@@ -1,6 +1,7 @@
 2010-01-12  Michiel Roos	<michiel@netcreators.com>
 
 	* Fix #11754: Triggering prefix help should say "pages" and not "page" (Thanks to Stephen Bungert)
+	* Fix #11737: Set the default key to be 'pages' instead of 'tt_news'. (Thanks to Steffen Gebert)
 
 2009-01-19  Dmitry Dulepov  <dmitry@typo3.org>
 

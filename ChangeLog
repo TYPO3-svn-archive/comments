@@ -1,3 +1,7 @@
+2010-01-12  Michiel Roos	<michiel@netcreators.com>
+
+	* Fix #11754: Triggering prefix help should say "pages" and not "page" (Thanks to Stephen Bungert)
+
 2009-01-19  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Continued implementation of form view

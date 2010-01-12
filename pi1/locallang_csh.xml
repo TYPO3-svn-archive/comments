@@ -13,7 +13,7 @@
 		<languageKey index="default" type="array">
 			<label index="code.description">Defines operation mode of the plugin</label>
 			<label index="code.details">"Comment listing" mode shows list of comments. "Comment form" mode shows form to enter comments.</label>
-			<label index="externalPrefix.description">Defines a parameter in URL that will trigger comments displaying. Typically it is a parameter that defines a single view. For example, tt_news extension uses tx_ttnews[tt_news] as a parameter to define single item to show. Therefore external prefix is tx_ttnews in this case.&lt;br /&gt;&lt;br /&gt; To comment on pages, use "page" prefix.</label>
+			<label index="externalPrefix.description">Defines a parameter in URL that will trigger comments displaying. Typically it is a parameter that defines a single view. For example, tt_news extension uses tx_ttnews[tt_news] as a parameter to define single item to show. Therefore external prefix is tx_ttnews in this case.&lt;br /&gt;&lt;br /&gt; To comment on pages, use "pages" prefix.</label>
 			<label index="storagePid.description">Defines where to store comment records</label>
 			<label index="templateFile.description">Defines file path to the template file. Default points to the extension. Usual TYPO3 fules apply: to specify file in fileadmin, start file path from "fileadmin/", to specify file in another extension, use "EXT:" prefix.</label>
 			<label index="commentsPerPage.description">Defines how many comments per page to show</label>

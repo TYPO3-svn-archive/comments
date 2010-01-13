@@ -987,6 +987,7 @@ class tx_comments_pi1 extends tslib_pibase {
 						'template' => $template,
 						'check' => $check,
 						'markers' => $markers,
+						'uid' => $uid
 					);
 					if (is_array($tempMarkers = t3lib_div::callUserFunction($userFunc, $params, $this))) {
 						$markers = $tempMarkers;

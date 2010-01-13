@@ -3,6 +3,7 @@
 	* Fix #8619: XHTML Strict tweaks (Thanks to Michiel Roos)
 	* Fix: Captcha fix, did not work to previous renaming of name attribute
 	* Fix #11312: HOOKS: The function "checkCustomFunctionCodes()" needs one argument! (Thanks to Simon Schick)
+	* Change #10279: Pass uid of new comment to sendNotificationMail hook (Thanks to Mathias Brodala)
 
 2010-01-12  Michiel Roos	<michiel@netcreators.com>
 

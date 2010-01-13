@@ -583,7 +583,7 @@ class tx_comments_pi1 extends tslib_pibase {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['form'] as $userFunc) {
 				$params = array(
 					'pObj' => &$this,
-					'template' => $template,
+					'template' => &$template,
 					'markers' => $markers,
 				);
 				if (is_array($tempMarkers = t3lib_div::callUserFunction($userFunc, $params, $this))) {

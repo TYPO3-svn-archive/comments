@@ -1,7 +1,8 @@
 2010-01-13  Michiel Roos	<michiel@netcreators.com>
 
 	* Fix #8619: XHTML Strict tweaks (Thanks to Michiel Roos)
-	* Fix: Captcha fix, did not work to previous renaming of name attribute 
+	* Fix: Captcha fix, did not work to previous renaming of name attribute
+	* Fix #11312: HOOKS: The function "checkCustomFunctionCodes()" needs one argument! (Thanks to Simon Schick)
 
 2010-01-12  Michiel Roos	<michiel@netcreators.com>
 

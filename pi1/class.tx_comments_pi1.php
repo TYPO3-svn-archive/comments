@@ -163,7 +163,7 @@ class tx_comments_pi1 extends tslib_pibase {
 						}
 						break;
 					default:
-						$content .= $this->checkCustomFunctionCodes();
+						$content .= $this->checkCustomFunctionCodes($code);
 						break;
 				}
 			}

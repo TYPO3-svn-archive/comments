@@ -1,3 +1,8 @@
+2010-01-13  Michiel Roos	<michiel@netcreators.com>
+
+	* Fix #8619: XHTML Strict tweaks (Thanks to Michiel Roos)
+	* Fix: Captcha fix, did not work to previous renaming of name attribute 
+
 2010-01-12  Michiel Roos	<michiel@netcreators.com>
 
 	* Fix #11754: Triggering prefix help should say "pages" and not "page" (Thanks to Stephen Bungert)

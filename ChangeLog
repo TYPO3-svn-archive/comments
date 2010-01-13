@@ -5,6 +5,7 @@
 	* Fix #11312: HOOKS: The function "checkCustomFunctionCodes()" needs one argument! (Thanks to Simon Schick)
 	* Change #10279: Pass uid of new comment to sendNotificationMail hook (Thanks to Mathias Brodala)
 	* Change #9668: Modify template in hook function (Thanks to Peter Schuster)
+	* Fix #9933: Comments are stored in PID 0 if plugin.tx_comments_pi1.storagePid ist empty / not set in 1.5.1 (Thanks to Gregor Hermens)
 
 2010-01-12  Michiel Roos	<michiel@netcreators.com>
 

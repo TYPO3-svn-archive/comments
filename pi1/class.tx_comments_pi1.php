@@ -286,7 +286,7 @@ class tx_comments_pi1 extends tslib_pibase {
 			$this->conf['storagePid'] = $GLOBALS['TYPO3_DB']->cleanIntList($this->conf['storagePid']);
 		}
 		// If storage pid is not set, use current page
-		if ($this->conf['storagePid'] == '') {
+		if (empty($this->conf['storagePid'])) {
 			$this->conf['storagePid'] = $GLOBALS['TSFE']->id;
 		}
 

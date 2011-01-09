@@ -807,13 +807,12 @@ class tx_comments_pi1 extends tslib_pibase {
 						}
 
 						// Clear cache
-						$clearCache = t3lib_div::trimExplode(',', $this->conf['additionalClearCachePages'], true);
-						$clearCache[] = $GLOBALS['TSFE']->id;
-						$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-						/* @var $tce t3lib_TCEmain */
-						foreach (array_unique($clearCache) as $pid) {
-							$tce->clear_cacheCmd($pid);
+						$clearCacheIds = $GLOBALS['TSFE']->id;
+						$additionalClearCachePages = trim($this->conf['additionalClearCachePages']);
+						if (!empty($additionalClearCachePages)) {
+							$clearCacheIds .= ',' . $additionalClearCachePages;
 						}
+						$GLOBALS['TSFE']->clearPageCacheContent_pidList($clearCacheIds);
 
 						// Go to first/last page using redirect
 						$queryParams = $_GET;

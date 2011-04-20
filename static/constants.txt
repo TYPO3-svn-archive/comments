@@ -46,7 +46,7 @@ plugin.tx_comments_pi1 {
 	fromEmail =
 
 	# cat=plugin.comments: Spam protection; type=string; label=E-mail template:Template to use for notification to administrator
-	emailTemplate = EXT:comments/res/email.txt
+	emailTemplate = EXT:comments/resources/template/email.txt
 
 	# cat=plugin.comments: Spam protection; type=string; label=Spam cut off point:New comment will not be posted at all if it earns this amount of points or more
 	spamCutOffPoint = 1000

@@ -18,6 +18,7 @@ $TCA['tx_comments_comments'] = array(
 			)
 		),
 		'external_ref' => array(
+			'exclude' => 1,
 			'label' => 'LLL:EXT:comments/locallang_db.xml:tx_comments_comments.external_ref',
 			'config' => array(
 				'type' => 'group',
@@ -42,6 +43,7 @@ $TCA['tx_comments_comments'] = array(
 			),
 		),
 		'external_prefix' => array(
+			'exclude' => 1,
 			'label' => 'LLL:EXT:comments/locallang_db.xml:tx_comments_comments.external_prefix',
 			'config' => array(
 				'type' => 'input',
@@ -50,6 +52,7 @@ $TCA['tx_comments_comments'] = array(
 			),
 		),
 		'approved' => array(
+			'exclude' => 1,
 			'label' => 'LLL:EXT:comments/locallang_db.xml:tx_comments_comments.approved',
 			'config' => array(
 				'type' => 'check',
@@ -60,6 +63,7 @@ $TCA['tx_comments_comments'] = array(
 			),
 		),
 		'firstname' => array(
+			'exclude' => 1,
 			'label' => 'LLL:EXT:comments/locallang_db.xml:tx_comments_comments.firstname',
 			'config' => array(
 				'type' => 'input',
@@ -67,6 +71,7 @@ $TCA['tx_comments_comments'] = array(
 			),
 		),
 		'lastname' => array(
+			'exclude' => 1,
 			'label' => 'LLL:EXT:comments/locallang_db.xml:tx_comments_comments.lastname',
 			'config' => array(
 				'type' => 'input',
@@ -74,6 +79,7 @@ $TCA['tx_comments_comments'] = array(
 			),
 		),
 		'email' => array(
+			'exclude' => 1,
 			'label' => 'LLL:EXT:comments/locallang_db.xml:tx_comments_comments.email',
 			'config' => array(
 				'type' => 'input',
@@ -81,6 +87,7 @@ $TCA['tx_comments_comments'] = array(
 			),
 		),
 		'homepage' => array(
+			'exclude' => 1,
 			'label' => 'LLL:EXT:comments/locallang_db.xml:tx_comments_comments.homepage',
 			'config' => array(
 				'type' => 'input',
@@ -88,6 +95,7 @@ $TCA['tx_comments_comments'] = array(
 			),
 		),
 		'location' => array(
+			'exclude' => 1,
 			'label' => 'LLL:EXT:comments/locallang_db.xml:tx_comments_comments.location',
 			'config' => array(
 				'type' => 'input',
@@ -95,6 +103,7 @@ $TCA['tx_comments_comments'] = array(
 			),
 		),
 		'content' => array(
+			'exclude' => 1,
 			'label' => 'LLL:EXT:comments/locallang_db.xml:tx_comments_comments.content',
 			'config' => array(
 				'type' => 'text',
@@ -104,6 +113,7 @@ $TCA['tx_comments_comments'] = array(
 			),
 		),
 		'remote_addr' => array(
+			'exclude' => 1,
 			'label' => 'LLL:EXT:comments/locallang_db.xml:tx_comments_comments.remote_addr',
 			'config' => array(
 				'type' => 'input',
@@ -112,6 +122,7 @@ $TCA['tx_comments_comments'] = array(
 			),
 		),
 		'double_post_check' => array(
+			'exclude' => 1,
 			'label' => '',
 			'config' => array(
 				'type' => 'passthrough'
@@ -132,6 +143,7 @@ $TCA['tx_comments_urllog'] = array(
 	),
 	'columns' => array(
 		'external_ref' => array(
+			'exclude' => 1,
 			'label' => 'LLL:EXT:comments/locallang_db.xml:tx_comments_comments.external_ref',
 			'config' => array(
 				'type' => 'group',
@@ -156,6 +168,7 @@ $TCA['tx_comments_urllog'] = array(
 			),
 		),
 		'url' => array(
+			'exclude' => 1,
 			'label' => 'LLL:EXT:comments/locallang_db.xml:tx_comments_urllog.url',
 			'config' => array(
 				'type' => 'input',

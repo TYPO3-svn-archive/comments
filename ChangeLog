@@ -2,6 +2,7 @@
 
 	* Added feature #28180: Add single view to tt_news hook (credits Tymoteusz Motylewski)
 	* Fixed issue #28169: Comments sorting is configured in a wrong way (credits Marcus Krause)
+	* Fixed issue #27307: TCA fields should be excludable (credits Søren Malling)
 
 2011-04-20  Ingo Renner  <ingo@typo3.org>
 

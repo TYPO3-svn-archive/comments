@@ -67,6 +67,7 @@ class tx_comments_ttnews {
 			case 'LATEST':
 			case 'LIST':
 			case 'SEARCH':
+			case 'SINGLE':
 				// Add marker for number of comments
 				$commentCount = $this->getNumberOfComments($row['uid'], $pObj);
 				$templateName = $commentCount ? '###TTNEWS_COMMENT_COUNT_SUB###' : '###TTNEWS_COMMENT_NONE_SUB###';

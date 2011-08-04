@@ -12,6 +12,7 @@
 		<el>
 			<requireApproval>
 				<TCEforms>
+					<exclude>1</exclude>
 					<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.requireApproval</label>
 					<config>
 						<type>check</type>
@@ -27,6 +28,7 @@
 			</requireApproval>
 			<considerReferer>
 				<TCEforms>
+					<exclude>1</exclude>
 					<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.considerReferer</label>
 					<config>
 						<type>check</type>
@@ -42,6 +44,7 @@
 			</considerReferer>
 			<useCaptcha>
 				<TCEforms>
+					<exclude>1</exclude>
 					<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.useCaptcha</label>
 					<config>
 						<type>select</type>
@@ -69,6 +72,7 @@
 			</useCaptcha>
 			<notificationEmail>
 				<TCEforms>
+					<exclude>1</exclude>
 					<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.notificationEmail</label>
 					<config>
 						<type>input</type>
@@ -80,6 +84,7 @@
 			</notificationEmail>
 			<fromEmail>
 				<TCEforms>
+					<exclude>1</exclude>
 					<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.fromEmail</label>
 					<config>
 						<type>input</type>
@@ -91,6 +96,7 @@
 			</fromEmail>
 			<emailTemplate>
 				<TCEforms>
+					<exclude>1</exclude>
 					<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.emailTemplate</label>
 					<config>
 						<type>input</type>

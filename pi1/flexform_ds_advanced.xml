@@ -12,6 +12,7 @@
 		<el>
 			<commentsPerPage>
 				<TCEforms>
+				<exclude>1</exclude>
 				<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.commentsPerPage</label>
 				<config>
 					<type>input</type>
@@ -27,6 +28,7 @@
 			</commentsPerPage>
 			<closeCommentsAfter>
 				<TCEforms>
+				<exclude>1</exclude>
 				<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.closeCommentsAfter</label>
 				<config>
 					<type>input</type>
@@ -38,6 +40,7 @@
 			</closeCommentsAfter>
 			<enableRatings>
 				<TCEforms>
+				<exclude>1</exclude>
 				<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.enableRatings</label>
 				<displayCond>EXT:ratings:LOADED:true</displayCond>
 				<config>
@@ -48,6 +51,7 @@
 			</enableRatings>
 			<reverseSorting>
 				<TCEforms>
+				<exclude>1</exclude>
 				<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.reverseSorting</label>
 				<config>
 					<type>check</type>

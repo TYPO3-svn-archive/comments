@@ -12,6 +12,7 @@
 		<el>
 			<code>
 				<TCEforms>
+					<exclude>1</exclude>
 					<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.code</label>
 					<config>
 						<type>select</type>
@@ -35,6 +36,7 @@
 			</code>
 			<externalPrefix>
 				<TCEforms>
+				<exclude>1</exclude>
 				<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.trigger.prefix</label>
 				<config>
 					<type>input</type>
@@ -45,6 +47,7 @@
 			</externalPrefix>
 			<storagePid>
 				<TCEforms>
+					<exclude>1</exclude>
 					<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.storage.page</label>
 					<config>
 						<type>group</type>
@@ -61,6 +64,7 @@
 			</storagePid>
 			<templateFile>
 				<TCEforms>
+					<exclude>1</exclude>
 					<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.template_file</label>
 					<config>
 						<type>input</type>

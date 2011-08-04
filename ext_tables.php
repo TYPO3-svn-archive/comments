@@ -27,7 +27,6 @@ $TCA['tx_comments_comments'] = array(
 		'label' => 'content',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
-		'sortby' => 'crdate',
 		'default_sortby' => ' ORDER BY crdate DESC',
 		'delete' => 'deleted',
 		'enablecolumns' => array (

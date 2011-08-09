@@ -128,7 +128,7 @@ class tx_comments_ttnews {
 		}
 		else {
 			// Use default
-			$file = 'EXT:comments/res/pi1_template.html';
+			$file = 'EXT:comments/resources/template/pi1_template.html';
 		}
 		if (($template = $pObj->cObj->fileResource($file))) {
 			$template = $pObj->cObj->getSubpart($template, $section);

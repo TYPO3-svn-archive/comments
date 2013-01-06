@@ -1,5 +1,7 @@
 2013-01-05  Ingo Renner  <ingo@typo3.org>
 
+	* Release of version 1.6.0
+
 	* Fixed calls to missing/deprecated functions
 	* Fixed issue #39001: latest "pagebrowse" ext do not work with comments
 	* Added feature #38635: Marker for comment count, credits Sebastian Schawohl

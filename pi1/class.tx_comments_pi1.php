@@ -24,56 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
-* class.tx_comments_pi1.php
-*
-* Commenting system.
-*
-* $Id$
-*
-* @author Dmitry Dulepov <dmitry@typo3.org>
-*/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   93: class tx_comments_pi1 extends tslib_pibase
- *  124:     function main($content, $conf)
- *  174:     function init()
- *  222:     function mergeConfiguration()
- *  316:     function fetchConfigValue($param)
- *  336:     function checkExternalUid()
- *  352:     function comments()
- *  402:     function comments_getComments(&$rows)
- *  451:     function comments_getComments_getRatings(&$row)
- *  471:     function comments_getComments_getEmail($email)
- *  486:     function comments_getPageBrowser($page, $rpp, $rowCount)
- *  557:     function comments_getPageBrowser_getPageLink($page)
- *  574:     function form()
- *  665:     function form_updatePostVarsWithFeUserData(&$this->piVars)
- *  712:     function form_getCaptcha()
- *  747:     function form_wrapError($field)
- *  757:     function processSubmission()
- *  908:     function processSubmission_checkTypicalSpam()
- *  954:     function processSubmission_validate()
- * 1000:     function sendNotificationEmail($uid, $points)
- * 1045:     function isCommentingClosed()
- * 1102:     function commentingClosed()
- * 1117:     function formatDate($date)
- * 1132:     function fixLL()
- * 1154:     function fixLL_internal($LL, &$ll, $prefix = '')
- * 1170:     function createLinks($text)
- * 1183:     function applyStdWrap($text, $stdWrapName)
- * 1196:     function checkCustomFunctionCodes($code)
- * 1218:     function isNoCacheUrl($url)
- * 1237:     function hasValidItemUrl()
- * 1260:     function substituteMarkersAndSubparts($template, array $markers, array $subparts)
- *
- * TOTAL FUNCTIONS: 30
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
+
 
 require_once(PATH_t3lib . 'class.t3lib_befunc.php');
 require_once(PATH_t3lib . 'class.t3lib_refindex.php');

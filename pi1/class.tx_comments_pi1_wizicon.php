@@ -72,7 +72,20 @@ class tx_comments_pi1_wizicon {
 	 */
 	function includeLocalLang()	{
 		$llFile = t3lib_extMgm::extPath('comments').'pi1/locallang.xml';
-		$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
+
+		switch (TYPO3_version) {
+			case '4.5':
+				$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
+				break;
+			case '4.6':
+			case '4.7':
+				$LOCAL_LANG = t3lib_l10n_parser_Llxml::getParsedData($llFile, $GLOBALS['LANG']->lang);
+				break;
+			case '6.0':
+			default:
+				$localLanguageParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Parser\\LocallangXmlParser');
+				$LOCAL_LANG = $localLanguageParser->getParsedData($llFile, $GLOBALS['LANG']->lang);
+		}
 
 		return $LOCAL_LANG;
 	}

@@ -257,8 +257,7 @@ class tx_comments_fecontroller extends tx_comments_basecontroller {
 	 * @return	string	Generated HTML
 	 */
 	protected function errorView(array $errors) {
-		$errorViewClassName = t3lib_div::makeInstanceClassName('tx_comments_error_view');
-		$errorView = new $errorViewClassName($this, $errors);
+		$errorView = t3lib_div::makeInstance('tx_comments_error_view', $this, $errors);
 		/* @var $errorView tx_comments_error_view */
 		return $errorView->render();
 	}

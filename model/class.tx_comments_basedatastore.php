@@ -90,9 +90,9 @@ abstract class tx_comments_basedatastore {
 				get_class($this) . '?');
 		}
 		else {
-			$className = t3lib_div::makeInstanceClassName($this->dataClass);
+			$className = t3lib_div::makeInstance($this->dataClass);
 			if (!$className) {
-				trigger_error('tx_comments_basedatastore: t3lib_div::makeInstanceClassName(\'' .
+				trigger_error('tx_comments_basedatastore: t3lib_div::makeInstance(\'' .
 					$this->dataClass . '\') failed in get()');
 			}
 			else {

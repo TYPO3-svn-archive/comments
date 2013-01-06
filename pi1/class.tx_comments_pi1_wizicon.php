@@ -21,19 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   45: class tx_comments_pi1_wizicon
- *   53:     function proc($wizardItems)
- *   73:     function includeLocalLang()
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
+
 
 /**
  * Class that adds the wizard icon.

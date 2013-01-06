@@ -3,6 +3,7 @@
 	* Fixed calls to missing/deprecated functions
 	* Fixed issue #39001: latest "pagebrowse" ext do not work with comments
 	* Added feature #38635: Marker for comment count, credits Sebastian Schawohl
+	* Fixed issue #31315: GET parameter id is added twice to redirection URL, credits Christian Futterlieb
 
 2011-08-09  Ingo Renner  <ingo@typo3.org>
 

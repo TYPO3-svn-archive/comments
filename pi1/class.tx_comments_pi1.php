@@ -788,7 +788,7 @@ class tx_comments_pi1 extends tslib_pibase {
 
 						// Go to first/last page using redirect
 						$queryParams = $_GET;
-						foreach (array('no_cache', 'cHash') as $var) {
+						foreach (array('id', 'no_cache', 'cHash') as $var) {
 							unset($queryParams[$var]);
 						}
 						if ($this->conf['advanced.']['reverseSorting']) {

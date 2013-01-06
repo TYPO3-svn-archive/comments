@@ -57,6 +57,7 @@ class tx_comments_pi1 extends tslib_pibase {
 	var $foreignTableName;					// Table name of the record we comment on
 	var $formValidationErrors = array();	// Array of form validation errors
 	var $formTopMessage = '';				// This message is displayed in the top of the form
+	protected $counter = 0;					// Number of comments
 
 	/**
 	 * Ratings API
@@ -330,6 +331,9 @@ class tx_comments_pi1 extends tslib_pibase {
 		}
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,approved,crdate,firstname,lastname,homepage,location,email,content',
 					'tx_comments_comments', $this->where, '', $sorting, $start . ',' . $rpp);
+		list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS counter',
+					'tx_comments_comments', $this->where);
+		$this->counter = $row['counter'];
 
 		$subParts = array(
 			'###SINGLE_COMMENT###' => $this->comments_getComments($rows),
@@ -337,6 +341,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		);
 		$markers = array(
 			'###UID###' => $this->externalUid,
+			'###COMMENT_COUNT###' => $this->counter,
 		);
 
 		// Fetch template
@@ -460,9 +465,7 @@ class tx_comments_pi1 extends tslib_pibase {
 	 * @return	string		Generated HTML
 	 */
 	function comments_getPageBrowser($rpp) {
-		list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS counter',
-					'tx_comments_comments', $this->where);
-		$numberOfPages = intval($row['counter']/$rpp) + (($row['counter'] % $rpp) == 0 ? 0 : 1);
+		$numberOfPages = intval($this->counter/$rpp) + (($this->counter % $rpp) == 0 ? 0 : 1);
 		$pageBrowserKind = $this->conf['pageBrowser'];
 		$pageBrowserConfig = $this->conf['pageBrowser.'];
 		if (!$pageBrowserKind || !is_array($pageBrowserConfig) || !$pageBrowserConfig['templateFile']) {

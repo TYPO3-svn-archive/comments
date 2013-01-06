@@ -1,6 +1,7 @@
 2013-01-05  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed a call to a missing/ deprecated functions
+	* Fixed issue #39001: latest "pagebrowse" ext do not work with comments
 
 2011-08-09  Ingo Renner  <ingo@typo3.org>
 

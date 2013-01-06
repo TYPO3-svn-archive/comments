@@ -472,10 +472,11 @@ class tx_comments_pi1 extends tslib_pibase {
 					'style="border: 1px solid black; margin: 5px 20px;" />';
 		}
 		else {
-			$pageBrowserConfig += array(
+			$pageBrowserConfig = array_merge($pageBrowserConfig, array(
 				'pageParameterName' => $this->prefixId . '|page',
 				'numberOfPages' => $numberOfPages,
-			);
+			));
+
 			// Get page browser
 			$cObj = t3lib_div::makeInstance('tslib_cObj');
 			/* @var $cObj tslib_cObj */

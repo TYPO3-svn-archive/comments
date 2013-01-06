@@ -162,8 +162,7 @@ class tx_comments_pi1 extends tslib_pibase {
 
 		$this->where_dpck = 'external_prefix=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->conf['externalPrefix'], 'tx_comments_comments') .
 					' AND external_ref=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->foreignTableName . '_' . $this->externalUid, 'tx_comments_comments') .
-					' AND ' . (t3lib_div::testInt($this->conf['storagePid']) ?
-							'pid=' . $this->conf['storagePid'] : 'pid IN (' . $this->conf['storagePid'] . ')') .
+					' AND pid IN (' . $this->conf['storagePid'] . ')' .
 					$this->cObj->enableFields('tx_comments_comments');
 		$this->where = 'approved=1 AND ' . $this->where_dpck;
 
@@ -228,18 +227,7 @@ class tx_comments_pi1 extends tslib_pibase {
 			}
 		}
 
-		// storagePid can be either single pid or list of pids. Validate and exclude bad elements.
-		$this->conf['storagePid'] = trim($this->conf['storagePid']);
-		if (t3lib_div::testInt($this->conf['storagePid'])) {
-			$this->conf['storagePid'] = intval($this->conf['storagePid']);
-		}
-		else {
-			$this->conf['storagePid'] = $GLOBALS['TYPO3_DB']->cleanIntList($this->conf['storagePid']);
-		}
-		// If storage pid is not set, use current page
-		if (empty($this->conf['storagePid'])) {
-			$this->conf['storagePid'] = $GLOBALS['TSFE']->id;
-		}
+		$this->conf['storagePid'] = $this->getStoragePageId();
 
 		// Set date
 		if (trim($this->conf['advanced.']['dateFormat']) == '') {
@@ -255,6 +243,35 @@ class tx_comments_pi1 extends tslib_pibase {
 				t3lib_div::callUserFunction($userFunc, $params, $this);
 			}
 		}
+	}
+
+	/**
+	 * Storage page ID can be either single pid or list of pids. Validate and
+	 * exclude bad elements.
+	 *
+	 */
+	protected function getStoragePageId() {
+		$storagePageId = trim($this->conf['storagePid']);
+
+		$pageIdIsInt = FALSE;
+		if (TYPO3_branch == '6.0') {
+			$pageIdIsInt = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($storagePageId);
+		} else {
+			$pageIdIsInt = t3lib_div::testInt($storagePageId);
+		}
+
+		if ($pageIdIsInt) {
+			$storagePageId = intval($storagePageId);
+		} else {
+			$storagePageId = $GLOBALS['TYPO3_DB']->cleanIntList($storagePageId);
+		}
+
+		if (empty($storagePageId)) {
+				// use current page
+			$storagePageId = $GLOBALS['TSFE']->id;
+		}
+
+		return $storagePageId;
 	}
 
 	/**

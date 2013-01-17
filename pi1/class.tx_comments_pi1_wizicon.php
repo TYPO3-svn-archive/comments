@@ -59,7 +59,7 @@ class tx_comments_pi1_wizicon {
 	 * @return	array		The array with language labels
 	 */
 	function includeLocalLang()	{
-		switch (TYPO3_version) {
+		switch (TYPO3_branch) {
 			case '4.5':
 				$llFile     = t3lib_extMgm::extPath('comments').'locallang.xml';
 				$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);

@@ -1,6 +1,7 @@
 2013-01-16  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #44522: Fatal Error caused by wrong constant
+	* Fixed an issue possibly leading to a fatal error caused by wrong scope of method call
 
 2013-01-06  Ingo Renner  <ingo@typo3.org>v
 

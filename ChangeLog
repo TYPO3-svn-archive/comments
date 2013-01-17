@@ -1,5 +1,7 @@
 2013-01-16  Ingo Renner  <ingo@typo3.org>
 
+	* Release of version 1.6.3
+
 	* Fixed an issue possibly leading to a fatal error caused by wrong scope of method call
 
 	* Release of version 1.6.2

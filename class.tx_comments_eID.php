@@ -24,6 +24,8 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+
 /**
 * class.tx_comments_pi1.php
 *
@@ -47,6 +49,8 @@
  *
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Comment management script.
@@ -60,20 +64,20 @@ class tx_comments_eID {
 	var $command;
 
 	function init() {
-		$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
+		$GLOBALS['LANG'] = GeneralUtility::makeInstance('language');
 		$GLOBALS['LANG']->init('default');
 		$GLOBALS['LANG']->includeLLFile('EXT:comments/locallang_eID.xml');
 
 		tslib_eidtools::connectDB();
 
 		// Sanity check
-		$this->uid = t3lib_div::_GET('uid');
+		$this->uid = GeneralUtility::_GET('uid');
 
 		$uidIsInt = FALSE;
 		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-			$uidIsInt = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->uid);
+			$uidIsInt = MathUtility::canBeInterpretedAsInteger($this->uid);
 		} else {
-			$uidIsInt = t3lib_div::testInt($this->uid);
+			$uidIsInt = MathUtility::canBeInterpretedAsInteger($this->uid);
 		}
 
 		if (!$uidIsInt) {
@@ -86,13 +90,13 @@ class tx_comments_eID {
 			exit;
 		}
 
-		$check = t3lib_div::_GET('chk');
+		$check = GeneralUtility::_GET('chk');
 		if (md5($this->uid . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) != $check) {
 			echo $GLOBALS['LANG']->getLL('wrong_check_value');
 			exit;
 		}
-		$this->command = t3lib_div::_GET('cmd');
-		if (!t3lib_div::inList('approve,delete,kill', $this->command)) {
+		$this->command = GeneralUtility::_GET('cmd');
+		if (!GeneralUtility::inList('approve,delete,kill', $this->command)) {
 			echo $GLOBALS['LANG']->getLL('wrong_cmd');
 			exit;
 		}
@@ -124,12 +128,12 @@ class tx_comments_eID {
 				$params = array(
 					'pObj' => &$this,
 				);
-				t3lib_div::callUserFunction($userFunc, $params, $this);
+				GeneralUtility::callUserFunction($userFunc, $params, $this);
 			}
 		}
 		// Clear cache
-		$pidList = t3lib_div::intExplode(',', t3lib_div::_GET('clearCache'));
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+		$pidList = GeneralUtility::intExplode(',', GeneralUtility::_GET('clearCache'));
+		$tce = GeneralUtility::makeInstance('t3lib_TCEmain');
 		/* @var $tce t3lib_TCEmain */
 		foreach ($pidList as $pid) {
 			if ($pid != 0) {
@@ -144,7 +148,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/comment
 }
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance('tx_comments_eID');
+$SOBE = GeneralUtility::makeInstance('tx_comments_eID');
 $SOBE->init();
 $SOBE->main();
 ?>

@@ -41,6 +41,8 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 
 /**
  * This clas provides hook to tt_news to add extra markers.
@@ -70,7 +72,7 @@ class tx_comments_ttnews {
 				$commentCount = $this->getNumberOfComments($row['uid'], $pObj);
 				$templateName = $commentCount ? '###TTNEWS_COMMENT_COUNT_SUB###' : '###TTNEWS_COMMENT_NONE_SUB###';
 				if (($template = $this->getTemplate($templateName, $lConf, $pObj))) {
-					$lang = t3lib_div::makeInstance('language');
+					$lang = GeneralUtility::makeInstance('language');
 					/* @var $lang language */
 					$lang->init($GLOBALS['TSFE']->lang);
 					$markerArray['###TX_COMMENTS_COUNT###'] = $pObj->cObj->substituteMarkerArray(

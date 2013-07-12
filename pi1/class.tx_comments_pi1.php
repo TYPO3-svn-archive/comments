@@ -25,6 +25,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 
 /**
@@ -87,13 +89,13 @@ class tx_comments_pi1 extends tslib_pibase {
 
 		// check if we need to go at all
 		if ($this->checkExternalUid()) {
-			if (t3lib_div::inList($this->conf['code'], 'FORM')) {
+			if (GeneralUtility::inList($this->conf['code'], 'FORM')) {
 				$commentingClosed = $this->isCommentingClosed();
 				if (!$commentingClosed) {
 					$this->processSubmission();
 				}
 			}
-			foreach (t3lib_div::trimExplode(',', $this->conf['code'], true) as $code) {
+			foreach (GeneralUtility::trimExplode(',', $this->conf['code'], true) as $code) {
 				switch ($code) {
 					case 'COMMENTS':
 						$content .= $this->comments();
@@ -133,7 +135,7 @@ class tx_comments_pi1 extends tslib_pibase {
 				$this->showUidParam = $this->conf['showUidMap.'][$this->conf['externalPrefix']];
 			}
 
-			$ar = t3lib_div::_GP($this->conf['externalPrefix']);
+			$ar = GeneralUtility::_GP($this->conf['externalPrefix']);
 			$this->externalUid = (is_array($ar) ? intval($ar[$this->showUidParam]) : false);
 			$this->foreignTableName = $this->conf['prefixToTableMap.'][$this->conf['externalPrefix']];
 		}
@@ -161,7 +163,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		$this->where = 'approved=1 AND ' . $this->where_dpck;
 
 		if ($this->conf['advanced.']['enableRatings'] && t3lib_extMgm::isLoaded('ratings')) {
-			$this->ratingsApiObj = t3lib_div::makeInstance('tx_ratings_api');
+			$this->ratingsApiObj = GeneralUtility::makeInstance('tx_ratings_api');
 		}
 	}
 
@@ -234,7 +236,7 @@ class tx_comments_pi1 extends tslib_pibase {
 				$params = array(
 					'pObj' => &$this,
 				);
-				t3lib_div::callUserFunction($userFunc, $params, $this);
+				GeneralUtility::callUserFunction($userFunc, $params, $this);
 			}
 		}
 	}
@@ -249,9 +251,9 @@ class tx_comments_pi1 extends tslib_pibase {
 
 		$pageIdIsInt = FALSE;
 		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-			$pageIdIsInt = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($storagePageId);
+			$pageIdIsInt = MathUtility::canBeInterpretedAsInteger($storagePageId);
 		} else {
-			$pageIdIsInt = t3lib_div::testInt($storagePageId);
+			$pageIdIsInt = MathUtility::canBeInterpretedAsInteger($storagePageId);
 		}
 
 		if ($pageIdIsInt) {
@@ -358,7 +360,7 @@ class tx_comments_pi1 extends tslib_pibase {
 					'markers' => $subParts,
 					'plainMarkers' => $markers,
 				);
-				if (is_array($tempMarkers = t3lib_div::callUserFunction($userFunc, $params, $this))) {
+				if (is_array($tempMarkers = GeneralUtility::callUserFunction($userFunc, $params, $this))) {
 					$subParts = $tempMarkers;
 				}
 			}
@@ -405,7 +407,7 @@ class tx_comments_pi1 extends tslib_pibase {
 						'markers' => $markerArray,
 						'row' => $row,
 					);
-					if (is_array($tempMarkers = t3lib_div::callUserFunction($userFunc, $params, $this))) {
+					if (is_array($tempMarkers = GeneralUtility::callUserFunction($userFunc, $params, $this))) {
 						$markerArray = $tempMarkers;
 					}
 				}
@@ -474,7 +476,7 @@ class tx_comments_pi1 extends tslib_pibase {
 			));
 
 			// Get page browser
-			$cObj = t3lib_div::makeInstance('tslib_cObj');
+			$cObj = GeneralUtility::makeInstance('tslib_cObj');
 			/* @var $cObj tslib_cObj */
 			$cObj->start(array(), '');
 			$result = $cObj->cObjGetSingle($pageBrowserKind, $pageBrowserConfig);
@@ -489,14 +491,14 @@ class tx_comments_pi1 extends tslib_pibase {
 	 */
 	function form() {
 		$template = $this->cObj->getSubpart($this->templateCode, '###COMMENT_FORM###');
-		$actionLink = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
-		$requiredFields = t3lib_div::trimExplode(',', $this->conf['requiredFields'], true);
+		$actionLink = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+		$requiredFields = GeneralUtility::trimExplode(',', $this->conf['requiredFields'], true);
 		$requiredMark = $this->cObj->getSubpart($this->templateCode, '##REQUIRED_FIELD###');
 		$content = (count($this->formValidationErrors) == 0 ? '' : $this->piVars['content']);
 		if ($this->conf['advanced.']['preFillFormFromFeUser']) {
 			$this->form_updatePostVarsWithFeUserData();
 		}
-		$itemUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
+		$itemUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
 		$userIntMarker = '<input type="hidden" name="typo3_user_int" value="1" />';
 		$markers = array(
 			'###CURRENT_URL###' => htmlspecialchars($itemUrl),
@@ -551,7 +553,7 @@ class tx_comments_pi1 extends tslib_pibase {
 					'template' => &$template,
 					'markers' => $markers,
 				);
-				if (is_array($tempMarkers = t3lib_div::callUserFunction($userFunc, $params, $this))) {
+				if (is_array($tempMarkers = GeneralUtility::callUserFunction($userFunc, $params, $this))) {
 					$markers = $tempMarkers;
 				}
 			}
@@ -627,7 +629,7 @@ class tx_comments_pi1 extends tslib_pibase {
 			return str_replace('<br /><br />', '<br />', $code);
 		}
 		elseif ($captchaType == 2 && t3lib_extMgm::isLoaded('sr_freecap')) {
-			$freeCap = t3lib_div::makeInstance('tx_srfreecap_pi2');
+			$freeCap = GeneralUtility::makeInstance('tx_srfreecap_pi2');
 			/* @var $freeCap tx_srfreecap_pi2 */
 			$template = $this->cObj->getSubpart($this->templateCode, '###CAPTCHA_SUB###');
 			return $this->cObj->substituteMarkerArray($template, array_merge($freeCap->makeCaptcha(), array(
@@ -670,7 +672,7 @@ class tx_comments_pi1 extends tslib_pibase {
 				'location' => trim($this->piVars['location']),
 				'homepage' => trim($this->piVars['homepage']),
 				'content' => trim($this->piVars['content']),
-				'remote_addr' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
+				'remote_addr' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
 			);
 
 			// Call hook for additional fields in record (by Frank Naegler)
@@ -680,7 +682,7 @@ class tx_comments_pi1 extends tslib_pibase {
 						'record' => $record,
 						'pObj' => &$this,
 					);
-					if (($newRecord = t3lib_div::callUserFunction($userFunc, $params, $this))) {
+					if (($newRecord = GeneralUtility::callUserFunction($userFunc, $params, $this))) {
 						$record = $newRecord;
 					}
 				}
@@ -716,7 +718,7 @@ class tx_comments_pi1 extends tslib_pibase {
 					$newUid = $GLOBALS['TYPO3_DB']->sql_insert_id();
 
 					// Update reference index. This will show in theList view that someone refers to external record.
-					$refindex = t3lib_div::makeInstance('t3lib_refindex');
+					$refindex = GeneralUtility::makeInstance('t3lib_refindex');
 					/* @var $refindex t3lib_refindex */
 					$refindex->updateRefIndexTable('tx_comments_comments', $newUid);
 
@@ -766,7 +768,7 @@ class tx_comments_pi1 extends tslib_pibase {
 									'pObj' => &$this,
 									'uid' => intval($newUid),
 								);
-								t3lib_div::callUserFunction($userFunc, $params, $this);
+								GeneralUtility::callUserFunction($userFunc, $params, $this);
 							}
 						}
 
@@ -800,11 +802,11 @@ class tx_comments_pi1 extends tslib_pibase {
 						}
 						$redirectLink = $this->cObj->typoLink_URL(array(
 							'parameter' => $GLOBALS['TSFE']->id,
-							'additionalParams' => t3lib_div::implodeArrayForUrl('', $queryParams),
+							'additionalParams' => GeneralUtility::implodeArrayForUrl('', $queryParams),
 							'useCacheHash' => true,
 						));
 						@ob_end_clean();
-						header('Location: ' . t3lib_div::locationHeaderUrl($redirectLink));
+						header('Location: ' . GeneralUtility::locationHeaderUrl($redirectLink));
 						exit;
 					}
 				}
@@ -849,8 +851,8 @@ class tx_comments_pi1 extends tslib_pibase {
 
 			// Check referer - not reliable because firewals block it or browsers may forget to send it
 			if ($this->conf['considerReferer']) {
-				$parts1 = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
-				$parts2 = parse_url(t3lib_div::getIndpEnv('HTTP_HOST'));
+				$parts1 = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
+				$parts2 = parse_url(GeneralUtility::getIndpEnv('HTTP_HOST'));
 				$points += ($parts1['host'] != $parts2['host']);
 			}
 		}
@@ -863,7 +865,7 @@ class tx_comments_pi1 extends tslib_pibase {
 					'formdata' => $this->piVars,
 					'points' => $points,
 				);
-				$points += t3lib_div::callUserFunction($_funcRef, $params, $this);
+				$points += GeneralUtility::callUserFunction($_funcRef, $params, $this);
 			}
 		}
 
@@ -881,14 +883,14 @@ class tx_comments_pi1 extends tslib_pibase {
 			$this->piVars[$key] = trim($value);
 		}
 		// Check required fields first
-		$requiredFields = t3lib_div::trimExplode(',', $this->conf['requiredFields'], true);
+		$requiredFields = GeneralUtility::trimExplode(',', $this->conf['requiredFields'], true);
 		foreach ($requiredFields as $field) {
 			if (!$this->piVars[$field]) {
 				$this->formValidationErrors[$field] = $this->pi_getLL('error.required.field');
 			}
 		}
 		// Validate e-mail
-		if ($this->piVars['email'] && !t3lib_div::validEmail($this->piVars['email'])) {
+		if ($this->piVars['email'] && !filter_var($this->piVars['email'], FILTER_VALIDATE_EMAIL)) {
 			$this->formValidationErrors['email'] = $this->pi_getLL('error.invalid.email');
 		}
 
@@ -902,7 +904,7 @@ class tx_comments_pi1 extends tslib_pibase {
 			}
 		}
 		elseif ($captchaType == 2 && t3lib_extMgm::isLoaded('sr_freecap')) {
-			$freeCap = t3lib_div::makeInstance('tx_srfreecap_pi2');
+			$freeCap = GeneralUtility::makeInstance('tx_srfreecap_pi2');
 			/* @var $freeCap tx_srfreecap_pi2 */
 			if (!$freeCap->checkWord($this->piVars['captcha'])) {
 				$this->formValidationErrors['captcha'] = $this->pi_getLL('error.wrong.captcha');
@@ -922,11 +924,11 @@ class tx_comments_pi1 extends tslib_pibase {
 	function sendNotificationEmail($uid, $points) {
 		$toEmail = $this->conf['spamProtect.']['notificationEmail'];
 		$fromEmail = $this->conf['spamProtect.']['fromEmail'];
-		if (t3lib_div::validEmail($toEmail) && t3lib_div::validEmail($fromEmail)) {
+		if (filter_var($toEmail, FILTER_VALIDATE_EMAIL) && filter_var($fromEmail, FILTER_VALIDATE_EMAIL)) {
 			$template = $this->cObj->fileResource($this->conf['spamProtect.']['emailTemplate']);
 			$check = md5($uid . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
 			$markers = array(
-				'###URL###' => t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'),
+				'###URL###' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'),
 				'###POINTS###' => $points,
 				'###FIRSTNAME###' => $this->piVars['firstname'],
 				'###LASTNAME###' => $this->piVars['lastname'],
@@ -934,10 +936,10 @@ class tx_comments_pi1 extends tslib_pibase {
 				'###LOCATION###' => $this->piVars['location'],
 				'###HOMEPAGE###' => $this->piVars['homepage'],
 				'###CONTENT###' => $this->piVars['content'],
-				'###REMOTE_ADDR###' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
-				'###APPROVE_LINK###' => t3lib_div::locationHeaderUrl('index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=approve'),
-				'###DELETE_LINK###' => t3lib_div::locationHeaderUrl('index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=delete'),
-				'###KILL_LINK###' => t3lib_div::locationHeaderUrl('index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=kill'),
+				'###REMOTE_ADDR###' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+				'###APPROVE_LINK###' => GeneralUtility::locationHeaderUrl('index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=approve'),
+				'###DELETE_LINK###' => GeneralUtility::locationHeaderUrl('index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=delete'),
+				'###KILL_LINK###' => GeneralUtility::locationHeaderUrl('index.php?eID=comments&uid=' . $uid . '&chk=' . $check . '&cmd=kill'),
 				'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('comments'),
 			);
 			// Call hook for custom markers
@@ -950,13 +952,13 @@ class tx_comments_pi1 extends tslib_pibase {
 						'markers' => $markers,
 						'uid' => $uid
 					);
-					if (is_array($tempMarkers = t3lib_div::callUserFunction($userFunc, $params, $this))) {
+					if (is_array($tempMarkers = GeneralUtility::callUserFunction($userFunc, $params, $this))) {
 						$markers = $tempMarkers;
 					}
 				}
 			}
 			$content = $this->cObj->substituteMarkerArray($template, $markers);
-			t3lib_div::plainMailEncoded($toEmail, $this->pi_getLL('email.subject'), $content, 'From: ' . $this->conf['spamProtect.']['fromEmail']);
+			GeneralUtility::plainMailEncoded($toEmail, $this->pi_getLL('email.subject'), $content, 'From: ' . $this->conf['spamProtect.']['fromEmail']);
 		}
 	}
 
@@ -975,13 +977,13 @@ class tx_comments_pi1 extends tslib_pibase {
 					'uid' => $this->externalUid,
 				);
 
-				$time = t3lib_div::callUserFunction($userFunc, $params, $this);
+				$time = GeneralUtility::callUserFunction($userFunc, $params, $this);
 
 				$timeIsInt = FALSE;
 				if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-					$timeIsInt = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($time);
+					$timeIsInt = MathUtility::canBeInterpretedAsInteger($time);
 				} else {
-					$timeIsInt = t3lib_div::testInt($time);
+					$timeIsInt = MathUtility::canBeInterpretedAsInteger($time);
 				}
 
 				if ($time !== false && $timeIsInt) {
@@ -1002,7 +1004,6 @@ class tx_comments_pi1 extends tslib_pibase {
 			// No time limit emposed
 			return false;
 		}
-		t3lib_div::loadTCA($this->foreignTableName);
 		if (isset($GLOBALS['TCA'][$this->foreignTableName]['ctrl']['crdate'])) {
 			$fieldName = $GLOBALS['TCA'][$this->foreignTableName]['ctrl']['crdate'];
 		}
@@ -1132,7 +1133,7 @@ class tx_comments_pi1 extends tslib_pibase {
 					'pObj' => &$this,
 					'code' => $code,
 				);
-				if (($html = t3lib_div::callUserFunction($userFunc, $params, $this))) {
+				if (($html = GeneralUtility::callUserFunction($userFunc, $params, $this))) {
 					return $html;
 				}
 			}

@@ -38,6 +38,8 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 
 /**
  * A hook to TCEmain to remove comments if associated record is removed.
@@ -78,7 +80,7 @@ class tx_comments_tcemain {
 				$cmdmap['tx_comments_urllog'][$row['uid']]['delete'] = true;
 			}
 			if (count($cmdmap)) {
-				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+				$tce = GeneralUtility::makeInstance('t3lib_TCEmain');
 				/* @var $tce t3lib_TCEmain */
 				$tce->start(false, $cmdmap, $pObj->BE_USER);
 				$GLOBALS['TYPO3_DB']->sql_query('START TRANSACTION');

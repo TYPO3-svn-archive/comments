@@ -34,6 +34,7 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 
 /**
@@ -55,11 +56,11 @@ class tx_comments_cms_layout {
 		global $LANG;
 
 		if ($params['row']['list_type'] == 'comments_pi1') {
-			$data = t3lib_div::xml2array($params['row']['pi_flexform']);
+			$data = GeneralUtility::xml2array($params['row']['pi_flexform']);
 			$result = array();
 			if (is_array($data)) {
 				$mode = $data['data']['sDEF']['lDEF']['code']['vDEF'];
-				foreach (t3lib_div::trimExplode(',', $mode, true) as $code) {
+				foreach (GeneralUtility::trimExplode(',', $mode, true) as $code) {
 					switch ($code) {
 						case 'COMMENTS':
 							$result[] = $LANG->sL('LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.code.I.0');

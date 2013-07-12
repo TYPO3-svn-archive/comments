@@ -44,7 +44,7 @@ class tx_comments_tcemain {
 	 * @param	t3lib_TCEmain		$pObj	Reference to parent object
 	 * @return	void		Nothing
 	 */
-	function processCmdmap_postProcess($command, $table, $id, $value, &$pObj) {
+	function processCmdmap_postProcess($command, $table, $id, $value, $pObj) {
 		/* @var $pObj t3lib_TCEmain */
 		if ($command == 'delete' && $table != 'tx_comments_comments') {
 			$cmdmap = array();

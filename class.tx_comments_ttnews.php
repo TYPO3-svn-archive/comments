@@ -42,7 +42,7 @@ class tx_comments_ttnews {
  * @param	tx_ttnews		$pObj	Reference to parent object
  * @return	array		Modified marker array
  */
-	function extraItemMarkerProcessor($markerArray, $row, $lConf, &$pObj) {
+	function extraItemMarkerProcessor($markerArray, $row, $lConf, $pObj) {
 		/* @var $pObj tx_ttnews */
 		switch ($pObj->theCode) {
 			case 'LATEST':
@@ -80,7 +80,7 @@ class tx_comments_ttnews {
 	 * @return	int		Number of comments for this news item
 	 * @access private
 	 */
-	function getNumberOfComments($newsUid, &$pObj) {
+	function getNumberOfComments($newsUid, $pObj) {
 		/* @var $pObj tx_ttnews */
 		$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS t', 'tx_comments_comments',
 				'external_prefix=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('tx_ttnews', 'tx_comments_comments') .
@@ -99,7 +99,7 @@ class tx_comments_ttnews {
 	 * @return	string		Template section
 	 * @access private
 	 */
-	function getTemplate($section, $conf, &$pObj) {
+	function getTemplate($section, $conf, $pObj) {
 		// Search for file
 		if (isset($conf['commentsTemplateFile'])) {
 			$file = $conf['commentsTemplateFile'];
@@ -129,7 +129,7 @@ class tx_comments_ttnews {
 	 * @return	string		Generated URL to item
 	 * @access private
 	 */
-	function getItemLink($marker, $itemUid, &$pObj) {
+	function getItemLink($marker, $itemUid, $pObj) {
 		$result = '';
 		if (isset($GLOBALS['TSFE']->register['newsMoreLink']) &&
 				($pos = strpos($GLOBALS['TSFE']->register['newsMoreLink'], 'href="')) !== false) {

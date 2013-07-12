@@ -234,7 +234,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['mergeConfiguration'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['mergeConfiguration'] as $userFunc) {
 				$params = array(
-					'pObj' => &$this,
+					'pObj' => $this,
 				);
 				GeneralUtility::callUserFunction($userFunc, $params, $this);
 			}
@@ -348,7 +348,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['comments'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['comments'] as $userFunc) {
 				$params = array(
-					'pObj' => &$this,
+					'pObj' => $this,
 					'template' => $this->templateCode,
 					'markers' => $subParts,
 					'plainMarkers' => $markers,
@@ -369,7 +369,7 @@ class tx_comments_pi1 extends tslib_pibase {
 	 * @param	array		$rows	Rows from tx_comments_comments
 	 * @return	string		Generated HTML
 	 */
-	function comments_getComments(&$rows) {
+	function comments_getComments($rows) {
 		if (count($rows) == 0) {
 			$template = $this->cObj->getSubpart($this->templateCode, '###NO_COMMENTS###');
 			if ($template) {
@@ -395,7 +395,7 @@ class tx_comments_pi1 extends tslib_pibase {
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['comments_getComments'])) {
 				foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['comments_getComments'] as $userFunc) {
 					$params = array(
-						'pObj' => &$this,
+						'pObj' => $this,
 						'template' => $template,
 						'markers' => $markerArray,
 						'row' => $row,
@@ -418,7 +418,7 @@ class tx_comments_pi1 extends tslib_pibase {
 	 * @param	array		$row	Comment row data
 	 * @return	string		Ratings	HTML for this row
 	 */
-	function comments_getComments_getRatings(&$row) {
+	function comments_getComments_getRatings($row) {
 		if ($this->ratingsApiObj) {
 			$conf = $this->conf['ratingsConfig.'];
 			if (!is_array($conf)) {
@@ -542,8 +542,8 @@ class tx_comments_pi1 extends tslib_pibase {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['form'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['form'] as $userFunc) {
 				$params = array(
-					'pObj' => &$this,
-					'template' => &$template,
+					'pObj' => $this,
+					'template' => $template,
 					'markers' => $markers,
 				);
 				if (is_array($tempMarkers = GeneralUtility::callUserFunction($userFunc, $params, $this))) {
@@ -673,7 +673,7 @@ class tx_comments_pi1 extends tslib_pibase {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['processSubmission'] as $userFunc) {
 					$params = array(
 						'record' => $record,
-						'pObj' => &$this,
+						'pObj' => $this,
 					);
 					if (($newRecord = GeneralUtility::callUserFunction($userFunc, $params, $this))) {
 						$record = $newRecord;
@@ -758,7 +758,7 @@ class tx_comments_pi1 extends tslib_pibase {
 						if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['processValidComment'])) {
 							foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['processValidComment'] as $userFunc) {
 								$params = array(
-									'pObj' => &$this,
+									'pObj' => $this,
 									'uid' => intval($newUid),
 								);
 								GeneralUtility::callUserFunction($userFunc, $params, $this);
@@ -854,7 +854,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['externalSpamCheck'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['externalSpamCheck'] as $_funcRef) {
 				$params = array(
-					'pObj' => &$this,
+					'pObj' => $this,
 					'formdata' => $this->piVars,
 					'points' => $points,
 				);
@@ -939,7 +939,7 @@ class tx_comments_pi1 extends tslib_pibase {
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['sendNotificationMail'])) {
 				foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['sendNotificationMail'] as $userFunc) {
 					$params = array(
-						'pObj' => &$this,
+						'pObj' => $this,
 						'template' => $template,
 						'check' => $check,
 						'markers' => $markers,
@@ -965,7 +965,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['closeCommentsAfter'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['closeCommentsAfter'] as $userFunc) {
 				$params = array(
-					'pObj' => &$this,
+					'pObj' => $this,
 					'table' => $this->foreignTableName,
 					'uid' => $this->externalUid,
 				);
@@ -1068,7 +1068,7 @@ class tx_comments_pi1 extends tslib_pibase {
 	 * @param	string		$prefix	Prefix
 	 * @return	void
 	 */
-	function fixLL_internal($LL, &$ll, $prefix = '') {
+	function fixLL_internal($LL, $ll, $prefix = '') {
 		while (list($key, $val) = each($LL)) {
 			if (is_array($val))	{
 				$this->fixLL_internal($val, $ll, $prefix . $key);
@@ -1115,7 +1115,7 @@ class tx_comments_pi1 extends tslib_pibase {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['customFunctionCode'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['customFunctionCode'] as $userFunc) {
 				$params = array(
-					'pObj' => &$this,
+					'pObj' => $this,
 					'code' => $code,
 				);
 				if (($html = GeneralUtility::callUserFunction($userFunc, $params, $this))) {

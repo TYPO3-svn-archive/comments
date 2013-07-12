@@ -96,7 +96,7 @@ class tx_comments_eID {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['eID_postProc'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['comments']['eID_postProc'] as $userFunc) {
 				$params = array(
-					'pObj' => &$this,
+					'pObj' => $this,
 				);
 				GeneralUtility::callUserFunction($userFunc, $params, $this);
 			}

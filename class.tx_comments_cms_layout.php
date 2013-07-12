@@ -40,7 +40,7 @@ class tx_comments_cms_layout {
 	 * @param	object		$pObj	A reference to calling object
 	 * @return	string		Information about pi1 plugin
 	 */
-	function getExtensionSummary($params, &$pObj) {
+	function getExtensionSummary($params, $pObj) {
 		global $LANG;
 
 		if ($params['row']['list_type'] == 'comments_pi1') {

@@ -21,23 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * Handling of related records for comments.
- *
- * $Id$
- */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   49: class tx_comments_tcemain
- *   61:     function processCmdmap_postProcess($command, $table, $id, $value, &$pObj)
- *
- * TOTAL FUNCTIONS: 1
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 

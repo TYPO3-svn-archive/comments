@@ -25,32 +25,9 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
-/**
-* class.tx_comments_pi1.php
-*
-* Comment management script.
-*
-* $Id$
-*
-* @author Dmitry Dulepov <dmitry@typo3.org>
-*/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   60: class tx_comments_eID
- *   64:     function init()
- *  100:     function main()
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+
 
 /**
  * Comment management script.

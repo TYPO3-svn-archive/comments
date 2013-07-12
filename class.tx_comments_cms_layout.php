@@ -22,18 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   46: class tx_comments_cms_layout
- *   54:     function getExtensionSummary($params, &$pObj)
- *
- * TOTAL FUNCTIONS: 1
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 

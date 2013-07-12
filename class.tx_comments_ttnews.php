@@ -21,31 +21,12 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * Hooks to tt_news.
- *
- * $Id$
- */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   54: class tx_comments_ttnews
- *   64:     function extraItemMarkerProcessor($markerArray, $row, $lConf, &$pObj)
- *  101:     function getNumberOfComments($newsUid, &$pObj)
- *  120:     function getTemplate($section, $conf, &$pObj)
- *  150:     function getItemLink($marker, $itemUid, &$pObj)
- *
- * TOTAL FUNCTIONS: 4
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 
 /**
- * This clas provides hook to tt_news to add extra markers.
+ * This class provides hook to tt_news to add extra markers.
  *
  * @author	Dmitry Dulepov <dmitry@typo3.org>
  * @package TYPO3

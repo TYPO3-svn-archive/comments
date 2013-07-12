@@ -59,24 +59,10 @@ class tx_comments_pi1_wizicon {
 	 * @return	array		The array with language labels
 	 */
 	function includeLocalLang()	{
-		switch (TYPO3_branch) {
-			case '4.5':
-				$llFile     = t3lib_extMgm::extPath('comments') . 'pi1/locallang.xml';
-				$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
-				break;
-			case '4.6':
-			case '4.7':
-				$llFile       = t3lib_extMgm::extPath('comments') . 'pi1/locallang.xml';
-				$llFileParser = t3lib_div::makeInstance('t3lib_l10n_parser_Llxml');
-				$LOCAL_LANG   = $llFileParser->getParsedData($llFile, $GLOBALS['LANG']->lang);
-				break;
-			case '6.0':
-			default:
-				$llFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('comments') . 'pi1/locallang.xml';
+		$llFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('comments') . 'pi1/locallang.xml';
 
-				$localLanguageParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Parser\\LocallangXmlParser');
-				$LOCAL_LANG = $localLanguageParser->getParsedData($llFile, $GLOBALS['LANG']->lang);
-		}
+		$localLanguageParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Parser\\LocallangXmlParser');
+		$LOCAL_LANG = $localLanguageParser->getParsedData($llFile, $GLOBALS['LANG']->lang);
 
 		return $LOCAL_LANG;
 	}

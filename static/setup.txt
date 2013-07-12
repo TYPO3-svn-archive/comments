@@ -36,7 +36,7 @@ plugin.tx_comments_pi1 {
 		# Enable URL log (for "List" mode)
 		enableUrlLog = 1
 
-		# If set, reverses sortng to show last comments first
+		# If set, reverses sortng to show newer comments first
 		reverseSorting = {$plugin.tx_comments_pi1.reverseSorting}
 	}
 

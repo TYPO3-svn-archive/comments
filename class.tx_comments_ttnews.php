@@ -62,7 +62,7 @@ class tx_comments_ttnews {
 							'###COMMENTS_COUNT###' => sprintf($lang->sL('LLL:EXT:comments/locallang_hooks.xml:comments_number'), $commentCount),
 							'###COMMENTS_COUNT_NONE###' => $lang->sL('LLL:EXT:comments/locallang_hooks.xml:comments_number_none'),
 							'###UID###' => $row['uid'],
-							'###COMMENTS_LINK###' => $this->getItemLink($markerArray['###LINK_ITEM###'], $row['uid'], $pObj),
+							'###COMMENTS_LINK###' => $this->getItemLink($markerArray['###LINK_ITEM###'], $row['uid'], $pObj, $pObj->theCode),
 						)
 					);
 					unset($lang);	// Free memory explicitely!
@@ -129,10 +129,10 @@ class tx_comments_ttnews {
 	 * @return	string		Generated URL to item
 	 * @access private
 	 */
-	function getItemLink($marker, $itemUid, $pObj) {
+	function getItemLink($marker, $itemUid, $pObj, $ttCode) {
 		$result = '';
 		if (isset($GLOBALS['TSFE']->register['newsMoreLink']) &&
-				($pos = strpos($GLOBALS['TSFE']->register['newsMoreLink'], 'href="')) !== false) {
+				($pos = strpos($GLOBALS['TSFE']->register['newsMoreLink'], 'href="')) !== false && $ttCode!='SINGLE') {
 			$value = substr($GLOBALS['TSFE']->register['newsMoreLink'], $pos + 6);
 			$result = substr($value, 0, strpos($value, '"'));
 		}

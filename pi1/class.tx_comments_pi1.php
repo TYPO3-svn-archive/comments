@@ -895,7 +895,6 @@ class tx_comments_pi1 extends tslib_pibase {
 		// Check spam: captcha
 		$captchaType = intval($this->conf['spamProtect.']['useCaptcha']);
 		if ($captchaType == 1 && t3lib_extMgm::isLoaded('captcha')) {
-			@session_start();	// As of PHP 4.3.3, calling session_start() while the session has already been started will result in an error of level E_NOTICE. Also, the second session start will simply be ignored.
 			$captchaStr = $_SESSION['tx_captcha_string'];
 			$_SESSION['tx_captcha_string'] = '';
 			if (!$captchaStr || $this->piVars['captcha'] !== $captchaStr) {

@@ -249,14 +249,7 @@ class tx_comments_pi1 extends tslib_pibase {
 	protected function getStoragePageId() {
 		$storagePageId = trim($this->conf['storagePid']);
 
-		$pageIdIsInt = FALSE;
-		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-			$pageIdIsInt = MathUtility::canBeInterpretedAsInteger($storagePageId);
-		} else {
-			$pageIdIsInt = MathUtility::canBeInterpretedAsInteger($storagePageId);
-		}
-
-		if ($pageIdIsInt) {
+		if (MathUtility::canBeInterpretedAsInteger($storagePageId)) {
 			$storagePageId = intval($storagePageId);
 		} else {
 			$storagePageId = $GLOBALS['TYPO3_DB']->cleanIntList($storagePageId);
@@ -978,15 +971,7 @@ class tx_comments_pi1 extends tslib_pibase {
 				);
 
 				$time = GeneralUtility::callUserFunction($userFunc, $params, $this);
-
-				$timeIsInt = FALSE;
-				if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-					$timeIsInt = MathUtility::canBeInterpretedAsInteger($time);
-				} else {
-					$timeIsInt = MathUtility::canBeInterpretedAsInteger($time);
-				}
-
-				if ($time !== false && $timeIsInt) {
+				if ($time !== false && MathUtility::canBeInterpretedAsInteger($time)) {
 					$time = intval($time);
 					if ($time <= $GLOBALS['EXEC_TIME']) {
 						return true;	// Commenting closed

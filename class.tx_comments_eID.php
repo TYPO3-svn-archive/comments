@@ -73,14 +73,7 @@ class tx_comments_eID {
 		// Sanity check
 		$this->uid = GeneralUtility::_GET('uid');
 
-		$uidIsInt = FALSE;
-		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-			$uidIsInt = MathUtility::canBeInterpretedAsInteger($this->uid);
-		} else {
-			$uidIsInt = MathUtility::canBeInterpretedAsInteger($this->uid);
-		}
-
-		if (!$uidIsInt) {
+		if (!MathUtility::canBeInterpretedAsInteger($this->uid)) {
 			echo $GLOBALS['LANG']->getLL('bad_uid_value');
 			exit;
 		}

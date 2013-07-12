@@ -11,8 +11,8 @@
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'Commenting system',
-	'description' => 'Adds commenting for pages or virtually any record visible in frontend.',
+	'title' => 'Comments',
+	'description' => 'Adds commenting functionality for pages or virtually any record visible in frontend.',
 	'category' => 'plugin',
 	'author' => 'Ingo Renner',
 	'author_email' => 'ingo@typo3.org',

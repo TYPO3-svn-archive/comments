@@ -3,10 +3,10 @@ plugin.tx_comments_pi1 {
 	# cat=plugin.comments: Basic; type=string; label=Storage PID:The PID where comments are stored or a comma-separated list of PIDs (see manual!)
 	storagePid =
 
-	# cat=plugin.comments: Basic; type=string; label=Comment trigger:If this prefix to showUid URL parameter exists, it will trigger commenting system
+	# cat=plugin.comments: Basic; type=string; label=Comment trigger:If this prefix to showUid URL parameter exists, it will render the comments plugin
 	externalPrefix = pages
 
-	# cat=plugin.comments: Basic; type=string; label=Template file:Template file for commenting system
+	# cat=plugin.comments: Basic; type=string; label=Template file:Template file for the comments plugin
 	templateFile = EXT:comments/resources/template/pi1_template.html
 
 	# cat=plugin.comments: Basic; type=int+; label=Comments per page:Number of comments per page

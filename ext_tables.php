@@ -4,7 +4,7 @@
 if (!defined('TYPO3_MODE')) die('Access denied.');
 
 // Add static files for plugins
-t3lib_extMgm::addStaticFile($_EXTKEY, 'static/', 'Commenting system');
+t3lib_extMgm::addStaticFile($_EXTKEY, 'static/', 'Comments');
 
 // Add pi1 plugin
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi1'] = 'layout,select_key,pages';

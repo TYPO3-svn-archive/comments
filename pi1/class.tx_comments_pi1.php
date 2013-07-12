@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 
 /**
- * Commenting system for tt_products.
+ * Comments.
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
  * @package TYPO3

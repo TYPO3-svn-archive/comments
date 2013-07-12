@@ -150,8 +150,4 @@ class tx_comments_ttnews {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/comments/class.tx_comments_ttnews.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/comments/class.tx_comments_ttnews.php']);
-}
-
 ?>

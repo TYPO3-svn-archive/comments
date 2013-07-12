@@ -113,12 +113,9 @@ class tx_comments_eID {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/comments/class.tx_comments_eID.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/comments/class.tx_comments_eID.php']);
-}
-
 // Make instance:
 $SOBE = GeneralUtility::makeInstance('tx_comments_eID');
 $SOBE->init();
 $SOBE->main();
+
 ?>

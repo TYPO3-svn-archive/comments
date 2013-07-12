@@ -28,14 +28,6 @@
  * $Id$
  */
 
-require_once(t3lib_extMgm::extPath('lang', 'lang.php'));
-
-$tx_comments_path = t3lib_extMgm::extPath('comments');
-require_once($tx_comments_path . 'controller/class.tx_comments_basecontroller.php');
-require_once($tx_comments_path . 'view/class.tx_comments_error_view.php');
-require_once($tx_comments_path . 'view/class.tx_comments_form_view.php');
-require_once($tx_comments_path . 'view/class.tx_comments_comments_view.php');
-unset($tx_comments_path);
 
 /**
  * This class implements the main Frontend controller for the comments extension

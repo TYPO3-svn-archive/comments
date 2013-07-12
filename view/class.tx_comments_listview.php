@@ -28,7 +28,6 @@
  * $Id: $
  */
 
-require_once(t3lib_extMgm::extPath('comments', 'class.tx_comments_baseview.php'));
 
 /**
  * This class contains a list view for comments

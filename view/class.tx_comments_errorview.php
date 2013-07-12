@@ -28,7 +28,6 @@
  * $Id$
  */
 
-require_once(t3lib_extMgm::extPath('comments', 'view/class.tx_comments_baseview.php'));
 
 /**
  * This class implements a error view for the comments extension

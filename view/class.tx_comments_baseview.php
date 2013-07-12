@@ -28,8 +28,6 @@
  * $Id$
  */
 
-require_once(t3lib_extMgm::extPath('comments', 'controller/class.tx_comments_basecontroller.php'));
-
 /**
  * This class implements a base class for all comment extension views.
  *

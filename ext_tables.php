@@ -10,6 +10,8 @@ t3lib_extMgm::addStaticFile($_EXTKEY, 'static/', 'Commenting system');
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi1'] = 'layout,select_key,pages';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1'] = 'pi_flexform';
 t3lib_extMgm::addPlugin(Array('LLL:EXT:comments/pi1/locallang.xml:tt_content.list_type_pi1', $_EXTKEY.'_pi1'), 'list_type');
+
+#TODO remove 4.2 compatibility
 if (version_compare(TYPO3_version, '4.2', '<')) {
 	// Pre-4.2 dies if flexform has references to sheets
 	require_once(t3lib_extMgm::extPath('comments', 'flexform_functions.php'));

@@ -42,8 +42,6 @@
  *
  */
 
-require_once(t3lib_extMgm::extPath('lang', 'lang.php'));
-
 /**
  * This clas provides hook to tt_news to add extra markers.
  *

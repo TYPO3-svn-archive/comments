@@ -26,13 +26,6 @@
 ***************************************************************/
 
 
-require_once(PATH_t3lib . 'class.t3lib_befunc.php');
-require_once(PATH_t3lib . 'class.t3lib_refindex.php');
-require_once(PATH_tslib . 'class.tslib_pibase.php');
-
-if (t3lib_extMgm::isLoaded('ratings')) {
-	require_once(t3lib_extMgm::extPath('ratings', 'class.tx_ratings_api.php'));
-}
 
 /**
  * Commenting system for tt_products.
@@ -634,7 +627,6 @@ class tx_comments_pi1 extends tslib_pibase {
 			return str_replace('<br /><br />', '<br />', $code);
 		}
 		elseif ($captchaType == 2 && t3lib_extMgm::isLoaded('sr_freecap')) {
-			require_once(t3lib_extMgm::extPath('sr_freecap') . 'pi2/class.tx_srfreecap_pi2.php');
 			$freeCap = t3lib_div::makeInstance('tx_srfreecap_pi2');
 			/* @var $freeCap tx_srfreecap_pi2 */
 			$template = $this->cObj->getSubpart($this->templateCode, '###CAPTCHA_SUB###');
@@ -911,7 +903,6 @@ class tx_comments_pi1 extends tslib_pibase {
 			}
 		}
 		elseif ($captchaType == 2 && t3lib_extMgm::isLoaded('sr_freecap')) {
-			require_once(t3lib_extMgm::extPath('sr_freecap') . 'pi2/class.tx_srfreecap_pi2.php');
 			$freeCap = t3lib_div::makeInstance('tx_srfreecap_pi2');
 			/* @var $freeCap tx_srfreecap_pi2 */
 			if (!$freeCap->checkWord($this->piVars['captcha'])) {

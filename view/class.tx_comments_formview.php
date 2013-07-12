@@ -28,7 +28,6 @@
  * $Id$
  */
 
-require_once(t3lib_extMgm::extPath('comments', 'view/class.tx_comments_baseview.php'));
 
 /**
  * This class implements a form view for the comments extension. This class
@@ -172,7 +171,6 @@ class tx_comments_formview extends tx_comments_baseview {
 	 * @return	string	Generated HTML
 	 */
 	protected function getCaptchaFromSrFreeCap($subpart) {
-		require_once(t3lib_extMgm::extPath('sr_freecap') . 'pi2/class.tx_srfreecap_pi2.php');
 		$freeCap = t3lib_div::makeInstance('tx_srfreecap_pi2');
 		/* @var $freeCap tx_srfreecap_pi2 */
 		return $this->cObj->substituteMarkerArray($subpart, array_merge($freeCap->makeCaptcha(), array(

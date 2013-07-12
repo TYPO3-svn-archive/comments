@@ -28,9 +28,6 @@
  * $Id$
  */
 
-if (!class_exists('tx_comments_basemodel', false)) {
-	require_once(t3lib_extMgm::extPath('comments', 'model/class.tx_comments_basemodel.php'));
-}
 
 /**
  * This class is a data record for comments.

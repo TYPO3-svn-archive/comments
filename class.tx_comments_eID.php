@@ -47,8 +47,6 @@
  *
  */
 
-require_once(t3lib_extMgm::extPath('lang', 'lang.php'));
-require_once(PATH_site . 't3lib/class.t3lib_tcemain.php');
 
 /**
  * Comment management script.
@@ -131,7 +129,6 @@ class tx_comments_eID {
 		}
 		// Clear cache
 		$pidList = t3lib_div::intExplode(',', t3lib_div::_GET('clearCache'));
-		t3lib_div::requireOnce(PATH_t3lib . 'class.t3lib_tcemain.php');
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		/* @var $tce t3lib_TCEmain */
 		foreach ($pidList as $pid) {

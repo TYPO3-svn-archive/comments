@@ -16,7 +16,7 @@
 				<label>LLL:EXT:comments/pi1/locallang.xml:tt_content.tx_comments_pi1.commentsPerPage</label>
 				<config>
 					<type>input</type>
-					<default>10</default>
+					<default>100</default>
 					<eval>trim,lower,num</eval>
 					<size>7</size>
 					<max>5</max>

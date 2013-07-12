@@ -10,7 +10,7 @@ plugin.tx_comments_pi1 {
 	templateFile = EXT:comments/resources/template/pi1_template.html
 
 	# cat=plugin.comments: Basic; type=int+; label=Comments per page:Number of comments per page
-	commentsPerPage = 10
+	commentsPerPage = 100
 
 	# cat=plugin.comments: Advanced; type=string; label=Date format:Date format specification. See PHP date() function for details. If empty, uses TYPO3 date format defined in Install tool
 	dateFormat =

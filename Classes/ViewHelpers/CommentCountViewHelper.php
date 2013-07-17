@@ -69,7 +69,8 @@ class CommentCountViewHelper extends AbstractViewHelper {
 		$commentCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 			'uid',
 			'tx_comments_comments',
-			'external_ref = \'' . $tableName . '_' . $uid . '\''
+			'external_ref = \'' . $tableName . '_' . $uid . '\' '
+				. $GLOBALS['TSFE']->sys_page->enableFields('tx_comments_comments')
 		);
 
 		return $commentCount;
